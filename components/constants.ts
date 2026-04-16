@@ -25,12 +25,15 @@ export const ANALYTICS = {
 export const NAV = [
   { href: '#about', label: 'Что такое ГИС' },
   { href: '#uz2', label: 'Требования ФСТЭК' },
+  { href: '#tech', label: 'Стек' },
+  { href: '#legal', label: 'Правовое поле' },
   { href: '#check', label: 'Чек-лист' },
   { href: '#services', label: 'Услуги' },
   { href: '#pricing', label: 'Пакеты' },
   { href: '#process', label: 'Как работаем' },
   { href: '#reviews', label: 'Отзывы' },
   { href: '#regions', label: 'География' },
+  { href: '#glossary', label: 'Глоссарий' },
   { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },
 ] as const;

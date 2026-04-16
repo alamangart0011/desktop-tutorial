@@ -5,6 +5,9 @@ import { Stats } from '@/components/Stats';
 import { Problem } from '@/components/Problem';
 import { SystemBreakdown } from '@/components/SystemBreakdown';
 import { Uz2Requirements } from '@/components/Uz2Requirements';
+import { TechStack } from '@/components/TechStack';
+import { LegalUpdates } from '@/components/LegalUpdates';
+import { Glossary } from '@/components/Glossary';
 import { Services } from '@/components/Services';
 import { Pricing } from '@/components/Pricing';
 import { Process } from '@/components/Process';
@@ -41,6 +44,8 @@ export default function Page() {
         <Problem />
         <SystemBreakdown />
         <Uz2Requirements />
+        <TechStack />
+        <LegalUpdates />
         <ReadinessCheck />
         <Calculator />
         <Services />
@@ -54,6 +59,7 @@ export default function Page() {
         <Cases />
         <Reviews />
         <Regions />
+        <Glossary />
         <Faq />
         <ContactForm />
       </main>
