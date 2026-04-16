@@ -8,6 +8,7 @@ import { Uz2Requirements } from '@/components/Uz2Requirements';
 import { TechStack } from '@/components/TechStack';
 import { LegalUpdates } from '@/components/LegalUpdates';
 import { Glossary } from '@/components/Glossary';
+import { DocLinks } from '@/components/DocLinks';
 import { Services } from '@/components/Services';
 import { Pricing } from '@/components/Pricing';
 import { Process } from '@/components/Process';
@@ -32,6 +33,9 @@ const ReadinessCheck = dynamic(
 const Calculator = dynamic(
   () => import('@/components/Calculator').then((m) => m.Calculator),
 );
+const RiskCalc = dynamic(
+  () => import('@/components/RiskCalc').then((m) => m.RiskCalc),
+);
 const Faq = dynamic(() => import('@/components/Faq').then((m) => m.Faq));
 
 export default function Page() {
@@ -46,6 +50,7 @@ export default function Page() {
         <Uz2Requirements />
         <TechStack />
         <LegalUpdates />
+        <RiskCalc />
         <ReadinessCheck />
         <Calculator />
         <Services />
@@ -60,6 +65,7 @@ export default function Page() {
         <Reviews />
         <Regions />
         <Glossary />
+        <DocLinks />
         <Faq />
         <ContactForm />
       </main>

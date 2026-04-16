@@ -34,6 +34,7 @@ export const NAV = [
   { href: '#reviews', label: 'Отзывы' },
   { href: '#regions', label: 'География' },
   { href: '#glossary', label: 'Глоссарий' },
+  { href: '#docs', label: 'Нормативка' },
   { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },
 ] as const;
