@@ -24,6 +24,7 @@ export const ANALYTICS = {
 
 export const NAV = [
   { href: '#about', label: 'Что такое ГИС' },
+  { href: '#audience', label: 'Для кого' },
   { href: '#uz2', label: 'Требования ФСТЭК' },
   { href: '#tech', label: 'Стек' },
   { href: '#legal', label: 'Правовое поле' },

@@ -6,6 +6,7 @@ import { Problem } from '@/components/Problem';
 import { SystemBreakdown } from '@/components/SystemBreakdown';
 import { Uz2Requirements } from '@/components/Uz2Requirements';
 import { TechStack } from '@/components/TechStack';
+import { Audience } from '@/components/Audience';
 import { LegalUpdates } from '@/components/LegalUpdates';
 import { Glossary } from '@/components/Glossary';
 import { DocLinks } from '@/components/DocLinks';
@@ -47,6 +48,7 @@ export default function Page() {
         <Stats />
         <Problem />
         <SystemBreakdown />
+        <Audience />
         <Uz2Requirements />
         <TechStack />
         <LegalUpdates />
