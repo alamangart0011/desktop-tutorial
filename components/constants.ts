@@ -9,8 +9,17 @@ export const BRAND = {
   telegram: '',
   whatsapp: '',
   address: 'Санкт-Петербург',
+  region: 'Санкт-Петербург',
+  postalCode: '191036',
+  streetAddress: '—',
   site: 'https://oboron-it.ru',
   workingHours: 'Пн–Пт 09:00–18:00 (МСК)',
+} as const;
+
+export const ANALYTICS = {
+  yandexMetrikaId: '',
+  yandexVerification: '',
+  googleVerification: '',
 } as const;
 
 export const NAV = [

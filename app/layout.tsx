@@ -1,51 +1,116 @@
-import type { Metadata, Viewport } from "next";
-import { Manrope } from "next/font/google";
-import "./globals.css";
-import { BRAND } from "@/components/constants";
+import type { Metadata, Viewport } from 'next';
+import { Manrope } from 'next/font/google';
+import Script from 'next/script';
+import './globals.css';
+import { ANALYTICS, BRAND } from '@/components/constants';
+import { FAQ_QA } from '@/components/faq-data';
 
 const manrope = Manrope({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-manrope",
-  display: "swap",
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-manrope',
+  display: 'swap',
 });
+
+const TITLE =
+  'Подключение к ГИС «Профилактика» под ключ · ПП РФ № 411, ФСТЭК УЗ2 — ' +
+  BRAND.name;
+const DESCRIPTION =
+  'Подключаем КДН, школы, опеку, соцзащиту, медучреждения и ОВД к ГИС «Профилактика» под ключ. Документы ПДн, СЗИ (Secret Net Studio, ПАК «Соболь», КриптоПро NGate), сертифицированная ОС (Astra/Alt/РЕД), аттестация ИСПДн по 21 Приказу ФСТЭК (УЗ2), обучение и техподдержка. Срок 35–45 рабочих дней.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BRAND.site),
   title: {
-    default:
-      'Подключение к ГИС «Профилактика» под ключ — ' + BRAND.name,
-    template: "%s — " + BRAND.name,
+    default: TITLE,
+    template: '%s — ' + BRAND.name,
   },
-  description:
-    'Подключаем КДН, школы, опеку, соцзащиту и медучреждения к ГИС «Профилактика» по ПП РФ № 411. УЗ2, ФСТЭК, СКЗИ, СЗИ, документы, обучение, техподдержка. Срок 35–45 рабочих дней.',
+  description: DESCRIPTION,
+  applicationName: BRAND.name,
+  authors: [{ name: BRAND.name, url: BRAND.site }],
+  generator: 'Next.js',
   keywords: [
     'ГИС Профилактика',
-    'подключение ГИС Профилактика',
-    'ПП 411',
+    'ГИС «Профилактика»',
+    'подключение к ГИС Профилактика',
+    'ГИС профилактики безнадзорности',
+    'ПП РФ 411',
+    'Постановление 411 от 01.04.2025',
     'ФСТЭК 21',
+    '21 Приказ ФСТЭК',
+    'ФСТЭК 117',
     'УЗ2',
+    'ИСПДн',
+    '152-ФЗ',
+    '120-ФЗ',
+    'КДН и ЗП',
+    'КДНиЗП',
+    'комиссия по делам несовершеннолетних',
+    'ЕСИА подключение',
+    'СМЭВ',
     'КриптоПро NGate',
     'Secret Net Studio',
+    'ПАК Соболь',
     'Astra Linux',
-    'ИСПДн',
-    'АРМ ГИС',
+    'Alt Linux',
+    'РЕД ОС',
+    'аттестация ИСПДн',
+    'СЗИ от НСД',
+    'СКЗИ',
+    'защита персональных данных несовершеннолетних',
+    'Оборон-Экран',
+    'Санкт-Петербург',
   ],
+  category: 'Информационная безопасность',
   openGraph: {
-    title: 'Подключение к ГИС «Профилактика» под ключ — ' + BRAND.name,
-    description:
-      'Федеральный оператор — Минпросвещения. Подключение обязательно с 01.12.2025. Делаем под ключ по требованиям ФСТЭК № 21, УЗ2. Срок 35–45 дней.',
+    title: TITLE,
+    description: DESCRIPTION,
     url: BRAND.site,
     siteName: BRAND.name,
     locale: 'ru_RU',
     type: 'website',
   },
-  robots: { index: true, follow: true },
-  alternates: { canonical: '/' },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  alternates: {
+    canonical: '/',
+    languages: { 'ru-RU': '/' },
+  },
+  verification: {
+    ...(ANALYTICS.yandexVerification
+      ? { yandex: ANALYTICS.yandexVerification }
+      : {}),
+    ...(ANALYTICS.googleVerification
+      ? { google: ANALYTICS.googleVerification }
+      : {}),
+  },
+  formatDetection: {
+    telephone: true,
+    email: true,
+    address: true,
+  },
+  other: {
+    'yandex-tableau-widget':
+      'logo=' + BRAND.site + '/favicon.svg, color=#0b3b8c, title=' + BRAND.name,
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: '#0b3b8c',
+  colorScheme: 'light',
   width: 'device-width',
   initialScale: 1,
 };
@@ -59,37 +124,176 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: BRAND.name,
+    legalName: BRAND.legal,
     url: BRAND.site,
+    logo: `${BRAND.site}/favicon.svg`,
     telephone: BRAND.phone,
     email: BRAND.email,
     address: {
       '@type': 'PostalAddress',
       addressLocality: BRAND.address,
+      addressRegion: BRAND.region,
+      postalCode: BRAND.postalCode,
       addressCountry: 'RU',
     },
+    sameAs: [BRAND.site],
   };
+
+  const ldLocalBusiness = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': BRAND.site + '#business',
+    name: BRAND.name,
+    image: `${BRAND.site}/opengraph-image`,
+    telephone: BRAND.phone,
+    email: BRAND.email,
+    url: BRAND.site,
+    priceRange: '₽₽₽',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: BRAND.address,
+      addressRegion: BRAND.region,
+      addressCountry: 'RU',
+    },
+    areaServed: { '@type': 'Country', name: 'Russia' },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '09:00',
+        closes: '18:00',
+      },
+    ],
+  };
+
   const ldService = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    serviceType: 'Подключение к ГИС «Профилактика»',
+    serviceType: 'Подключение организации к ГИС «Профилактика» под ключ',
+    name: 'Подключение к ГИС «Профилактика»',
     provider: { '@type': 'Organization', name: BRAND.name, url: BRAND.site },
-    areaServed: 'RU',
+    areaServed: { '@type': 'Country', name: 'Russia' },
     description:
-      'Комплексное подключение организаций к ГИС «Профилактика» по требованиям ФСТЭК № 21, УЗ2, ПП РФ № 411.',
+      'Комплексная услуга подключения организаций к ГИС «Профилактика» по ПП РФ № 411: документы ПДн, СЗИ и СКЗИ, аттестация ИСПДн по 21 Приказу ФСТЭК (УЗ2), ЕСИА, обучение, техподдержка.',
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'RUB',
+      lowPrice: 150000,
+      offerCount: 3,
+      availability: 'https://schema.org/InStock',
+    },
   };
+
+  const ldFaq = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_QA.map((qa) => ({
+      '@type': 'Question',
+      name: qa.q,
+      acceptedAnswer: { '@type': 'Answer', text: qa.a },
+    })),
+  };
+
+  const ldBreadcrumbs = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Главная',
+        item: BRAND.site,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Подключение к государственным информационным системам',
+        item: BRAND.site + '/#services',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: 'ГИС «Профилактика»',
+        item: BRAND.site + '/#about',
+      },
+    ],
+  };
+
+  const ldWebSite = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: BRAND.name,
+    url: BRAND.site,
+    inLanguage: 'ru-RU',
+    publisher: { '@type': 'Organization', name: BRAND.name },
+  };
+
+  const metrikaId = ANALYTICS.yandexMetrikaId;
 
   return (
     <html lang="ru" className={manrope.variable}>
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="canonical" href={BRAND.site} />
+        <meta name="format-detection" content="telephone=yes" />
+        <meta name="geo.region" content="RU-SPE" />
+        <meta name="geo.placename" content={BRAND.address} />
+      </head>
       <body>
+        <a
+          href="#top"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg focus:text-[var(--color-brand)]"
+        >
+          Перейти к содержанию
+        </a>
         {children}
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldOrg) }}
         />
         <script
           type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldLocalBusiness) }}
+        />
+        <script
+          type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFaq) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumbs) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldWebSite) }}
+        />
+
+        {metrikaId && (
+          <>
+            <Script id="ym-init" strategy="afterInteractive">
+              {`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();
+for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+ym(${metrikaId}, "init", {clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, ecommerce:"dataLayer"});`}
+            </Script>
+            <noscript>
+              <div>
+                <img
+                  src={`https://mc.yandex.ru/watch/${metrikaId}`}
+                  style={{ position: 'absolute', left: '-9999px' }}
+                  alt=""
+                />
+              </div>
+            </noscript>
+          </>
+        )}
       </body>
     </html>
   );
