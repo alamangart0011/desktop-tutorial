@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { BRAND, NAV } from './constants';
 
 export function Footer() {
@@ -80,9 +81,15 @@ export function Footer() {
           <span>
             Не является публичной офертой. Состав и стоимость работ фиксируются в договоре.
           </span>
-          <a href={BRAND.site} target="_blank" rel="noreferrer noopener" className="hover:text-white">
-            {BRAND.site}
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/privacy" className="hover:text-white">
+              Политика обработки ПДн
+            </Link>
+            <span className="opacity-40">·</span>
+            <a href={BRAND.site} target="_blank" rel="noreferrer noopener" className="hover:text-white">
+              {BRAND.site}
+            </a>
+          </div>
         </div>
       </div>
     </footer>

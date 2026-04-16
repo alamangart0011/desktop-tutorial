@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 import { BRAND } from './constants';
 
@@ -67,12 +68,17 @@ export function QuickLead() {
           )}
           <button
             type="submit"
+            data-goal="callback"
             className="mt-3 w-full inline-flex items-center justify-center rounded-xl bg-[var(--color-brand)] text-white font-semibold px-5 py-3.5 hover:bg-[var(--color-brand-2)] transition"
           >
             Перезвоните мне
           </button>
           <p className="mt-2 text-[11px] text-[var(--color-muted)]">
-            Нажимая «Перезвоните мне», вы соглашаетесь на обработку ПДн в соответствии с 152-ФЗ.
+            Нажимая «Перезвоните мне», вы соглашаетесь с{' '}
+            <Link href="/privacy" className="underline text-[var(--color-brand)]">
+              Политикой обработки ПДн
+            </Link>{' '}
+            в соответствии с 152-ФЗ.
           </p>
         </form>
       </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 import { BRAND } from './constants';
 
@@ -127,6 +128,18 @@ export function ContactForm() {
               </div>
             </div>
           </div>
+
+          <div className="mt-8 rounded-2xl overflow-hidden border border-white/10">
+            <iframe
+              src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(BRAND.address)}&z=13&l=map`}
+              width="100%"
+              height="240"
+              loading="lazy"
+              title={`Карта: ${BRAND.address}`}
+              style={{ border: 0, display: 'block', filter: 'grayscale(0.2)' }}
+              allowFullScreen
+            />
+          </div>
         </div>
 
         <form
@@ -159,7 +172,11 @@ export function ContactForm() {
               className="mt-0.5 w-4 h-4 accent-[var(--color-brand)]"
             />
             <span>
-              Согласен на обработку персональных данных в соответствии с 152-ФЗ для обратной связи.
+              Согласен на обработку персональных данных в соответствии с{' '}
+              <Link href="/privacy" className="underline text-[var(--color-brand)]">
+                Политикой
+              </Link>{' '}
+              и 152-ФЗ для обратной связи.
             </span>
           </label>
 
@@ -180,6 +197,7 @@ export function ContactForm() {
 
           <button
             type="submit"
+            data-goal="contact"
             className="mt-5 w-full inline-flex items-center justify-center rounded-xl bg-[var(--color-brand)] text-white font-semibold px-5 py-3.5 hover:bg-[var(--color-brand-2)] transition"
           >
             Отправить заявку

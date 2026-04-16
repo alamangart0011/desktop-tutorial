@@ -20,12 +20,14 @@ export function Hero() {
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <a
               href="#check"
+              data-goal="hero-check"
               className="inline-flex items-center justify-center rounded-xl bg-[var(--color-accent)] text-[#052e1e] font-semibold px-6 py-4 hover:brightness-110 transition"
             >
               Проверить готовность за 2 минуты
             </a>
             <a
               href="#contact"
+              data-goal="hero-contact"
               className="inline-flex items-center justify-center rounded-xl bg-white/10 border border-white/20 text-white font-semibold px-6 py-4 hover:bg-white/20 transition"
             >
               Получить коммерческое предложение

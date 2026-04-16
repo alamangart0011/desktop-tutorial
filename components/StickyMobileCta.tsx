@@ -9,6 +9,7 @@ export function StickyMobileCta() {
     >
       <a
         href={`tel:${BRAND.phoneRaw}`}
+        data-goal="phone-tap-mobile"
         className="flex-1 inline-flex items-center justify-center rounded-xl bg-[var(--color-brand)] text-white font-semibold px-3 py-3 text-sm"
       >
         Позвонить
