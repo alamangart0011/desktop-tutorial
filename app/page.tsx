@@ -20,6 +20,8 @@ import { ContactForm } from '@/components/ContactForm';
 import { Footer } from '@/components/Footer';
 import { StickyMobileCta } from '@/components/StickyMobileCta';
 import { CookieBanner } from '@/components/CookieBanner';
+import { ScrollProgress } from '@/components/ScrollProgress';
+import { BackToTop } from '@/components/BackToTop';
 
 const ReadinessCheck = dynamic(
   () => import('@/components/ReadinessCheck').then((m) => m.ReadinessCheck),
@@ -56,6 +58,8 @@ export default function Page() {
         <ContactForm />
       </main>
       <Footer />
+      <ScrollProgress />
+      <BackToTop />
       <StickyMobileCta />
       <CookieBanner />
     </>
