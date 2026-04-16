@@ -7,7 +7,9 @@ import { SystemBreakdown } from '@/components/SystemBreakdown';
 import { Uz2Requirements } from '@/components/Uz2Requirements';
 import { TechStack } from '@/components/TechStack';
 import { Audience } from '@/components/Audience';
+import { Integrations } from '@/components/Integrations';
 import { LegalUpdates } from '@/components/LegalUpdates';
+import { Guarantees } from '@/components/Guarantees';
 import { Glossary } from '@/components/Glossary';
 import { DocLinks } from '@/components/DocLinks';
 import { Services } from '@/components/Services';
@@ -51,12 +53,14 @@ export default function Page() {
         <Audience />
         <Uz2Requirements />
         <TechStack />
+        <Integrations />
         <LegalUpdates />
         <RiskCalc />
         <ReadinessCheck />
         <Calculator />
         <Services />
         <Pricing />
+        <Guarantees />
         <Process />
         <LeadMagnet />
         <QuickLead />
