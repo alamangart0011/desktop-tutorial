@@ -34,6 +34,7 @@ export const NAV = [
   { href: '#pricing', label: 'Пакеты' },
   { href: '#guarantees', label: 'Гарантии' },
   { href: '#process', label: 'Как работаем' },
+  { href: '#methodology', label: 'Методология' },
   { href: '#reviews', label: 'Отзывы' },
   { href: '#regions', label: 'География' },
   { href: '#glossary', label: 'Глоссарий' },

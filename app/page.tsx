@@ -9,6 +9,8 @@ import { TechStack } from '@/components/TechStack';
 import { Audience } from '@/components/Audience';
 import { Integrations } from '@/components/Integrations';
 import { LegalUpdates } from '@/components/LegalUpdates';
+import { Methodology } from '@/components/Methodology';
+import { MidCta } from '@/components/MidCta';
 import { Guarantees } from '@/components/Guarantees';
 import { Glossary } from '@/components/Glossary';
 import { DocLinks } from '@/components/DocLinks';
@@ -55,6 +57,7 @@ export default function Page() {
         <TechStack />
         <Integrations />
         <LegalUpdates />
+        <MidCta />
         <RiskCalc />
         <ReadinessCheck />
         <Calculator />
@@ -65,6 +68,7 @@ export default function Page() {
         <LeadMagnet />
         <QuickLead />
         <Reasons />
+        <Methodology />
         <Trust />
         <Comparison />
         <Cases />
