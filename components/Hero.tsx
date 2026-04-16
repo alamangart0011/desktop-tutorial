@@ -7,7 +7,7 @@ export function Hero() {
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3 py-1.5 text-xs font-medium text-white/90 mb-6">
             <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
-            Подключение обязательно с 01.12.2025 — ПП РФ № 411
+            ГИС работает с 01.12.2025 — штрафы по 13.11 КоАП уже применяются
           </div>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]">
             Подключим вашу организацию к ГИС&nbsp;«Профилактика» под ключ

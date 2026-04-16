@@ -13,6 +13,8 @@ import { QuickLead } from '@/components/QuickLead';
 import { Reasons } from '@/components/Reasons';
 import { Comparison } from '@/components/Comparison';
 import { Cases } from '@/components/Cases';
+import { Trust } from '@/components/Trust';
+import { Reviews } from '@/components/Reviews';
 import { Faq } from '@/components/Faq';
 import { ContactForm } from '@/components/ContactForm';
 import { Footer } from '@/components/Footer';
@@ -35,8 +37,10 @@ export default function Page() {
         <Process />
         <QuickLead />
         <Reasons />
+        <Trust />
         <Comparison />
         <Cases />
+        <Reviews />
         <Faq />
         <ContactForm />
       </main>

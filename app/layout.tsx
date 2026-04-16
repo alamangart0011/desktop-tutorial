@@ -4,6 +4,7 @@ import Script from 'next/script';
 import './globals.css';
 import { ANALYTICS, BRAND } from '@/components/constants';
 import { FAQ_QA } from '@/components/faq-data';
+import { RATING, REVIEWS } from '@/components/reviews-data';
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -182,6 +183,47 @@ export default function RootLayout({
       offerCount: 3,
       availability: 'https://schema.org/InStock',
     },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: RATING.value,
+      reviewCount: RATING.count,
+      bestRating: RATING.best,
+      worstRating: RATING.worst,
+    },
+    review: REVIEWS.map((r) => ({
+      '@type': 'Review',
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: r.rating,
+        bestRating: 5,
+      },
+      author: { '@type': 'Person', name: r.author },
+      datePublished: r.date,
+      reviewBody: r.text,
+    })),
+  };
+
+  const ldHowTo = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'Как подключить организацию к ГИС «Профилактика»',
+    description:
+      'Семь шагов подключения организации к ГИС «Профилактика» по ПП РФ № 411 с аттестацией ИСПДн по 21 Приказу ФСТЭК (УЗ2).',
+    totalTime: 'P45D',
+    estimatedCost: {
+      '@type': 'MonetaryAmount',
+      currency: 'RUB',
+      value: 150000,
+    },
+    step: [
+      { '@type': 'HowToStep', position: 1, name: 'Экспресс-аудит', text: 'Обследование ИСПДн, оценка готовности по 21 Приказу ФСТЭК, согласование класса УЗ.' },
+      { '@type': 'HowToStep', position: 2, name: 'Дорожная карта и КП', text: 'Фиксированная смета, состав СЗИ/СКЗИ, перечень документов и сроки в договоре.' },
+      { '@type': 'HowToStep', position: 3, name: 'Документы ПДн', text: 'Готовим Уведомление в Роскомнадзор, Акт обследования, Модель угроз, Акт классификации, ТЗ на СЗПДн, ПМИ, Технический паспорт.' },
+      { '@type': 'HowToStep', position: 4, name: 'Поставка и монтаж СЗИ', text: 'Secret Net Studio, ПАК «Соболь», КриптоПро NGate, антивирус, СОВ, СДЗ, отечественная ОС.' },
+      { '@type': 'HowToStep', position: 5, name: 'Аттестация ИСПДн', text: 'Аттестационные испытания, Заключение об оценке эффективности мер защиты ПДн (срок 3 года).' },
+      { '@type': 'HowToStep', position: 6, name: 'ЕСИА и интеграции', text: 'Регистрация в ЛК Госуслуги, настройка ролей, СМЭВ, обмен с региональными АИС.' },
+      { '@type': 'HowToStep', position: 7, name: 'Обучение и техподдержка', text: 'Обучение операторов с удостоверениями, горячая линия 24/7, SLA 4 часа.' },
+    ],
   };
 
   const ldFaq = {
@@ -226,6 +268,21 @@ export default function RootLayout({
     url: BRAND.site,
     inLanguage: 'ru-RU',
     publisher: { '@type': 'Organization', name: BRAND.name },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${BRAND.site}/?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
+  const ldSpeakable = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    url: BRAND.site,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '#about p', '#uz2 p'],
+    },
   };
 
   const metrikaId = ANALYTICS.yandexMetrikaId;
@@ -271,6 +328,14 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldWebSite) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldHowTo) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldSpeakable) }}
         />
 
         {metrikaId && (
