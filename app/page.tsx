@@ -19,6 +19,7 @@ import { Regions } from '@/components/Regions';
 import { ContactForm } from '@/components/ContactForm';
 import { Footer } from '@/components/Footer';
 import { StickyMobileCta } from '@/components/StickyMobileCta';
+import { CookieBanner } from '@/components/CookieBanner';
 
 const ReadinessCheck = dynamic(
   () => import('@/components/ReadinessCheck').then((m) => m.ReadinessCheck),
@@ -56,6 +57,7 @@ export default function Page() {
       </main>
       <Footer />
       <StickyMobileCta />
+      <CookieBanner />
     </>
   );
 }

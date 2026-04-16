@@ -285,6 +285,50 @@ export default function RootLayout({
     },
   };
 
+  const ldCourse = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: 'Подготовка операторов ГИС «Профилактика» с удостоверениями',
+    description:
+      'Курс для специалистов КДНиЗП, школ, опеки, соцзащиты: работа в ГИС «Профилактика», заполнение карточек СОП/ТЖС/ИПР, межведомственный обмен через СМЭВ, формирование отчётов.',
+    provider: {
+      '@type': 'Organization',
+      name: BRAND.name,
+      sameAs: BRAND.site,
+    },
+    inLanguage: 'ru-RU',
+    educationalCredentialAwarded: 'Удостоверение о повышении квалификации',
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: ['onsite', 'online'],
+      location: {
+        '@type': 'Place',
+        name: BRAND.address,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: BRAND.address,
+          addressCountry: 'RU',
+        },
+      },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'RUB',
+        availability: 'https://schema.org/InStock',
+      },
+    },
+  };
+
+  const ldItemListServices = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Внедрение и подключение к ГИС', url: BRAND.site + '/#services' },
+      { '@type': 'ListItem', position: 2, name: 'Обучение и методология (КДНиЗП, школы, опека)', url: BRAND.site + '/#services' },
+      { '@type': 'ListItem', position: 3, name: 'Техподдержка 24/7, SLA 4 часа', url: BRAND.site + '/#services' },
+      { '@type': 'ListItem', position: 4, name: 'Аудит готовности и аттестация ИСПДн', url: BRAND.site + '/#services' },
+    ],
+  };
+
   const metrikaId = ANALYTICS.yandexMetrikaId;
 
   return (
@@ -340,6 +384,14 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldSpeakable) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldCourse) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldItemListServices) }}
         />
 
         {metrikaId && (
