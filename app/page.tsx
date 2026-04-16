@@ -11,6 +11,7 @@ import { Pricing } from '@/components/Pricing';
 import { Process } from '@/components/Process';
 import { QuickLead } from '@/components/QuickLead';
 import { Reasons } from '@/components/Reasons';
+import { Comparison } from '@/components/Comparison';
 import { Cases } from '@/components/Cases';
 import { Faq } from '@/components/Faq';
 import { ContactForm } from '@/components/ContactForm';
@@ -34,6 +35,7 @@ export default function Page() {
         <Process />
         <QuickLead />
         <Reasons />
+        <Comparison />
         <Cases />
         <Faq />
         <ContactForm />
