@@ -292,9 +292,13 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="canonical" href={BRAND.site} />
+        <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://mc.yandex.ru" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <meta name="format-detection" content="telephone=yes" />
         <meta name="geo.region" content="RU-SPE" />
         <meta name="geo.placename" content={BRAND.address} />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
       </head>
       <body>
         <a

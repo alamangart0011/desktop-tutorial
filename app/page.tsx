@@ -15,6 +15,7 @@ import { Comparison } from '@/components/Comparison';
 import { Cases } from '@/components/Cases';
 import { Trust } from '@/components/Trust';
 import { Reviews } from '@/components/Reviews';
+import { Regions } from '@/components/Regions';
 import { Faq } from '@/components/Faq';
 import { ContactForm } from '@/components/ContactForm';
 import { Footer } from '@/components/Footer';
@@ -41,6 +42,7 @@ export default function Page() {
         <Comparison />
         <Cases />
         <Reviews />
+        <Regions />
         <Faq />
         <ContactForm />
       </main>

@@ -29,6 +29,8 @@ export const NAV = [
   { href: '#services', label: 'Услуги' },
   { href: '#pricing', label: 'Пакеты' },
   { href: '#process', label: 'Как работаем' },
+  { href: '#reviews', label: 'Отзывы' },
+  { href: '#regions', label: 'География' },
   { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },
 ] as const;
