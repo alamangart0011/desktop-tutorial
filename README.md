@@ -1,5 +1,70 @@
-# Welcome to GitHub Desktop!
+# Лендинг «Подключение к ГИС Профилактика» — НПК «Оборон-Экран»
 
-This is your README. READMEs are where you can communicate what your project is and how to use it.
+Одностраничный продающий лендинг на Next.js 15 + React 19 + Tailwind CSS v4.
+Заточен под продажу услуги подключения организаций к федеральной ГИС «Профилактика
+безнадзорности и правонарушений несовершеннолетних» (ПП РФ № 411, ФСТЭК № 21, УЗ2).
 
-Write your name on line 6, save it, and then head back to GitHub Desktop.
+## Запуск
+
+```bash
+npm install
+npm run dev
+# http://localhost:3000
+```
+
+Прод-сборка:
+
+```bash
+npm run build
+npm start
+```
+
+## Как менять контакты и бренд
+
+Все константы бренда — в одном файле: `components/constants.ts`.
+
+```ts
+export const BRAND = {
+  name: 'НПК «Оборон-Экран»',
+  phone: '+7 (812) 660-80-01',
+  email: 'mail@oboron-it.ru',
+  telegram: '',   // добавьте ссылку t.me/..., если есть
+  whatsapp: '',   // добавьте wa.me/..., если есть
+  address: 'Санкт-Петербург',
+  site: 'https://oboron-it.ru',
+  ...
+};
+```
+
+Форма в `components/ContactForm.tsx` шлёт заявку через `mailto:` — открывает
+почтовый клиент с готовым письмом на адрес из `BRAND.email`. Без бэкенда.
+
+## Структура
+
+- `app/layout.tsx` — HTML, SEO, шрифты, JSON-LD Organization/Service.
+- `app/page.tsx` — композиция секций.
+- `app/globals.css` — Tailwind + тема.
+- `components/*` — Header, Hero, Stats, Problem, SystemBreakdown, Uz2Requirements,
+  ReadinessCheck (интерактивный чек-лист), Services, Pricing, Process, Reasons,
+  Cases, Faq, ContactForm, Footer.
+
+## Что внутри продающей логики
+
+1. Hero с дедлайном 01.12.2025 и УТП «под ключ за 35–45 дней».
+2. Блок боли + таблица штрафов по 13.11 КоАП (до 5 млн ₽).
+3. Максимальный разбор ГИС: 18 категорий обязанных организаций, данные ИПР/СОП/ТЖС,
+   интеграции ЕСИА/СМЭВ, правовая база (120-ФЗ, 152-ФЗ, ПП 411, ФСТЭК 21/117/77).
+4. УЗ2: 7 карточек СЗИ (Secret Net Studio, КриптоПро NGate, ПАК «Соболь» и т. д.),
+   ОС (Astra/Alt/РЕД), 8 документов ПДн, штрафы, callout по ФСТЭК № 117 (01.03.2026).
+5. Интерактивный чек-лист готовности на 10 вопросов с балльной оценкой и персональным
+   вердиктом (высокий риск / частичная готовность / почти готовы).
+6. 4 услуги × 3 пакета цен (Старт / Организация / Регион) + 7-шаговый процесс.
+7. Почему мы, кейсы, FAQ на 10 вопросов.
+8. Форма заявки с валидацией и запасными CTA (позвонить, e-mail).
+
+## Деплой
+
+Любой хостинг, поддерживающий Next.js 15 (Vercel, Yandex Cloud, self-hosted Node).
+`output` не задан — используется стандартный SSR. Для статического экспорта можно
+добавить `output: 'export'` в `next.config.mjs`, но тогда отключатся `next/font`
+подгрузки — их надо будет заменить на self-hosted Manrope.
