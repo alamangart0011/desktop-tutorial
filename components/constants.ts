@@ -18,14 +18,30 @@ export const BRAND = {
   inn: '7801322348',
   ogrn: '1167847438670',
   kpp: '780101001',
-  site: 'https://oboron-it.ru',
+  site: 'https://gisprof.ru',
+  siteHost: 'gisprof.ru',
   workingHours: 'Пн–Пт 09:00–18:00 (МСК)',
+  latitude: 59.9406,
+  longitude: 30.2357,
 } as const;
+
+export const MIRRORS = [
+  'https://gisprof.ru',
+  'https://gis-prof.ru',
+  'https://gisprofilaktika.ru',
+  'https://pp411.ru',
+  'https://xn----7sbab2ce0afk.xn--p1ai',
+  'https://profilaktika-spb.ru',
+  'https://spb-gis.ru',
+] as const;
+
+export const INDEXNOW_KEY = 'b2f3e9c5a1d84fe9a7c0d6e1f4b2a8d3';
 
 export const ANALYTICS = {
   yandexMetrikaId: '',
   yandexVerification: '',
   googleVerification: '',
+  mailruVerification: '',
 } as const;
 
 export const NAV = [

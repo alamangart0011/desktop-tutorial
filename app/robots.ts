@@ -8,18 +8,78 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: ['/'],
+        disallow: ['/api/', '/_next/', '/thanks'],
       },
       {
         userAgent: 'Yandex',
-        allow: '/',
+        allow: ['/'],
+        disallow: ['/api/', '/_next/', '/thanks'],
       },
       {
         userAgent: 'YandexBot',
-        allow: '/',
+        allow: ['/'],
+        disallow: ['/api/', '/_next/', '/thanks'],
+      },
+      {
+        userAgent: 'YandexImages',
+        allow: ['/'],
+      },
+      {
+        userAgent: 'YandexMedia',
+        allow: ['/'],
+      },
+      {
+        userAgent: 'YandexMetrika',
+        allow: ['/'],
+      },
+      {
+        userAgent: 'YandexDirect',
+        allow: ['/'],
+      },
+      {
+        userAgent: 'YandexTurbo',
+        allow: ['/'],
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: ['/'],
+        disallow: ['/api/', '/_next/', '/thanks'],
+      },
+      {
+        userAgent: 'Googlebot-Image',
+        allow: ['/'],
+      },
+      {
+        userAgent: 'Bingbot',
+        allow: ['/'],
+        disallow: ['/api/', '/_next/', '/thanks'],
+      },
+      {
+        userAgent: 'Mail.Ru',
+        allow: ['/'],
+      },
+      {
+        userAgent: 'DuckDuckBot',
+        allow: ['/'],
+      },
+      {
+        userAgent: 'AhrefsBot',
+        disallow: ['/'],
+      },
+      {
+        userAgent: 'SemrushBot',
+        disallow: ['/'],
+      },
+      {
+        userAgent: 'MJ12bot',
+        disallow: ['/'],
       },
     ],
-    sitemap: `${BRAND.site}/sitemap.xml`,
-    host: BRAND.site.replace(/^https?:\/\//, ''),
+    sitemap: [
+      `${BRAND.site}/sitemap.xml`,
+      `${BRAND.site}/turbo.xml`,
+    ],
+    host: BRAND.siteHost,
   };
 }

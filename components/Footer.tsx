@@ -10,7 +10,16 @@ export function Footer() {
     { t: 'Приказ ФСТЭК № 21', url: 'https://fstec.ru/en/53-normotvorcheskaya/akty/prikazy/691' },
   ];
   return (
-    <footer className="bg-[#071332] text-white/80">
+    <footer
+      className="bg-[#071332] text-white/80"
+      role="contentinfo"
+      itemScope
+      itemType="https://schema.org/Organization"
+    >
+      <meta itemProp="name" content={BRAND.name} />
+      <meta itemProp="legalName" content={BRAND.legal} />
+      <meta itemProp="url" content={BRAND.site} />
+      <meta itemProp="taxID" content={BRAND.inn} />
       <div className="container-x py-12 grid grid-cols-1 md:grid-cols-[1.2fr,1fr,1fr] gap-8 md:gap-10">
         <div>
           <div className="flex items-center gap-2">
@@ -19,7 +28,7 @@ export function Footer() {
             </span>
             <div className="font-extrabold">{BRAND.shortName}</div>
           </div>
-          <p className="mt-4 text-sm text-white/75 max-w-sm leading-relaxed">
+          <p className="mt-4 text-sm text-white/75 max-w-sm leading-relaxed" itemProp="description">
             {BRAND.legal}. Решения по информационной безопасности и подключению
             организаций к государственным информационным системам. Работаем с госсектором и
             коммерческими структурами.
@@ -48,17 +57,43 @@ export function Footer() {
           </div>
           <ul className="mt-3 space-y-2 text-sm">
             <li>
-              <a href={`tel:${BRAND.phoneRaw}`} className="hover:text-white transition">
+              <a
+                href={`tel:${BRAND.phoneRaw}`}
+                className="hover:text-white transition"
+                itemProp="telephone"
+                data-goal="phone-tap-footer"
+              >
                 {BRAND.phone}
               </a>
             </li>
             <li>
-              <a href={`mailto:${BRAND.email}`} className="hover:text-white transition">
+              <a
+                href={`mailto:${BRAND.email}`}
+                className="hover:text-white transition"
+                itemProp="email"
+                data-goal="email-tap-footer"
+              >
                 {BRAND.email}
               </a>
             </li>
-            <li className="text-white/75 leading-relaxed">{BRAND.fullAddress}</li>
-            <li>{BRAND.workingHours}</li>
+            <li
+              className="text-white/75 leading-relaxed"
+              itemProp="address"
+              itemScope
+              itemType="https://schema.org/PostalAddress"
+            >
+              <meta itemProp="streetAddress" content={BRAND.streetAddress} />
+              <meta itemProp="addressLocality" content={BRAND.address} />
+              <meta itemProp="addressRegion" content={BRAND.region} />
+              <meta itemProp="postalCode" content={BRAND.postalCode} />
+              <meta itemProp="addressCountry" content="RU" />
+              {BRAND.fullAddress}
+            </li>
+            <li>
+              <time itemProp="openingHours" dateTime="Mo-Fr 09:00-18:00">
+                {BRAND.workingHours}
+              </time>
+            </li>
           </ul>
           <dl className="mt-5 grid grid-cols-3 gap-2 text-[11px]">
             <div className="rounded-md bg-white/5 border border-white/10 px-2 py-1.5">
