@@ -1,9 +1,14 @@
 import { BRAND } from './constants';
-import { VARIANT } from '@/lib/variants';
+import { VARIANT, VARIANT_KEY } from '@/lib/variants';
 import { FAQ_QA } from './faq-data';
+import { getVariantContent } from '@/lib/variant-content';
+import { REVIEWS as BASE_REVIEWS, RATING as BASE_RATING } from './reviews-data';
 
 export function HomeJsonLd() {
   const site = VARIANT.canonicalBase;
+  const VC = getVariantContent(VARIANT_KEY);
+  const allReviews = [...VC.reviews, ...BASE_REVIEWS];
+  const allFaq = [...VC.faq, ...FAQ_QA];
   const ldService = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -132,10 +137,66 @@ export function HomeJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     '@id': site + '#faq',
-    mainEntity: FAQ_QA.map((qa) => ({
+    mainEntity: allFaq.map((qa) => ({
       '@type': 'Question',
       name: qa.q,
       acceptedAnswer: { '@type': 'Answer', text: qa.a },
+    })),
+  };
+
+  const ldLocalBusiness = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': site + '#localbusiness',
+    name: BRAND.name,
+    image: site + '/opengraph-image',
+    url: site,
+    telephone: BRAND.phone,
+    email: BRAND.email,
+    priceRange: '150000 — 4000000 RUB',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'ул. Карташихина, 7, лит. А',
+      addressLocality: 'Санкт-Петербург',
+      postalCode: '199226',
+      addressCountry: 'RU',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 59.938784,
+      longitude: 30.246287,
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '09:00',
+        closes: '18:00',
+      },
+    ],
+    areaServed: [
+      { '@type': 'Country', name: 'Russia' },
+      { '@type': 'AdministrativeArea', name: 'Северо-Западный федеральный округ' },
+    ],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: BASE_RATING.value,
+      bestRating: 5,
+      worstRating: 1,
+      reviewCount: allReviews.length,
+    },
+    review: allReviews.slice(0, 5).map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.author },
+      datePublished: r.date,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: r.rating,
+        bestRating: 5,
+        worstRating: 1,
+      },
+      reviewBody: r.text,
+      itemReviewed: { '@type': 'Organization', name: BRAND.name },
     })),
   };
 
@@ -302,6 +363,7 @@ export function HomeJsonLd() {
     ldItemListServices,
     ldGovServiceAbout,
     ldArticle,
+    ldLocalBusiness,
   ];
 
   return (
