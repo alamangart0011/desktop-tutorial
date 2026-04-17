@@ -4,7 +4,10 @@ import Script from 'next/script';
 import './globals.css';
 import { ANALYTICS, BRAND } from '@/components/constants';
 import { AccessibilityToolbar } from '@/components/AccessibilityToolbar';
-import { VARIANT } from '@/lib/variants';
+import { VARIANT, VARIANTS } from '@/lib/variants';
+
+// Все URL'ы сети доменов — для Organization.sameAs (даёт Яндексу сигнал "единый бренд")
+const NETWORK_URLS = Object.values(VARIANTS).map((v) => v.canonicalBase);
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -249,7 +252,8 @@ export default function RootLayout({
       postalCode: BRAND.postalCode,
       addressCountry: 'RU',
     },
-    sameAs: [SITE_URL],
+    // sameAs перечисляет все домены сети — Яндекс связывает их как один бренд
+    sameAs: NETWORK_URLS,
   };
 
   const ldLocalBusiness = {
@@ -338,7 +342,7 @@ export default function RootLayout({
         closes: '18:00',
       },
     ],
-    sameAs: [SITE_URL],
+    sameAs: NETWORK_URLS,
   };
 
   const ldWebSite = {
