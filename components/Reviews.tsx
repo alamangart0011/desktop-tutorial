@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { REVIEWS, RATING } from './reviews-data';
+import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
 
 function Stars({ value, size = 16 }: { value: number; size?: number }) {
   return (
@@ -70,9 +71,9 @@ export function Reviews() {
               <span className="text-2xl font-extrabold text-[var(--color-ink)]">
                 {RATING.value.toFixed(1)}
               </span>
-              <span className="text-xs text-[var(--color-muted)]">из 5</span>
+              <span className="text-xs text-slate-600">из 5</span>
             </div>
-            <div className="mt-2 text-xs text-[var(--color-muted)]">
+            <div className="mt-2 text-xs text-slate-600">
               По {RATING.count} проверяемым отзывам заказчиков из госсектора
             </div>
           </div>
@@ -98,7 +99,7 @@ export function Reviews() {
             </span>
             <div className="relative flex items-center justify-between gap-4">
               <Stars value={r.rating} size={20} />
-              <time className="text-xs text-[var(--color-muted)]">{fmtDate(r.date)}</time>
+              <time className="text-xs text-slate-600">{fmtDate(r.date)}</time>
             </div>
             <blockquote className="relative mt-5 text-lg md:text-xl text-[var(--color-ink)] leading-relaxed font-medium">
               «{r.text}»
@@ -106,7 +107,7 @@ export function Reviews() {
             <figcaption className="relative mt-6 pt-5 border-t border-slate-100 flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <div className="font-bold text-[var(--color-ink)]">{r.author}</div>
-                <div className="text-sm text-[var(--color-muted)]">
+                <div className="text-sm text-slate-600">
                   {r.role} · {r.org}
                 </div>
               </div>
@@ -117,7 +118,7 @@ export function Reviews() {
                   className="inline-flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-200 hover:border-[var(--color-brand)] hover:text-[var(--color-brand)] transition"
                   aria-label="Предыдущий отзыв"
                 >
-                  ←
+                  <ChevronLeftIcon className="w-5 h-5" />
                 </button>
                 <button
                   type="button"
@@ -125,7 +126,7 @@ export function Reviews() {
                   className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-2)] transition"
                   aria-label="Следующий отзыв"
                 >
-                  →
+                  <ChevronRightIcon className="w-5 h-5" />
                 </button>
               </div>
             </figcaption>

@@ -1,4 +1,5 @@
 import { BRAND } from './constants';
+import { PhoneIcon, MailIcon } from './Icons';
 
 export function StickyMobileCta() {
   return (
@@ -11,18 +12,18 @@ export function StickyMobileCta() {
         href={`tel:${BRAND.phoneRaw}`}
         data-goal="phone-tap-mobile"
         aria-label={`Позвонить: ${BRAND.phone}`}
-        className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--color-brand)] text-white font-semibold px-3 py-3 text-sm transition active:scale-[0.97] min-h-[48px]"
+        className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-brand)] text-white font-semibold px-3 py-3 text-sm transition active:scale-[0.97] min-h-[48px]"
       >
-        <span aria-hidden>📞</span>
+        <PhoneIcon className="w-4 h-4" />
         <span>Позвонить</span>
       </a>
       <a
         href="#contact"
         data-goal="sticky-cta-contact"
         aria-label="Оставить заявку на подключение к ГИС"
-        className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold px-3 py-3 text-sm transition active:scale-[0.97] min-h-[48px]"
+        className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent)] text-[#052e1e] font-bold px-3 py-3 text-sm transition active:scale-[0.97] min-h-[48px]"
       >
-        <span aria-hidden>✉</span>
+        <MailIcon className="w-4 h-4" />
         <span>Заявка</span>
       </a>
     </div>

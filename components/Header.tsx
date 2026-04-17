@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { BRAND, NAV } from './constants';
 import { UrgencyBar } from './UrgencyBar';
+import { ArrowRightIcon } from './Icons';
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -97,10 +98,10 @@ export function Header() {
           <a
             href="#contact"
             data-goal="header-contact"
-            className="hidden sm:inline-flex btn-primary text-sm py-2.5 px-4"
+            className="hidden sm:inline-flex btn-primary text-sm py-2.5 px-4 gap-2 group"
           >
             Получить расчёт
-            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
           <button
             type="button"

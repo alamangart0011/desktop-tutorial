@@ -1,3 +1,5 @@
+import { ArrowRightIcon, CheckIcon, ClockIcon, RubleIcon } from './Icons';
+
 export function Pricing() {
   const tiers = [
     {
@@ -56,7 +58,7 @@ export function Pricing() {
           <span className="inline-block rounded-full bg-blue-50 text-[var(--color-brand)] text-xs font-semibold px-3 py-1">
             Пакеты
           </span>
-          <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight h-accent">
+          <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-[var(--color-ink)]">
             Прозрачные пакеты — от одного ведомства до всего региона
           </h2>
           <p className="mt-3 text-[var(--color-ink-2)] leading-relaxed">
@@ -71,7 +73,7 @@ export function Pricing() {
             Свободно 3 слота на запуск в апреле — резерв до подписания договора
           </div>
         </div>
-        <div className="mt-10 grid lg:grid-cols-3 gap-4">
+        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {tiers.map((t) => (
             <div
               key={t.name}
@@ -88,7 +90,7 @@ export function Pricing() {
               )}
               <div
                 className={`text-xs font-bold uppercase tracking-wider ${
-                  t.accent ? 'text-white/80' : 'text-[var(--color-muted)]'
+                  t.accent ? 'text-white/85' : 'text-slate-500'
                 }`}
               >
                 {t.sub}
@@ -97,10 +99,10 @@ export function Pricing() {
               <div className="mt-4 text-3xl font-extrabold tracking-tight">{t.price}</div>
               <div
                 className={`mt-1.5 text-xs font-semibold inline-flex items-center gap-1.5 ${
-                  t.accent ? 'text-white/80' : 'text-[var(--color-muted)]'
+                  t.accent ? 'text-white/85' : 'text-slate-600'
                 }`}
               >
-                <span aria-hidden>⏱</span>
+                <ClockIcon className="w-3.5 h-3.5" />
                 Срок: {t.timeline}
               </div>
               <ul
@@ -109,17 +111,17 @@ export function Pricing() {
                 }`}
               >
                 {t.items.map((i) => (
-                  <li key={i} className="flex items-start gap-2">
+                  <li key={i} className="flex items-start gap-2.5">
                     <span
-                      className={`mt-0.5 inline-flex w-5 h-5 rounded-full items-center justify-center text-[11px] font-black shrink-0 ${
+                      className={`mt-0.5 inline-flex w-5 h-5 rounded-full items-center justify-center shrink-0 ${
                         t.accent
                           ? 'bg-white text-[var(--color-brand)]'
                           : 'bg-[var(--color-brand)]/10 text-[var(--color-brand)]'
                       }`}
                     >
-                      ✓
+                      <CheckIcon className="w-3 h-3" strokeWidth={3} />
                     </span>
-                    <span>{i}</span>
+                    <span className="leading-snug">{i}</span>
                   </li>
                 ))}
               </ul>
@@ -133,15 +135,15 @@ export function Pricing() {
                 }`}
               >
                 {t.cta}
-                <span aria-hidden>→</span>
+                <ArrowRightIcon className="w-4 h-4" />
               </a>
             </div>
           ))}
         </div>
         <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-[var(--color-paper)] p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-4 justify-between">
           <div className="flex items-start gap-3">
-            <span className="inline-flex w-10 h-10 rounded-xl bg-[var(--color-brand)]/10 text-[var(--color-brand)] items-center justify-center text-xl shrink-0">
-              💰
+            <span className="inline-flex w-11 h-11 rounded-xl bg-[var(--color-brand)]/10 text-[var(--color-brand)] items-center justify-center shrink-0">
+              <RubleIcon className="w-5 h-5" />
             </span>
             <div>
               <div className="font-extrabold text-[var(--color-ink)]">
@@ -156,10 +158,10 @@ export function Pricing() {
           <a
             href="#contact"
             data-goal="pricing-custom"
-            className="btn-primary text-sm px-5 py-3 whitespace-nowrap"
+            className="btn-primary text-sm px-5 py-3 whitespace-nowrap inline-flex items-center justify-center gap-2"
           >
             Запросить индивидуальный расчёт
-            <span aria-hidden>→</span>
+            <ArrowRightIcon className="w-4 h-4" />
           </a>
         </div>
       </div>

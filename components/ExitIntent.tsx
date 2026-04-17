@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { BRAND } from './constants';
+import { PhoneIcon } from './Icons';
 
 const KEY = 'oe-exit-intent-v1';
 
@@ -82,7 +83,8 @@ export function ExitIntent() {
               onClick={() => setOpen(false)}
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-brand)] text-white font-bold px-5 py-3.5 text-base hover:bg-[var(--color-brand-2)] transition min-h-[52px]"
             >
-              📞 Позвонить — {BRAND.phone}
+              <PhoneIcon className="w-5 h-5" />
+              Позвонить — {BRAND.phone}
             </a>
             <a
               href="#contact"

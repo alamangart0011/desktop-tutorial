@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
+import { TrustBar } from '@/components/TrustBar';
 import { Stats } from '@/components/Stats';
 import { Problem } from '@/components/Problem';
 import { Audience } from '@/components/Audience';
@@ -17,7 +18,6 @@ import { CookieBanner } from '@/components/CookieBanner';
 import { ScrollProgress } from '@/components/ScrollProgress';
 import { BackToTop } from '@/components/BackToTop';
 import { HomeJsonLd } from '@/components/HomeJsonLd';
-import { MobileFab } from '@/components/MobileFab';
 import { ExitIntent } from '@/components/ExitIntent';
 
 const RiskCalc = dynamic(
@@ -31,6 +31,7 @@ export default function Page() {
       <Header />
       <main id="main">
         <Hero />
+        <TrustBar />
         <Stats />
         <Problem />
         <Audience />
@@ -48,7 +49,6 @@ export default function Page() {
       <ScrollProgress />
       <BackToTop />
       <StickyMobileCta />
-      <MobileFab />
       <CookieBanner />
       <ExitIntent />
       <HomeJsonLd />

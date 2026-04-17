@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BRAND, NAV } from './constants';
+import { ExternalLinkIcon } from './Icons';
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -11,7 +12,7 @@ export function Footer() {
   ];
   return (
     <footer
-      className="bg-[#071332] text-white/80"
+      className="bg-[#071332] text-white/90"
       role="contentinfo"
       itemScope
       itemType="https://schema.org/Organization"
@@ -26,25 +27,25 @@ export function Footer() {
             <span className="inline-flex w-9 h-9 items-center justify-center rounded-xl bg-white text-[var(--color-brand)] font-extrabold">
               О
             </span>
-            <div className="font-extrabold">{BRAND.shortName}</div>
+            <div className="font-extrabold text-white">{BRAND.shortName}</div>
           </div>
-          <p className="mt-4 text-sm text-white/75 max-w-sm leading-relaxed" itemProp="description">
+          <p className="mt-4 text-sm text-white/90 max-w-sm leading-relaxed" itemProp="description">
             {BRAND.legal}. Решения по информационной безопасности и подключению
             организаций к государственным информационным системам. Работаем с госсектором и
             коммерческими структурами.
           </p>
-          <p className="mt-4 text-xs text-white/50">
+          <p className="mt-4 text-xs text-white/70">
             © {year} {BRAND.legal}. Все права защищены.
           </p>
         </div>
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-white/50">
+          <div className="text-xs font-bold uppercase tracking-wider text-white/70">
             Навигация
           </div>
           <ul className="mt-3 space-y-2 text-sm">
             {NAV.map((n) => (
               <li key={n.href}>
-                <a href={n.href} className="hover:text-white transition">
+                <a href={n.href} className="text-white/85 hover:text-white transition">
                   {n.label}
                 </a>
               </li>
@@ -52,14 +53,14 @@ export function Footer() {
           </ul>
         </div>
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-white/50">
+          <div className="text-xs font-bold uppercase tracking-wider text-white/70">
             Контакты и правовая база
           </div>
           <ul className="mt-3 space-y-2 text-sm">
             <li>
               <a
                 href={`tel:${BRAND.phoneRaw}`}
-                className="hover:text-white transition"
+                className="text-white/90 hover:text-white transition"
                 itemProp="telephone"
                 data-goal="phone-tap-footer"
               >
@@ -69,7 +70,7 @@ export function Footer() {
             <li>
               <a
                 href={`mailto:${BRAND.email}`}
-                className="hover:text-white transition"
+                className="text-white/90 hover:text-white transition"
                 itemProp="email"
                 data-goal="email-tap-footer"
               >
@@ -77,7 +78,7 @@ export function Footer() {
               </a>
             </li>
             <li
-              className="text-white/75 leading-relaxed"
+              className="text-white/85 leading-relaxed"
               itemProp="address"
               itemScope
               itemType="https://schema.org/PostalAddress"
@@ -90,29 +91,29 @@ export function Footer() {
               {BRAND.fullAddress}
             </li>
             <li>
-              <time itemProp="openingHours" dateTime="Mo-Fr 09:00-18:00">
+              <time itemProp="openingHours" dateTime="Mo-Fr 09:00-18:00" className="text-white/85">
                 {BRAND.workingHours}
               </time>
             </li>
           </ul>
           <dl className="mt-5 grid grid-cols-3 gap-2 text-[11px]">
-            <div className="rounded-md bg-white/5 border border-white/10 px-2 py-1.5">
-              <dt className="uppercase tracking-wider text-white/45 text-[9px] font-bold">
+            <div className="rounded-md bg-white/10 border border-white/15 px-2 py-1.5">
+              <dt className="uppercase tracking-wider text-white/70 text-[9px] font-bold">
                 ИНН
               </dt>
-              <dd className="font-semibold text-white/85">{BRAND.inn}</dd>
+              <dd className="font-semibold text-white">{BRAND.inn}</dd>
             </div>
-            <div className="rounded-md bg-white/5 border border-white/10 px-2 py-1.5">
-              <dt className="uppercase tracking-wider text-white/45 text-[9px] font-bold">
+            <div className="rounded-md bg-white/10 border border-white/15 px-2 py-1.5">
+              <dt className="uppercase tracking-wider text-white/70 text-[9px] font-bold">
                 ОГРН
               </dt>
-              <dd className="font-semibold text-white/85">{BRAND.ogrn}</dd>
+              <dd className="font-semibold text-white">{BRAND.ogrn}</dd>
             </div>
-            <div className="rounded-md bg-white/5 border border-white/10 px-2 py-1.5">
-              <dt className="uppercase tracking-wider text-white/45 text-[9px] font-bold">
+            <div className="rounded-md bg-white/10 border border-white/15 px-2 py-1.5">
+              <dt className="uppercase tracking-wider text-white/70 text-[9px] font-bold">
                 КПП
               </dt>
-              <dd className="font-semibold text-white/85">{BRAND.kpp}</dd>
+              <dd className="font-semibold text-white">{BRAND.kpp}</dd>
             </div>
           </dl>
           <ul className="mt-5 flex flex-wrap gap-2">
@@ -121,28 +122,35 @@ export function Footer() {
                 <a
                   href={l.url}
                   target="_blank"
-                  rel="noreferrer noopener"
-                  className="inline-flex text-[11px] font-semibold rounded-full bg-white/10 border border-white/10 px-2.5 py-1 hover:bg-white hover:text-[var(--color-brand)] transition"
+                  rel="nofollow noreferrer noopener"
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold rounded-full bg-white/10 border border-white/15 text-white/90 px-2.5 py-1 hover:bg-white hover:text-[var(--color-brand)] transition"
                 >
-                  {l.t} ↗
+                  {l.t}
+                  <ExternalLinkIcon className="w-3 h-3" />
                 </a>
               </li>
             ))}
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/10">
-        <div className="container-x py-4 text-[11px] text-white/45 flex flex-col md:flex-row gap-2 md:items-center md:justify-between">
+      <div className="border-t border-white/15">
+        <div className="container-x py-4 text-[11px] text-white/70 flex flex-col md:flex-row gap-2 md:items-center md:justify-between">
           <span>
             Не является публичной офертой. Состав и стоимость работ фиксируются в договоре.
           </span>
           <div className="flex flex-wrap items-center gap-3">
-            <Link href="/privacy" className="hover:text-white">
+            <Link href="/privacy" className="text-white/85 hover:text-white transition">
               Политика обработки ПДн
             </Link>
-            <span className="opacity-40">·</span>
-            <a href={BRAND.site} target="_blank" rel="noreferrer noopener" className="hover:text-white">
+            <span className="opacity-50">·</span>
+            <a
+              href={BRAND.site}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="inline-flex items-center gap-1 text-white/85 hover:text-white transition"
+            >
               {BRAND.site}
+              <ExternalLinkIcon className="w-3 h-3" />
             </a>
           </div>
         </div>
