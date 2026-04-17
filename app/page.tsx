@@ -36,6 +36,7 @@ import { BackToTop } from '@/components/BackToTop';
 import { SectionRail } from '@/components/SectionRail';
 import { HomeJsonLd } from '@/components/HomeJsonLd';
 import { Reveal } from '@/components/Reveal';
+import { MobileFab } from '@/components/MobileFab';
 
 const ReadinessCheck = dynamic(
   () => import('@/components/ReadinessCheck').then((m) => m.ReadinessCheck),
@@ -110,6 +111,7 @@ export default function Page() {
       <SectionRail />
       <BackToTop />
       <StickyMobileCta />
+      <MobileFab />
       <CookieBanner />
       <HomeJsonLd />
     </>

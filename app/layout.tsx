@@ -3,6 +3,7 @@ import { Manrope } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import { ANALYTICS, BRAND } from '@/components/constants';
+import { AccessibilityToolbar } from '@/components/AccessibilityToolbar';
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -224,6 +225,7 @@ export default function RootLayout({
         <div id="main" tabIndex={-1}>
           {children}
         </div>
+        <AccessibilityToolbar />
 
         <script
           type="application/ld+json"

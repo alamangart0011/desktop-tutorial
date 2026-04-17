@@ -291,3 +291,284 @@ button:focus-visible,
   outline-offset: 3px;
   border-radius: 10px;
 }
+
+/* ==== Count-up stats ==== */
+@keyframes count-pop {
+  0% { transform: translateY(8px); opacity: 0; }
+  60% { transform: translateY(-2px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.count-pop {
+  animation: count-pop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ==== Mobile FAB (floating call button) — only on mobile ==== */
+.fab-call {
+  position: fixed;
+  right: 16px;
+  bottom: 84px;
+  z-index: 45;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #34d399 100%);
+  color: #052e1e;
+  box-shadow: 0 16px 32px -12px rgba(16, 185, 129, 0.55), 0 0 0 0 rgba(16, 185, 129, 0.45);
+  animation: fab-pulse 2.4s ease-out infinite;
+}
+.fab-call:active {
+  transform: scale(0.95);
+}
+@keyframes fab-pulse {
+  0% { box-shadow: 0 16px 32px -12px rgba(16,185,129,0.55), 0 0 0 0 rgba(16,185,129,0.45); }
+  70% { box-shadow: 0 16px 32px -12px rgba(16,185,129,0.55), 0 0 0 18px rgba(16,185,129,0); }
+  100% { box-shadow: 0 16px 32px -12px rgba(16,185,129,0.55), 0 0 0 0 rgba(16,185,129,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab-call { animation: none; }
+}
+@media (min-width: 768px) {
+  .fab-call { display: none; }
+}
+
+/* ============ A11y toolbar (версия для слабовидящих) ============ */
+.a11y-toggle {
+  position: fixed;
+  left: 12px;
+  bottom: 84px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--color-brand);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 16px 30px -14px rgba(11, 59, 140, 0.55);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.a11y-toggle:hover { transform: translateY(-1px); }
+.a11y-toggle:active { transform: translateY(0) scale(0.97); }
+.a11y-toggle-label {
+  display: none;
+}
+@media (min-width: 768px) {
+  .a11y-toggle {
+    left: 20px;
+    bottom: 20px;
+  }
+  .a11y-toggle-label { display: inline; }
+}
+
+.a11y-panel {
+  position: fixed;
+  left: 12px;
+  bottom: 148px;
+  z-index: 50;
+  width: min(320px, calc(100vw - 24px));
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 30px 60px -24px rgba(11, 59, 140, 0.35);
+  animation: slide-up-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (min-width: 768px) {
+  .a11y-panel {
+    left: 20px;
+    bottom: 84px;
+  }
+}
+.a11y-legend {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.a11y-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.a11y-chip {
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.a11y-chip:hover { border-color: var(--color-brand-2); }
+.a11y-chip.is-active {
+  background: var(--color-brand);
+  color: #fff;
+  border-color: var(--color-brand);
+}
+
+/* ---- A11y: font scaling ---- */
+html[data-a11y-font="lg"] {
+  font-size: 112.5%;
+}
+html[data-a11y-font="xl"] {
+  font-size: 125%;
+}
+
+/* ---- A11y: letter spacing ---- */
+html[data-a11y-spacing="wide"] body {
+  letter-spacing: 0.04em;
+  word-spacing: 0.12em;
+  line-height: 1.75;
+}
+
+/* ---- A11y: serif font ---- */
+html[data-a11y-serif="on"] body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+/* ---- A11y: hide images ---- */
+html[data-a11y-images="off"] img,
+html[data-a11y-images="off"] svg:not(.a11y-keep),
+html[data-a11y-images="off"] picture,
+html[data-a11y-images="off"] iframe,
+html[data-a11y-images="off"] video,
+html[data-a11y-images="off"] [aria-hidden="true"].decorative {
+  display: none !important;
+}
+html[data-a11y-images="off"] .hero-gradient {
+  background: #000 !important;
+}
+
+/* ---- A11y: black on white (Ч/Б) ---- */
+html[data-a11y-theme="contrast-bw"] body,
+html[data-a11y-theme="contrast-bw"] section,
+html[data-a11y-theme="contrast-bw"] header,
+html[data-a11y-theme="contrast-bw"] footer {
+  background: #fff !important;
+  color: #000 !important;
+}
+html[data-a11y-theme="contrast-bw"] * {
+  color: #000 !important;
+  border-color: #000 !important;
+}
+html[data-a11y-theme="contrast-bw"] a,
+html[data-a11y-theme="contrast-bw"] .nav-link {
+  color: #000 !important;
+  text-decoration: underline;
+}
+html[data-a11y-theme="contrast-bw"] .hero-gradient,
+html[data-a11y-theme="contrast-bw"] [class*="bg-"] {
+  background: #fff !important;
+}
+html[data-a11y-theme="contrast-bw"] .btn-primary,
+html[data-a11y-theme="contrast-bw"] button[type="submit"] {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+html[data-a11y-theme="contrast-bw"] .btn-primary *,
+html[data-a11y-theme="contrast-bw"] button[type="submit"] * {
+  color: #fff !important;
+}
+
+/* ---- A11y: yellow on black ---- */
+html[data-a11y-theme="contrast-by"] body,
+html[data-a11y-theme="contrast-by"] section,
+html[data-a11y-theme="contrast-by"] header,
+html[data-a11y-theme="contrast-by"] footer {
+  background: #000 !important;
+  color: #ffd400 !important;
+}
+html[data-a11y-theme="contrast-by"] * {
+  color: #ffd400 !important;
+  border-color: #ffd400 !important;
+}
+html[data-a11y-theme="contrast-by"] a,
+html[data-a11y-theme="contrast-by"] .nav-link {
+  color: #ffd400 !important;
+  text-decoration: underline;
+}
+html[data-a11y-theme="contrast-by"] .hero-gradient,
+html[data-a11y-theme="contrast-by"] [class*="bg-"] {
+  background: #000 !important;
+}
+html[data-a11y-theme="contrast-by"] input,
+html[data-a11y-theme="contrast-by"] textarea {
+  background: #000 !important;
+  color: #ffd400 !important;
+  border: 2px solid #ffd400 !important;
+}
+html[data-a11y-theme="contrast-by"] .btn-primary,
+html[data-a11y-theme="contrast-by"] button[type="submit"] {
+  background: #ffd400 !important;
+  color: #000 !important;
+  border: 2px solid #ffd400 !important;
+}
+html[data-a11y-theme="contrast-by"] .btn-primary *,
+html[data-a11y-theme="contrast-by"] button[type="submit"] * {
+  color: #000 !important;
+}
+
+/* ---- A11y: white on dark blue (инверсия) ---- */
+html[data-a11y-theme="contrast-wb"] body,
+html[data-a11y-theme="contrast-wb"] section,
+html[data-a11y-theme="contrast-wb"] header,
+html[data-a11y-theme="contrast-wb"] footer {
+  background: #062044 !important;
+  color: #fff !important;
+}
+html[data-a11y-theme="contrast-wb"] * {
+  color: #fff !important;
+  border-color: #fff !important;
+}
+html[data-a11y-theme="contrast-wb"] a,
+html[data-a11y-theme="contrast-wb"] .nav-link {
+  color: #fff !important;
+  text-decoration: underline;
+}
+html[data-a11y-theme="contrast-wb"] .hero-gradient,
+html[data-a11y-theme="contrast-wb"] [class*="bg-"] {
+  background: #062044 !important;
+}
+html[data-a11y-theme="contrast-wb"] input,
+html[data-a11y-theme="contrast-wb"] textarea {
+  background: #062044 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+
+/* ---- A11y: keep toggle panel readable ---- */
+.a11y-toggle,
+.a11y-panel,
+.a11y-panel * {
+  /* panel itself is never re-themed */
+}
+html[data-a11y-theme^="contrast-"] .a11y-panel {
+  background: #fff !important;
+  color: var(--color-ink) !important;
+  border-color: var(--color-line) !important;
+}
+html[data-a11y-theme^="contrast-"] .a11y-panel *,
+html[data-a11y-theme^="contrast-"] .a11y-chip {
+  color: var(--color-ink) !important;
+  border-color: var(--color-line) !important;
+}
+html[data-a11y-theme^="contrast-"] .a11y-chip.is-active {
+  background: var(--color-brand) !important;
+  color: #fff !important;
+  border-color: var(--color-brand) !important;
+}
+html[data-a11y-theme^="contrast-"] .a11y-chip.is-active * {
+  color: #fff !important;
+}

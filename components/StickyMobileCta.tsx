@@ -10,17 +10,20 @@ export function StickyMobileCta() {
       <a
         href={`tel:${BRAND.phoneRaw}`}
         data-goal="phone-tap-mobile"
-        className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--color-brand)] text-white font-semibold px-3 py-3 text-sm transition active:scale-[0.97]"
+        aria-label={`Позвонить: ${BRAND.phone}`}
+        className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--color-brand)] text-white font-semibold px-3 py-3 text-sm transition active:scale-[0.97] min-h-[48px]"
       >
         <span aria-hidden>📞</span>
-        Позвонить
+        <span>Позвонить</span>
       </a>
       <a
         href="#contact"
         data-goal="sticky-cta-contact"
-        className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold px-3 py-3 text-sm transition active:scale-[0.97]"
+        aria-label="Оставить заявку на подключение к ГИС"
+        className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold px-3 py-3 text-sm transition active:scale-[0.97] min-h-[48px]"
       >
-        Оставить заявку
+        <span aria-hidden>✉</span>
+        <span>Заявка</span>
       </a>
     </div>
   );

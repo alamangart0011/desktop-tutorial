@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { BRAND, NAV } from './constants';
+import { UrgencyBar } from './UrgencyBar';
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -43,6 +44,7 @@ export function Header() {
         scrolled ? 'glass-solid is-scrolled' : 'glass'
       }`}
     >
+      <UrgencyBar />
       <div
         className={`container-x flex items-center justify-between transition-all duration-300 ${
           scrolled ? 'h-14' : 'h-16'
