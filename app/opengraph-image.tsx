@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { BRAND } from '@/components/constants';
 
-export const runtime = 'edge';
+export const dynamic = 'force-static';
 export const alt = 'Подключение к ГИС «Профилактика» под ключ — ' + BRAND.name;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -48,7 +48,7 @@ export default async function Image() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div
             style={{
-              display: 'inline-flex',
+              display: 'flex',
               alignSelf: 'flex-start',
               background: 'rgba(16,185,129,0.2)',
               color: '#a7f3d0',

@@ -9,8 +9,8 @@ export function Hero() {
             <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
             ГИС работает с 01.12.2025 — штрафы по 13.11 КоАП уже применяются
           </div>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]">
-            Подключим вашу организацию к ГИС&nbsp;«Профилактика» под ключ
+          <h1 className="text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] md:leading-[1.05] text-balance">
+            Подключим вашу организацию к ГИС&nbsp;«Профилактика» под&nbsp;ключ
           </h1>
           <p className="mt-5 text-base md:text-lg text-white/80 leading-relaxed max-w-2xl">
             Документы, аттестация ИСПДн по 21 Приказу ФСТЭК (УЗ2), установка СЗИ и СКЗИ,
@@ -38,7 +38,7 @@ export function Hero() {
             {[
               'По ПП РФ № 411',
               'СЗИ по ФСТЭК № 21',
-              '8 документов ПДн под ключ',
+              '8 документов ПДн на 3 года',
               'Сопровождение до приёмки',
             ].map((t) => (
               <li key={t} className="flex items-start gap-2">

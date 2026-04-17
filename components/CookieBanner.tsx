@@ -32,7 +32,7 @@ export function CookieBanner() {
       role="dialog"
       aria-live="polite"
       aria-label="Согласие на cookie"
-      className="fixed bottom-3 left-3 right-3 md:left-auto md:right-6 md:bottom-6 md:max-w-md z-50 rounded-2xl bg-white border border-slate-200 shadow-2xl p-4 md:p-5"
+      className="fixed bottom-[76px] md:bottom-6 left-3 right-3 md:left-auto md:right-6 md:max-w-md z-50 rounded-2xl bg-white border border-slate-200 shadow-2xl p-4 md:p-5"
     >
       <div className="text-sm text-[var(--color-ink)] leading-relaxed">
         Мы используем cookie и Яндекс.Метрику для удобства сайта и анализа посещаемости.

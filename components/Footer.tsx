@@ -11,7 +11,7 @@ export function Footer() {
   ];
   return (
     <footer className="bg-[#071332] text-white/80">
-      <div className="container-x py-12 grid md:grid-cols-[1.2fr,1fr,1fr] gap-10">
+      <div className="container-x py-12 grid grid-cols-1 md:grid-cols-[1.2fr,1fr,1fr] gap-8 md:gap-10">
         <div>
           <div className="flex items-center gap-2">
             <span className="inline-flex w-9 h-9 items-center justify-center rounded-xl bg-white text-[var(--color-brand)] font-extrabold">
@@ -19,7 +19,7 @@ export function Footer() {
             </span>
             <div className="font-extrabold">{BRAND.shortName}</div>
           </div>
-          <p className="mt-4 text-sm text-white/60 max-w-sm leading-relaxed">
+          <p className="mt-4 text-sm text-white/75 max-w-sm leading-relaxed">
             {BRAND.legal}. Решения по информационной безопасности и подключению
             организаций к государственным информационным системам. Работаем с госсектором и
             коммерческими структурами.
@@ -57,7 +57,7 @@ export function Footer() {
                 {BRAND.email}
               </a>
             </li>
-            <li className="text-white/60 leading-relaxed">{BRAND.fullAddress}</li>
+            <li className="text-white/75 leading-relaxed">{BRAND.fullAddress}</li>
             <li>{BRAND.workingHours}</li>
           </ul>
           <dl className="mt-5 grid grid-cols-3 gap-2 text-[11px]">

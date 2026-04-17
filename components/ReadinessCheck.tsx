@@ -74,7 +74,7 @@ export function ReadinessCheck() {
           </p>
         </div>
 
-        <div className="mt-10 grid lg:grid-cols-[1.5fr,1fr] gap-6">
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-[1.5fr,1fr] gap-6">
           <div className="rounded-2xl border border-slate-200 bg-[var(--color-paper)] p-6 md:p-8">
             <ul className="space-y-3">
               {QUESTIONS.map((q, i) => {

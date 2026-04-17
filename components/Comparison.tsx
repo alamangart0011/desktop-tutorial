@@ -67,24 +67,24 @@ export function Comparison() {
         </div>
 
         <div className="mt-10 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <table className="w-full text-left text-sm">
+          <table className="w-full min-w-[560px] text-left text-sm">
             <thead className="bg-slate-50 text-[var(--color-ink-2)]">
               <tr>
-                <th className="px-4 md:px-6 py-4 font-semibold w-[44%]">Критерий</th>
-                <th className="px-4 md:px-6 py-4 font-semibold text-[var(--color-brand)]">
+                <th className="px-3 sm:px-4 md:px-6 py-4 font-semibold w-[44%]">Критерий</th>
+                <th className="px-3 sm:px-4 md:px-6 py-4 font-semibold text-[var(--color-brand)]">
                   {BRAND.shortName}
                 </th>
-                <th className="px-4 md:px-6 py-4 font-semibold">Типичный ИТ-подрядчик</th>
+                <th className="px-3 sm:px-4 md:px-6 py-4 font-semibold">Типичный ИТ-подрядчик</th>
               </tr>
             </thead>
             <tbody>
               {ROWS.map((r) => (
                 <tr key={r.feature} className="border-t border-slate-100 align-top">
-                  <td className="px-4 md:px-6 py-4 text-[var(--color-ink)]">{r.feature}</td>
-                  <td className="px-4 md:px-6 py-4">
+                  <td className="px-3 sm:px-4 md:px-6 py-4 text-[var(--color-ink)]">{r.feature}</td>
+                  <td className="px-3 sm:px-4 md:px-6 py-4">
                     <Cell value={r.us} />
                   </td>
-                  <td className="px-4 md:px-6 py-4">
+                  <td className="px-3 sm:px-4 md:px-6 py-4">
                     <Cell value={r.others} />
                   </td>
                 </tr>

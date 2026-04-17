@@ -4,7 +4,18 @@ import { BRAND } from '@/components/constants';
 
 export const metadata: Metadata = {
   title: 'Заявка отправлена',
+  description:
+    'Заявка с сайта ' + BRAND.name + ' принята. Инженер свяжется в течение рабочего дня.',
+  alternates: { canonical: '/thanks' },
   robots: { index: false, follow: false },
+  openGraph: {
+    title: 'Заявка отправлена — ' + BRAND.name,
+    description: 'Инженер ' + BRAND.shortName + ' свяжется с вами в течение рабочего дня.',
+    url: '/thanks',
+    siteName: BRAND.name,
+    locale: 'ru_RU',
+    type: 'website',
+  },
 };
 
 export default function ThanksPage() {

@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+const isExport = process.env.STATIC_EXPORT === '1';
+const basePath = process.env.BASE_PATH ?? '';
+
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
@@ -19,14 +22,19 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   productionBrowserSourceMaps: false,
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: securityHeaders,
-      },
-    ];
-  },
+  ...(isExport
+    ? {
+        output: 'export',
+        trailingSlash: true,
+        images: { unoptimized: true },
+        basePath: basePath || undefined,
+        assetPrefix: basePath || undefined,
+      }
+    : {
+        async headers() {
+          return [{ source: '/:path*', headers: securityHeaders }];
+        },
+      }),
 };
 
 export default nextConfig;

@@ -47,7 +47,7 @@ export function ContactForm() {
       return;
     }
     if (!f.consent) {
-      setErr('Нужно согласие на обработку персональных данных (152-ФЗ).');
+      setErr('Согласитесь с Политикой обработки ПДн (152-ФЗ), чтобы продолжить.');
       return;
     }
     const body = [
@@ -93,7 +93,7 @@ export function ContactForm() {
                 ☎
               </span>
               <div>
-                <div className="text-white/60 text-xs">Телефон</div>
+                <div className="text-white/75 text-xs">Телефон</div>
                 <div className="font-semibold">{BRAND.phone}</div>
               </div>
             </a>
@@ -105,7 +105,7 @@ export function ContactForm() {
                 @
               </span>
               <div>
-                <div className="text-white/60 text-xs">E-mail</div>
+                <div className="text-white/75 text-xs">E-mail</div>
                 <div className="font-semibold">{BRAND.email}</div>
               </div>
             </a>
@@ -114,7 +114,7 @@ export function ContactForm() {
                 ◉
               </span>
               <div>
-                <div className="text-white/60 text-xs">Адрес</div>
+                <div className="text-white/75 text-xs">Адрес</div>
                 <div className="font-semibold leading-snug">
                   {BRAND.fullAddress}
                 </div>
@@ -125,7 +125,7 @@ export function ContactForm() {
                 ⏱
               </span>
               <div>
-                <div className="text-white/60 text-xs">Время работы</div>
+                <div className="text-white/75 text-xs">Время работы</div>
                 <div className="font-semibold">{BRAND.workingHours}</div>
               </div>
             </div>
@@ -164,7 +164,7 @@ export function ContactForm() {
             onChange={(e) => set('message', e.target.value)}
             rows={3}
             placeholder="Сколько АРМ, есть ли СЗИ, какие сроки"
-            className="mt-1 w-full rounded-xl border border-slate-200 bg-[var(--color-paper)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--color-brand)]"
+            className="mt-1 w-full rounded-xl border border-slate-200 bg-[var(--color-paper)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--color-brand)] placeholder:text-slate-400"
           />
           <label className="mt-4 flex items-start gap-2.5 text-xs text-[var(--color-ink-2)] cursor-pointer">
             <input
@@ -246,7 +246,7 @@ function Field({
         type={type}
         value={v}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-xl border border-slate-200 bg-[var(--color-paper)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--color-brand)]"
+        className="mt-1 w-full rounded-xl border border-slate-200 bg-[var(--color-paper)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--color-brand)] placeholder:text-slate-400"
       />
     </label>
   );

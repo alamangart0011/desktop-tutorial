@@ -10,6 +10,22 @@ export const metadata: Metadata = {
     ' в соответствии с 152-ФЗ. Цели обработки, состав ПДн, права субъекта, контакты ответственного.',
   alternates: { canonical: '/privacy' },
   robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Политика обработки персональных данных — ' + BRAND.name,
+    description:
+      'Порядок обработки и защиты персональных данных ' +
+      BRAND.legal +
+      ' по 152-ФЗ: цели, состав ПДн, сроки, права субъекта, контакты ответственного.',
+    url: '/privacy',
+    siteName: BRAND.name,
+    locale: 'ru_RU',
+    type: 'article',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Политика обработки ПДн — ' + BRAND.name,
+    description: 'Порядок обработки и защиты ПДн по 152-ФЗ.',
+  },
 };
 
 const REVISION_DATE = '16 апреля 2026 г.';
