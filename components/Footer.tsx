@@ -57,9 +57,29 @@ export function Footer() {
                 {BRAND.email}
               </a>
             </li>
-            <li>{BRAND.address}</li>
+            <li className="text-white/60 leading-relaxed">{BRAND.fullAddress}</li>
             <li>{BRAND.workingHours}</li>
           </ul>
+          <dl className="mt-5 grid grid-cols-3 gap-2 text-[11px]">
+            <div className="rounded-md bg-white/5 border border-white/10 px-2 py-1.5">
+              <dt className="uppercase tracking-wider text-white/45 text-[9px] font-bold">
+                ИНН
+              </dt>
+              <dd className="font-semibold text-white/85">{BRAND.inn}</dd>
+            </div>
+            <div className="rounded-md bg-white/5 border border-white/10 px-2 py-1.5">
+              <dt className="uppercase tracking-wider text-white/45 text-[9px] font-bold">
+                ОГРН
+              </dt>
+              <dd className="font-semibold text-white/85">{BRAND.ogrn}</dd>
+            </div>
+            <div className="rounded-md bg-white/5 border border-white/10 px-2 py-1.5">
+              <dt className="uppercase tracking-wider text-white/45 text-[9px] font-bold">
+                КПП
+              </dt>
+              <dd className="font-semibold text-white/85">{BRAND.kpp}</dd>
+            </div>
+          </dl>
           <ul className="mt-5 flex flex-wrap gap-2">
             {laws.map((l) => (
               <li key={l.t}>

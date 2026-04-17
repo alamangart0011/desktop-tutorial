@@ -130,8 +130,16 @@ export default function RootLayout({
     logo: `${BRAND.site}/favicon.svg`,
     telephone: BRAND.phone,
     email: BRAND.email,
+    taxID: BRAND.inn,
+    vatID: BRAND.inn,
+    identifier: [
+      { '@type': 'PropertyValue', propertyID: 'ИНН', value: BRAND.inn },
+      { '@type': 'PropertyValue', propertyID: 'ОГРН', value: BRAND.ogrn },
+      { '@type': 'PropertyValue', propertyID: 'КПП', value: BRAND.kpp },
+    ],
     address: {
       '@type': 'PostalAddress',
+      streetAddress: BRAND.streetAddress,
       addressLocality: BRAND.address,
       addressRegion: BRAND.region,
       postalCode: BRAND.postalCode,
@@ -152,8 +160,10 @@ export default function RootLayout({
     priceRange: '₽₽₽',
     address: {
       '@type': 'PostalAddress',
+      streetAddress: BRAND.streetAddress,
       addressLocality: BRAND.address,
       addressRegion: BRAND.region,
+      postalCode: BRAND.postalCode,
       addressCountry: 'RU',
     },
     areaServed: { '@type': 'Country', name: 'Russia' },

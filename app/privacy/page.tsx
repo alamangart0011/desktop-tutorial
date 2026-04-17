@@ -53,8 +53,12 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-bold mt-8">2. Сведения об Операторе</h2>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Наименование: {BRAND.legal}</li>
-              <li>Адрес: {BRAND.address}</li>
+              <li>Полное наименование: {BRAND.legal}</li>
+              <li>Краткое наименование: {BRAND.name}</li>
+              <li>ИНН: {BRAND.inn}</li>
+              <li>ОГРН: {BRAND.ogrn}</li>
+              <li>КПП: {BRAND.kpp}</li>
+              <li>Юридический адрес: {BRAND.fullAddress}</li>
               <li>
                 Телефон: <a href={`tel:${BRAND.phoneRaw}`} className="text-[var(--color-brand)]">{BRAND.phone}</a>
               </li>
@@ -62,6 +66,7 @@ export default function PrivacyPage() {
                 E-mail: <a href={`mailto:${BRAND.email}`} className="text-[var(--color-brand)]">{BRAND.email}</a>
               </li>
               <li>Сайт: {BRAND.site}</li>
+              <li>Режим работы: {BRAND.workingHours}</li>
             </ul>
           </section>
 
@@ -142,7 +147,7 @@ export default function PrivacyPage() {
             <p>
               Запросы направляются в письменной форме на e-mail{' '}
               <a href={`mailto:${BRAND.email}`} className="text-[var(--color-brand)]">{BRAND.email}</a>{' '}
-              или по адресу {BRAND.address}.
+              или по адресу {BRAND.fullAddress}.
             </p>
           </section>
 

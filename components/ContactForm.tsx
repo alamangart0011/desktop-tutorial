@@ -115,7 +115,9 @@ export function ContactForm() {
               </span>
               <div>
                 <div className="text-white/60 text-xs">Адрес</div>
-                <div className="font-semibold">{BRAND.address}</div>
+                <div className="font-semibold leading-snug">
+                  {BRAND.fullAddress}
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -131,11 +133,11 @@ export function ContactForm() {
 
           <div className="mt-8 rounded-2xl overflow-hidden border border-white/10">
             <iframe
-              src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(BRAND.address)}&z=13&l=map`}
+              src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(BRAND.fullAddress)}&z=16&l=map`}
               width="100%"
               height="240"
               loading="lazy"
-              title={`Карта: ${BRAND.address}`}
+              title={`Карта: ${BRAND.fullAddress}`}
               style={{ border: 0, display: 'block', filter: 'grayscale(0.2)' }}
               allowFullScreen
             />
