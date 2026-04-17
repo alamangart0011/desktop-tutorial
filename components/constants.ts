@@ -29,23 +29,12 @@ export const ANALYTICS = {
 } as const;
 
 export const NAV = [
-  { href: '#about', label: 'Что такое ГИС' },
   { href: '#audience', label: 'Для кого' },
-  { href: '#uz2', label: 'Требования ФСТЭК' },
-  { href: '#tech', label: 'Стек' },
-  { href: '#integrations', label: 'Интеграции' },
-  { href: '#legal', label: 'Правовое поле' },
-  { href: '#check', label: 'Чек-лист' },
-  { href: '#services', label: 'Услуги' },
-  { href: '#pricing', label: 'Пакеты' },
-  { href: '#guarantees', label: 'Гарантии' },
-  { href: '#process', label: 'Как работаем' },
-  { href: '#methodology', label: 'Методология' },
-  { href: '#team', label: 'Команда' },
+  { href: '#uz2', label: 'ФСТЭК УЗ2' },
+  { href: '#risk', label: 'Штраф' },
+  { href: '#reasons', label: 'Почему мы' },
   { href: '#reviews', label: 'Отзывы' },
-  { href: '#regions', label: 'География' },
-  { href: '#glossary', label: 'Глоссарий' },
-  { href: '#docs', label: 'Нормативка' },
+  { href: '#pricing', label: 'Пакеты' },
   { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },
 ] as const;
