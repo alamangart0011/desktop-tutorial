@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
-import { ANALYTICS, BRAND, MIRRORS } from '@/components/constants';
+import { ANALYTICS, BRAND } from '@/components/constants';
 import { AccessibilityToolbar } from '@/components/AccessibilityToolbar';
+import { VARIANT } from '@/lib/variants';
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -12,23 +13,22 @@ const manrope = Manrope({
   display: 'swap',
 });
 
-const TITLE =
-  'ГИС «Профилактика» — подключение под ключ за 35–45 дней · ПП РФ № 411, ФСТЭК УЗ2 · ' +
-  BRAND.shortName;
-const DESCRIPTION =
-  'Подключение к ГИС «Профилактика» под ключ по ПП РФ № 411: закрываем предписания прокуратуры и Роскомнадзора за 7 дней или возвращаем деньги. Экспресс-аудит ПДн, документы по 152-ФЗ, защита ИСПДн по 21 Приказу ФСТЭК (УЗ2), СЗИ (Secret Net Studio, ПАК «Соболь», КриптоПро NGate), сертифицированная ОС Astra Linux/Alt Linux/РЕД ОС, аттестация, настройка ЕСИА/СМЭВ, обучение сотрудников и техподдержка 24/7. Срок 35–45 дней, фиксированная цена. Работаем в СПб, Ленобласти и по СЗФО — для КДН, школ, опеки, соцзащиты, здравоохранения, муниципалитетов.';
+const TITLE = VARIANT.title;
+const DESCRIPTION = VARIANT.description;
+const SITE_URL = VARIANT.canonicalBase;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(BRAND.site),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: TITLE,
     template: '%s — ' + BRAND.name,
   },
   description: DESCRIPTION,
   applicationName: BRAND.name,
-  authors: [{ name: BRAND.name, url: BRAND.site }],
+  authors: [{ name: BRAND.name, url: SITE_URL }],
   generator: 'Next.js',
   keywords: [
+    ...VARIANT.keywords,
     'ГИС Профилактика',
     'ГИС «Профилактика»',
     'ГИС профилактика подключение',
@@ -109,7 +109,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: BRAND.site,
+    url: SITE_URL,
     siteName: BRAND.name,
     locale: 'ru_RU',
     type: 'website',
@@ -181,7 +181,7 @@ export const metadata: Metadata = {
   },
   other: {
     'yandex-tableau-widget':
-      'logo=' + BRAND.site + '/favicon.svg, color=#0b3b8c, title=' + BRAND.name,
+      'logo=' + SITE_URL + '/favicon.svg, color=#0b3b8c, title=' + BRAND.name,
     'msapplication-TileColor': '#0b3b8c',
     'msapplication-TileImage': '/opengraph-image',
     'msapplication-config': 'none',
@@ -192,7 +192,7 @@ export const metadata: Metadata = {
     'og:locale:alternate': 'ru_RU',
     'og:region': 'RU-SPE',
     'og:country-name': 'Russia',
-    'article:publisher': BRAND.site,
+    'article:publisher': SITE_URL,
     'geo.country': 'RU',
     'geo.position': `${BRAND.latitude};${BRAND.longitude}`,
     ICBM: `${BRAND.latitude}, ${BRAND.longitude}`,
@@ -230,8 +230,8 @@ export default function RootLayout({
     '@type': 'Organization',
     name: BRAND.name,
     legalName: BRAND.legal,
-    url: BRAND.site,
-    logo: `${BRAND.site}/favicon.svg`,
+    url: SITE_URL,
+    logo: `${SITE_URL}/favicon.svg`,
     telephone: BRAND.phone,
     email: BRAND.email,
     taxID: BRAND.inn,
@@ -249,20 +249,20 @@ export default function RootLayout({
       postalCode: BRAND.postalCode,
       addressCountry: 'RU',
     },
-    sameAs: [BRAND.site],
+    sameAs: [SITE_URL],
   };
 
   const ldLocalBusiness = {
     '@context': 'https://schema.org',
     '@type': ['LocalBusiness', 'ProfessionalService'],
-    '@id': BRAND.site + '#business',
+    '@id': SITE_URL + '#business',
     name: BRAND.name,
     legalName: BRAND.legal,
-    image: `${BRAND.site}/opengraph-image`,
-    logo: `${BRAND.site}/favicon.svg`,
+    image: `${SITE_URL}/opengraph-image`,
+    logo: `${SITE_URL}/favicon.svg`,
     telephone: BRAND.phone,
     email: BRAND.email,
-    url: BRAND.site,
+    url: SITE_URL,
     priceRange: '₽₽₽',
     taxID: BRAND.inn,
     vatID: BRAND.inn,
@@ -338,36 +338,36 @@ export default function RootLayout({
         closes: '18:00',
       },
     ],
-    sameAs: [BRAND.site, ...MIRRORS.filter((m) => m !== BRAND.site)],
+    sameAs: [SITE_URL],
   };
 
   const ldWebSite = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: BRAND.name,
-    url: BRAND.site,
+    url: SITE_URL,
     inLanguage: 'ru-RU',
     publisher: { '@type': 'Organization', name: BRAND.name },
     potentialAction: {
       '@type': 'SearchAction',
-      target: `${BRAND.site}/?q={search_term_string}`,
+      target: `${SITE_URL}/?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
     hasPart: [
-      { '@type': 'WebPageElement', name: 'О ГИС «Профилактика»', url: BRAND.site + '/#about' },
-      { '@type': 'WebPageElement', name: 'Для кого обязательно подключение', url: BRAND.site + '/#audience' },
-      { '@type': 'WebPageElement', name: 'Требования 21 Приказа ФСТЭК (УЗ2)', url: BRAND.site + '/#uz2' },
-      { '@type': 'WebPageElement', name: 'Калькулятор риска штрафа', url: BRAND.site + '/#risk' },
-      { '@type': 'WebPageElement', name: 'Калькулятор стоимости', url: BRAND.site + '/#calc' },
-      { '@type': 'WebPageElement', name: 'Калькулятор штрафа', url: BRAND.site + '/#risk' },
-      { '@type': 'WebPageElement', name: 'Пакеты услуг', url: BRAND.site + '/#pricing' },
-      { '@type': 'WebPageElement', name: 'Глоссарий', url: BRAND.site + '/#glossary' },
-      { '@type': 'WebPageElement', name: 'Нормативная база', url: BRAND.site + '/#docs' },
-      { '@type': 'WebPageElement', name: 'Контакты', url: BRAND.site + '/#contact' },
+      { '@type': 'WebPageElement', name: 'О ГИС «Профилактика»', url: SITE_URL + '/#about' },
+      { '@type': 'WebPageElement', name: 'Для кого обязательно подключение', url: SITE_URL + '/#audience' },
+      { '@type': 'WebPageElement', name: 'Требования 21 Приказа ФСТЭК (УЗ2)', url: SITE_URL + '/#uz2' },
+      { '@type': 'WebPageElement', name: 'Калькулятор риска штрафа', url: SITE_URL + '/#risk' },
+      { '@type': 'WebPageElement', name: 'Калькулятор стоимости', url: SITE_URL + '/#calc' },
+      { '@type': 'WebPageElement', name: 'Калькулятор штрафа', url: SITE_URL + '/#risk' },
+      { '@type': 'WebPageElement', name: 'Пакеты услуг', url: SITE_URL + '/#pricing' },
+      { '@type': 'WebPageElement', name: 'Глоссарий', url: SITE_URL + '/#glossary' },
+      { '@type': 'WebPageElement', name: 'Нормативная база', url: SITE_URL + '/#docs' },
+      { '@type': 'WebPageElement', name: 'Контакты', url: SITE_URL + '/#contact' },
     ],
   };
 
-  const metrikaRaw = ANALYTICS.yandexMetrikaId;
+  const metrikaRaw = VARIANT.metrikaId || ANALYTICS.yandexMetrikaId;
   // Placeholder '00000000' не инициализирует счётчик — замените на настоящий ID.
   const metrikaId =
     metrikaRaw && metrikaRaw !== '00000000' ? metrikaRaw : '';
@@ -391,11 +391,9 @@ export default function RootLayout({
           href="/turbo.xml"
         />
         <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
-        <link rel="canonical" href={BRAND.site + '/'} />
-        {MIRRORS.map((m) => (
-          <link key={m} rel="alternate" hrefLang="ru-RU" href={m + '/'} />
-        ))}
-        <link rel="alternate" hrefLang="x-default" href={BRAND.site + '/'} />
+        <link rel="canonical" href={SITE_URL + '/'} />
+        <link rel="alternate" hrefLang="ru-RU" href={SITE_URL + '/'} />
+        <link rel="alternate" hrefLang="x-default" href={SITE_URL + '/'} />
         <meta name="yandex" content="all" />
         <meta name="yandexbot" content="index, follow" />
         <meta name="bingbot" content="index, follow" />

@@ -1,4 +1,5 @@
 import { BRAND } from './constants';
+import { VARIANT } from '@/lib/variants';
 import {
   ArrowRightIcon,
   CheckIcon,
@@ -42,30 +43,32 @@ export function Hero() {
           <div className="max-w-3xl hero-stagger">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3 py-1.5 text-xs font-semibold text-white">
               <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
-              ГИС работает с 01.12.2025 — штрафы по 13.11 КоАП уже применяются
+              {VARIANT.regionBadge} · штрафы по 13.11 КоАП уже применяются
             </div>
 
             <h1 className="mt-6 text-[2.25rem] sm:text-5xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-balance">
-              Подключим вашу организацию к&nbsp;ГИС&nbsp;«Профилактика»{' '}
+              {VARIANT.h1}{' '}
               <span className="bg-gradient-to-r from-[var(--color-accent)] to-[#6ee7b7] bg-clip-text text-transparent">
-                под&nbsp;ключ
+                {VARIANT.h1Accent}
               </span>
             </h1>
 
             <p className="mt-5 text-[1.05rem] md:text-xl text-white leading-relaxed max-w-2xl font-semibold">
-              Получили предписание прокуратуры или Роскомнадзора по ГИС&nbsp;«Профилактика»?
-              Закроем вопрос за&nbsp;7&nbsp;дней — или вернём предоплату.
+              {VARIANT.heroSubtitle}
             </p>
 
-            <p className="mt-4 text-[1.02rem] md:text-lg text-white/90 leading-relaxed max-w-2xl">
-              Документы, защита ПДн, подключение через Госуслуги и обучение
-              сотрудников — берём на себя. Аттестацию и установку СЗИ выполняют
-              аккредитованные лицензиаты ФСТЭК/ФСБ на субподряде.
-            </p>
-            <p className="mt-3 text-base md:text-lg text-white/85 leading-relaxed max-w-2xl">
-              Запуск за 35–45 рабочих дней. Фиксированная цена в договоре.
-              Вы получаете готовый пакет и подписанный акт — без головной боли.
-            </p>
+            {VARIANT.intro.map((paragraph, idx) => (
+              <p
+                key={idx}
+                className={
+                  idx === 0
+                    ? 'mt-4 text-[1.02rem] md:text-lg text-white/90 leading-relaxed max-w-2xl'
+                    : 'mt-3 text-base md:text-lg text-white/85 leading-relaxed max-w-2xl'
+                }
+              >
+                {paragraph}
+              </p>
+            ))}
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <a

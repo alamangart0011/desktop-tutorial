@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { BRAND } from '@/components/constants';
+import { VARIANT } from '@/lib/variants';
 
 export const dynamic = 'force-static';
 
@@ -17,7 +17,7 @@ const ENTRIES: Entry[] = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return ENTRIES.map((e) => ({
-    url: `${BRAND.site}${e.path}`,
+    url: `${VARIANT.canonicalBase}${e.path}`,
     lastModified: now,
     changeFrequency: e.changeFrequency,
     priority: e.priority,

@@ -10,3 +10,6 @@ build/
 .DS_Store
 .vercel
 next-env.d.ts
+
+# Multi-variant build artefacts
+dist/

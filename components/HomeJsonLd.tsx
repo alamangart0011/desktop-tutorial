@@ -1,11 +1,13 @@
-import { BRAND, MIRRORS } from './constants';
+import { BRAND } from './constants';
+import { VARIANT } from '@/lib/variants';
 import { FAQ_QA } from './faq-data';
 
 export function HomeJsonLd() {
+  const site = VARIANT.canonicalBase;
   const ldService = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    '@id': BRAND.site + '#service',
+    '@id': site + '#service',
     serviceType: 'Подключение организации к ГИС «Профилактика» под ключ',
     name: 'Подключение к ГИС «Профилактика»',
     category: 'Информационная безопасность · Государственные информационные системы',
@@ -13,7 +15,7 @@ export function HomeJsonLd() {
     provider: {
       '@type': 'Organization',
       name: BRAND.name,
-      url: BRAND.site,
+      url: site,
       telephone: BRAND.phone,
       email: BRAND.email,
     },
@@ -28,7 +30,7 @@ export function HomeJsonLd() {
       audienceType:
         'КДНиЗП, школы и СПО, опека, соцзащита, здравоохранение, служба занятости, ОВД, учреждения культуры и спорта, ЦВСНП, СИЗО, УИИ',
     },
-    termsOfService: BRAND.site + '/privacy',
+    termsOfService: site + '/privacy',
     serviceOutput:
       '8 документов ПДн, аттестованная ИСПДн по 21 Приказу ФСТЭК (УЗ2), рабочие места с СЗИ/СКЗИ, доступ в ГИС через ЕСИА, обученный персонал',
     hoursAvailable: {
@@ -46,7 +48,7 @@ export function HomeJsonLd() {
         price: 150000,
         priceCurrency: 'RUB',
         availability: 'https://schema.org/InStock',
-        url: BRAND.site + '/#pricing',
+        url: site + '/#pricing',
         priceSpecification: {
           '@type': 'PriceSpecification',
           price: 150000,
@@ -60,14 +62,14 @@ export function HomeJsonLd() {
         price: 500000,
         priceCurrency: 'RUB',
         availability: 'https://schema.org/InStock',
-        url: BRAND.site + '/#pricing',
+        url: site + '/#pricing',
       },
       {
         '@type': 'Offer',
         name: 'Пакет «Регион» — серийное подключение',
         priceCurrency: 'RUB',
         availability: 'https://schema.org/InStock',
-        url: BRAND.site + '/#pricing',
+        url: site + '/#pricing',
       },
     ],
   };
@@ -75,7 +77,7 @@ export function HomeJsonLd() {
   const ldProduct = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    '@id': BRAND.site + '#product',
+    '@id': site + '#product',
     name: 'Подключение к ГИС «Профилактика» под ключ',
     description:
       'Готовое решение по подключению к ГИС «Профилактика»: документы ПДн, СЗИ/СКЗИ, аттестация ИСПДн (УЗ2), ЕСИА/СМЭВ, обучение сотрудников, техподдержка 24/7.',
@@ -95,7 +97,7 @@ export function HomeJsonLd() {
   const ldHowTo = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
-    '@id': BRAND.site + '#howto',
+    '@id': site + '#howto',
     name: 'Как подключить организацию к ГИС «Профилактика»',
     description:
       'Семь шагов подключения организации к ГИС «Профилактика» по ПП РФ № 411 с аттестацией ИСПДн по 21 Приказу ФСТЭК (УЗ2).',
@@ -116,20 +118,20 @@ export function HomeJsonLd() {
       { '@type': 'HowToTool', name: 'Яндекс.Браузер или Chromium-Gost' },
     ],
     step: [
-      { '@type': 'HowToStep', position: 1, name: 'Экспресс-аудит', text: 'Обследование ИСПДн, оценка готовности по 21 Приказу ФСТЭК, согласование класса УЗ.', url: BRAND.site + '/#risk' },
-      { '@type': 'HowToStep', position: 2, name: 'Дорожная карта и КП', text: 'Фиксированная смета, состав СЗИ/СКЗИ, перечень документов и сроки в договоре.', url: BRAND.site + '/#pricing' },
-      { '@type': 'HowToStep', position: 3, name: 'Документы ПДн', text: 'Готовим Уведомление в Роскомнадзор, Акт обследования, Модель угроз, Акт классификации, ТЗ на СЗПДн, ПМИ, Технический паспорт.', url: BRAND.site + '/#uz2' },
-      { '@type': 'HowToStep', position: 4, name: 'Поставка и монтаж СЗИ', text: 'Secret Net Studio, ПАК «Соболь», КриптоПро NGate, антивирус, СОВ, СДЗ, отечественная ОС.', url: BRAND.site + '/#uz2' },
-      { '@type': 'HowToStep', position: 5, name: 'Аттестация ИСПДн', text: 'Аттестационные испытания, Заключение об оценке эффективности мер защиты ПДн (срок 3 года).', url: BRAND.site + '/#uz2' },
-      { '@type': 'HowToStep', position: 6, name: 'ЕСИА и интеграции', text: 'Регистрация в ЛК Госуслуги, настройка ролей, СМЭВ, обмен с региональными АИС.', url: BRAND.site + '/#process' },
-      { '@type': 'HowToStep', position: 7, name: 'Обучение и техподдержка', text: 'Обучение операторов с удостоверениями, горячая линия 24/7, SLA 4 часа.', url: BRAND.site + '/#process' },
+      { '@type': 'HowToStep', position: 1, name: 'Экспресс-аудит', text: 'Обследование ИСПДн, оценка готовности по 21 Приказу ФСТЭК, согласование класса УЗ.', url: site + '/#risk' },
+      { '@type': 'HowToStep', position: 2, name: 'Дорожная карта и КП', text: 'Фиксированная смета, состав СЗИ/СКЗИ, перечень документов и сроки в договоре.', url: site + '/#pricing' },
+      { '@type': 'HowToStep', position: 3, name: 'Документы ПДн', text: 'Готовим Уведомление в Роскомнадзор, Акт обследования, Модель угроз, Акт классификации, ТЗ на СЗПДн, ПМИ, Технический паспорт.', url: site + '/#uz2' },
+      { '@type': 'HowToStep', position: 4, name: 'Поставка и монтаж СЗИ', text: 'Secret Net Studio, ПАК «Соболь», КриптоПро NGate, антивирус, СОВ, СДЗ, отечественная ОС.', url: site + '/#uz2' },
+      { '@type': 'HowToStep', position: 5, name: 'Аттестация ИСПДн', text: 'Аттестационные испытания, Заключение об оценке эффективности мер защиты ПДн (срок 3 года).', url: site + '/#uz2' },
+      { '@type': 'HowToStep', position: 6, name: 'ЕСИА и интеграции', text: 'Регистрация в ЛК Госуслуги, настройка ролей, СМЭВ, обмен с региональными АИС.', url: site + '/#process' },
+      { '@type': 'HowToStep', position: 7, name: 'Обучение и техподдержка', text: 'Обучение операторов с удостоверениями, горячая линия 24/7, SLA 4 часа.', url: site + '/#process' },
     ],
   };
 
   const ldFaq = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    '@id': BRAND.site + '#faq',
+    '@id': site + '#faq',
     mainEntity: FAQ_QA.map((qa) => ({
       '@type': 'Question',
       name: qa.q,
@@ -140,24 +142,24 @@ export function HomeJsonLd() {
   const ldBreadcrumbs = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    '@id': BRAND.site + '#breadcrumbs',
+    '@id': site + '#breadcrumbs',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Главная', item: BRAND.site + '/' },
-      { '@type': 'ListItem', position: 2, name: 'Информационная безопасность', item: BRAND.site + '/#uz2' },
-      { '@type': 'ListItem', position: 3, name: 'Подключение к государственным информационным системам', item: BRAND.site + '/#process' },
-      { '@type': 'ListItem', position: 4, name: 'ГИС «Профилактика»', item: BRAND.site + '/' },
+      { '@type': 'ListItem', position: 1, name: 'Главная', item: site + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Информационная безопасность', item: site + '/#uz2' },
+      { '@type': 'ListItem', position: 3, name: 'Подключение к государственным информационным системам', item: site + '/#process' },
+      { '@type': 'ListItem', position: 4, name: 'ГИС «Профилактика»', item: site + '/' },
     ],
   };
 
   const ldSpeakable = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': BRAND.site + '#webpage',
-    url: BRAND.site,
+    '@id': site + '#webpage',
+    url: site,
     name:
       'ГИС «Профилактика» — подключение под ключ за 35–45 дней · ПП РФ № 411, ФСТЭК УЗ2',
-    isPartOf: { '@id': BRAND.site + '#website' },
-    primaryImageOfPage: { '@type': 'ImageObject', url: BRAND.site + '/opengraph-image' },
+    isPartOf: { '@id': site + '#website' },
+    primaryImageOfPage: { '@type': 'ImageObject', url: site + '/opengraph-image' },
     inLanguage: 'ru-RU',
     speakable: {
       '@type': 'SpeakableSpecification',
@@ -165,17 +167,17 @@ export function HomeJsonLd() {
       xpath: ['/html/head/title'],
     },
     mainContentOfPage: { '@type': 'WebPageElement', cssSelector: '#main' },
-    significantLink: MIRRORS.map((m) => m + '/'),
+    significantLink: [site + '/#pricing', site + '/#contact', site + '/#uz2'],
   };
 
   const ldCourse = {
     '@context': 'https://schema.org',
     '@type': 'Course',
-    '@id': BRAND.site + '#course',
+    '@id': site + '#course',
     name: 'Подготовка операторов ГИС «Профилактика» с удостоверениями',
     description:
       'Курс для специалистов КДНиЗП, школ, опеки, соцзащиты: работа в ГИС «Профилактика», заполнение карточек СОП/ТЖС/ИПР, межведомственный обмен через СМЭВ, формирование отчётов.',
-    provider: { '@type': 'Organization', name: BRAND.name, sameAs: BRAND.site },
+    provider: { '@type': 'Organization', name: BRAND.name, sameAs: site },
     inLanguage: 'ru-RU',
     educationalCredentialAwarded: 'Удостоверение о повышении квалификации',
     hasCourseInstance: {
@@ -201,19 +203,19 @@ export function HomeJsonLd() {
   const ldItemListServices = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    '@id': BRAND.site + '#services',
+    '@id': site + '#services',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Внедрение и подключение к ГИС', url: BRAND.site + '/#process' },
-      { '@type': 'ListItem', position: 2, name: 'Обучение и методология (КДНиЗП, школы, опека)', url: BRAND.site + '/#process' },
-      { '@type': 'ListItem', position: 3, name: 'Техподдержка 24/7, SLA 4 часа', url: BRAND.site + '/#process' },
-      { '@type': 'ListItem', position: 4, name: 'Аудит готовности и аттестация ИСПДн', url: BRAND.site + '/#risk' },
+      { '@type': 'ListItem', position: 1, name: 'Внедрение и подключение к ГИС', url: site + '/#process' },
+      { '@type': 'ListItem', position: 2, name: 'Обучение и методология (КДНиЗП, школы, опека)', url: site + '/#process' },
+      { '@type': 'ListItem', position: 3, name: 'Техподдержка 24/7, SLA 4 часа', url: site + '/#process' },
+      { '@type': 'ListItem', position: 4, name: 'Аудит готовности и аттестация ИСПДн', url: site + '/#risk' },
     ],
   };
 
   const ldGovServiceAbout = {
     '@context': 'https://schema.org',
     '@type': 'GovernmentService',
-    '@id': BRAND.site + '#govservice',
+    '@id': site + '#govservice',
     name: 'Государственная информационная система «Профилактика безнадзорности и правонарушений несовершеннолетних»',
     alternateName: ['ГИС «Профилактика»', 'ГИС Профилактика', 'ГИС «Профилактика безнадзорности»'],
     serviceOperator: {
@@ -224,7 +226,7 @@ export function HomeJsonLd() {
     jurisdiction: { '@type': 'Country', name: 'Russia' },
     availableChannel: {
       '@type': 'ServiceChannel',
-      serviceUrl: BRAND.site + '/',
+      serviceUrl: site + '/',
       availableLanguage: { '@type': 'Language', name: 'Russian' },
     },
     termsOfService:
@@ -256,22 +258,22 @@ export function HomeJsonLd() {
   const ldArticle = {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
-    '@id': BRAND.site + '#article',
-    mainEntityOfPage: BRAND.site + '/',
+    '@id': site + '#article',
+    mainEntityOfPage: site + '/',
     headline:
       'Подключение к ГИС «Профилактика» под ключ по ПП РФ № 411 и ФСТЭК УЗ2',
     description:
       'Руководство по подключению организации к ГИС «Профилактика»: документы ПДн, выбор СЗИ и СКЗИ, аттестация ИСПДн по 21 Приказу ФСТЭК (УЗ2), ЕСИА и СМЭВ, штрафы по 13.11 КоАП.',
-    author: { '@type': 'Organization', name: BRAND.name, url: BRAND.site },
+    author: { '@type': 'Organization', name: BRAND.name, url: site },
     publisher: {
       '@type': 'Organization',
       name: BRAND.name,
-      logo: { '@type': 'ImageObject', url: BRAND.site + '/favicon.svg' },
+      logo: { '@type': 'ImageObject', url: site + '/favicon.svg' },
     },
     datePublished: '2026-01-15',
     dateModified: new Date().toISOString().slice(0, 10),
     inLanguage: 'ru-RU',
-    image: BRAND.site + '/opengraph-image',
+    image: site + '/opengraph-image',
     articleSection: [
       'ГИС Профилактика',
       'ПП РФ 411',
