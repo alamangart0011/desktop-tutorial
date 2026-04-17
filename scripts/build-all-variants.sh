@@ -9,36 +9,40 @@
 # Итог: dist/<host>/… — готовые статические экспорты под nginx.
 # На VPS потом запустить scripts/server/deploy-variants.sh.
 
-set -euo pipefail
+set -eo pipefail
 cd "$(dirname "$0")/.."
 
-# Ключи variant'ов должны соответствовать VARIANTS в lib/variants.ts
-ALL_VARIANTS=(main gisprofilaktika pp411 gis411rf profilaktikaspb spbgis)
+# Ключи variant'ов и их host'ы (параллельные массивы — совместимо с bash 3.2 macOS).
+# Должны соответствовать VARIANTS в lib/variants.ts.
+ALL_VARIANTS=(main           gisprofilaktika      pp411    gis411rf                          profilaktikaspb       spbgis)
+ALL_HOSTS=(   gisprof.ru     gisprofilaktika.ru   pp411.ru xn----7sbab2ce0afk.xn--p1ai        profilaktika-spb.ru   spb-gis.ru)
 
-if [[ -n "${VARIANTS:-}" ]]; then
-    read -r -a TO_BUILD <<<"$VARIANTS"
+if [ -n "${VARIANTS:-}" ]; then
+    # shellcheck disable=SC2206
+    TO_BUILD=($VARIANTS)
 else
     TO_BUILD=("${ALL_VARIANTS[@]}")
 fi
 
-if [[ -z "${SKIP_CLEAN:-}" ]]; then
+if [ -z "${SKIP_CLEAN:-}" ]; then
     rm -rf dist
 fi
 mkdir -p dist
 
-# Пары ключ:host, должны соответствовать lib/variants.ts
-declare -A HOSTS=(
-    [main]="gisprof.ru"
-    [gisprofilaktika]="gisprofilaktika.ru"
-    [pp411]="pp411.ru"
-    [gis411rf]="xn----7sbab2ce0afk.xn--p1ai"
-    [profilaktikaspb]="profilaktika-spb.ru"
-    [spbgis]="spb-gis.ru"
-)
+find_host() {
+    local v="$1" i
+    for i in "${!ALL_VARIANTS[@]}"; do
+        if [ "${ALL_VARIANTS[$i]}" = "$v" ]; then
+            printf '%s' "${ALL_HOSTS[$i]}"
+            return 0
+        fi
+    done
+    return 1
+}
 
 for v in "${TO_BUILD[@]}"; do
-    host="${HOSTS[$v]:-}"
-    if [[ -z "$host" ]]; then
+    host=$(find_host "$v" || true)
+    if [ -z "$host" ]; then
         echo "[skip] неизвестный variant: $v"
         continue
     fi
