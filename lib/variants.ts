@@ -72,7 +72,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     region: 'Россия',
     regionBadge: 'По всей России · офис в Санкт-Петербурге',
     metrikaId: '108625530',
-    yandexVerification: '',
+    yandexVerification: '91a8c0e46602e10a',
     keywords: [
       'ГИС Профилактика',
       'подключение к ГИС Профилактика',
@@ -106,7 +106,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     region: 'Россия',
     regionBadge: 'Федеральный центр компетенций',
     metrikaId: '108625530',
-    yandexVerification: '',
+    yandexVerification: '3bff3551472b5d65',
     keywords: [
       'ГИС Профилактика официальный сайт',
       'что такое ГИС Профилактика',
@@ -138,7 +138,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     region: 'Россия',
     regionBadge: 'Правовое сопровождение · ФСТЭК/ФСБ',
     metrikaId: '108625530',
-    yandexVerification: '',
+    yandexVerification: 'a5e41ed55c8891d4',
     keywords: [
       'постановление 411',
       'ПП 411 от 01.04.2025',
@@ -169,7 +169,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     region: 'Россия',
     regionBadge: 'По всей России · удалённое внедрение',
     metrikaId: '108625530',
-    yandexVerification: '',
+    yandexVerification: '8b2080a21c6188e8',
     keywords: [
       'гис 411',
       'гис-411',
@@ -200,7 +200,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     region: 'Санкт-Петербург',
     regionBadge: 'Санкт-Петербург · выезд по районам',
     metrikaId: '108625530',
-    yandexVerification: '',
+    yandexVerification: '1a077e59c3ed2d6b',
     keywords: [
       'гис профилактика спб',
       'гис профилактика санкт-петербург',
@@ -231,7 +231,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     region: 'Ленинградская область',
     regionBadge: 'Ленинградская область · выезд инженера',
     metrikaId: '108625530',
-    yandexVerification: '',
+    yandexVerification: 'a155ffbda1c092a2',
     keywords: [
       'гис профилактика ленобласть',
       'гис профилактика ло',
