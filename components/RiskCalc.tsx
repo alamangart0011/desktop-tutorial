@@ -24,7 +24,7 @@ export function RiskCalc() {
     const base = ROLE_RANGE[role];
     let low = base.min * episodes;
     let high = base.max * episodes;
-    if (leak) {
+    if (leak && role === 'legal') {
       low += 3_000_000;
       high += 15_000_000;
     }
@@ -101,17 +101,26 @@ export function RiskCalc() {
               </div>
             </label>
 
-            <label className="flex items-start gap-3 cursor-pointer">
+            <label
+              className={`flex items-start gap-3 ${
+                role === 'legal' ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
+              }`}
+            >
               <input
                 type="checkbox"
-                checked={leak}
+                checked={leak && role === 'legal'}
                 onChange={(e) => setLeak(e.target.checked)}
+                disabled={role !== 'legal'}
                 className="mt-1 h-4 w-4 accent-[var(--color-brand)]"
               />
               <span className="text-sm text-[var(--color-ink)]">
                 <b>Утечка ПДн несовершеннолетних.</b>{' '}
                 <span className="text-[var(--color-muted)]">
-                  Дополнительно ст. 13.11 ч. 13–14 КоАП: 3–15 млн ₽ юр. лицу.
+                  Дополнительно ст. 13.11 ч. 13–14 КоАП: 3–15 млн ₽ юр. лицу
+                  {role !== 'legal' && (
+                    <> (применяется только к юридическим лицам)</>
+                  )}
+                  .
                 </span>
               </span>
             </label>

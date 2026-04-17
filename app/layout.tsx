@@ -357,7 +357,6 @@ export default function RootLayout({
     <html lang="ru" className={manrope.variable}>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="canonical" href={BRAND.site} />
         <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="" />
         <link rel="dns-prefetch" href="https://mc.yandex.ru" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
