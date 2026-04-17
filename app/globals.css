@@ -661,3 +661,72 @@ html[data-a11y-theme^="contrast-"] .a11y-chip.is-active * {
           mask-composite: exclude;
   pointer-events: none;
 }
+
+/* ---- ExitIntent modal animations ---- */
+@keyframes ei-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes ei-pop {
+  from { opacity: 0; transform: scale(0.92) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ---- Copy toast ---- */
+@keyframes copy-toast {
+  0%   { opacity: 0; transform: translate(-50%, 8px); }
+  15%  { opacity: 1; transform: translate(-50%, 0); }
+  85%  { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -6px); }
+}
+
+/* ---- ScrollSpy active nav link ---- */
+[data-scrollspy] a.nav-active {
+  color: var(--color-brand) !important;
+  background: rgba(11, 59, 140, 0.08);
+  font-weight: 700;
+}
+[data-scrollspy] a {
+  position: relative;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+/* ---- Magnetic CTA: subtle lift + gradient sheen on hover ---- */
+.btn-primary,
+.btn-ghost {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .btn-primary:hover,
+  .btn-ghost:hover {
+    transform: translateY(-2px);
+  }
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%);
+    transform: translateX(-120%);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .btn-primary:hover::after {
+    transform: translateX(120%);
+  }
+}
+
+/* ---- abbr jargon tooltip (native title + styled underline) ---- */
+abbr[title] {
+  text-decoration: underline dotted rgba(11, 59, 140, 0.5);
+  text-underline-offset: 3px;
+  cursor: help;
+  border: 0;
+}
+
+/* ---- Smooth fade-in for cards that mount via client state ---- */
+.fade-mount {
+  animation: ei-fade 0.35s ease-out both;
+}

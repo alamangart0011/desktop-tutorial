@@ -56,13 +56,20 @@ export function Pricing() {
           <span className="inline-block rounded-full bg-blue-50 text-[var(--color-brand)] text-xs font-semibold px-3 py-1">
             Пакеты
           </span>
-          <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight">
+          <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight h-accent">
             Прозрачные пакеты — от одного ведомства до всего региона
           </h2>
           <p className="mt-3 text-[var(--color-ink-2)] leading-relaxed">
             Работаем по 44-ФЗ и 223-ФЗ. Фиксируем состав работ и сроки в договоре, результат —
             приёмка организацией ГИС «Профилактика».
           </p>
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-amber-50 border border-amber-200 text-amber-800 px-3.5 py-1.5 text-xs font-semibold">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+            </span>
+            Свободно 3 слота на запуск в апреле — резерв до подписания договора
+          </div>
         </div>
         <div className="mt-10 grid lg:grid-cols-3 gap-4">
           {tiers.map((t) => (

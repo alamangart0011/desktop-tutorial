@@ -210,10 +210,34 @@ export function ContactForm() {
             Ответим в течение рабочего дня.
           </p>
           <div className="mt-5 grid sm:grid-cols-2 gap-3">
-            <Field label="Организация *" v={f.org} onChange={(v) => set('org', v)} autoComplete="organization" />
-            <Field label="ФИО *" v={f.name} onChange={(v) => set('name', v)} autoComplete="name" />
-            <Field label="Должность" v={f.role} onChange={(v) => set('role', v)} autoComplete="organization-title" />
-            <Field label="Регион" v={f.region} onChange={(v) => set('region', v)} autoComplete="address-level1" />
+            <Field
+              label="Организация *"
+              v={f.org}
+              onChange={(v) => set('org', v)}
+              autoComplete="organization"
+              valid={f.org.trim().length >= 2}
+              required
+            />
+            <Field
+              label="ФИО *"
+              v={f.name}
+              onChange={(v) => set('name', v)}
+              autoComplete="name"
+              valid={f.name.trim().split(/\s+/).length >= 2}
+              required
+            />
+            <Field
+              label="Должность"
+              v={f.role}
+              onChange={(v) => set('role', v)}
+              autoComplete="organization-title"
+            />
+            <Field
+              label="Регион"
+              v={f.region}
+              onChange={(v) => set('region', v)}
+              autoComplete="address-level1"
+            />
             <Field
               label="Телефон *"
               v={f.phone}
@@ -222,8 +246,19 @@ export function ContactForm() {
               inputMode="tel"
               autoComplete="tel"
               placeholder="+7 (___) ___-__-__"
+              valid={f.phone.replace(/\D/g, '').length === 11}
+              required
             />
-            <Field label="E-mail *" v={f.email} onChange={(v) => set('email', v)} type="email" autoComplete="email" inputMode="email" />
+            <Field
+              label="E-mail *"
+              v={f.email}
+              onChange={(v) => set('email', v)}
+              type="email"
+              autoComplete="email"
+              inputMode="email"
+              valid={/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email)}
+              required
+            />
           </div>
           <label className="block mt-3 text-xs font-semibold text-[var(--color-ink-2)]">
             Сообщение
@@ -316,6 +351,8 @@ function Field({
   placeholder,
   autoComplete,
   inputMode,
+  valid,
+  required,
 }: {
   label: string;
   v: string;
@@ -324,19 +361,55 @@ function Field({
   placeholder?: string;
   autoComplete?: string;
   inputMode?: 'text' | 'tel' | 'email' | 'numeric' | 'decimal' | 'search' | 'url';
+  valid?: boolean;
+  required?: boolean;
 }) {
+  const hasValue = v.length > 0;
+  const state = required
+    ? hasValue
+      ? valid
+        ? 'ok'
+        : 'bad'
+      : 'idle'
+    : hasValue
+    ? 'ok'
+    : 'idle';
+  const borderClass =
+    state === 'ok'
+      ? 'border-emerald-400 focus:border-emerald-500'
+      : state === 'bad'
+      ? 'border-amber-400 focus:border-amber-500'
+      : 'border-slate-200 focus:border-[var(--color-brand)]';
   return (
     <label className="block">
       <span className="block text-xs font-semibold text-[var(--color-ink-2)]">{label}</span>
-      <input
-        type={type}
-        value={v}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        autoComplete={autoComplete}
-        inputMode={inputMode}
-        className="mt-1 w-full rounded-xl border border-slate-200 bg-[var(--color-paper)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--color-brand)] placeholder:text-slate-400"
-      />
+      <div className="relative mt-1">
+        <input
+          type={type}
+          value={v}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          inputMode={inputMode}
+          className={`w-full rounded-xl border-2 bg-[var(--color-paper)] px-4 py-3 pr-10 text-sm focus:outline-none placeholder:text-slate-400 transition ${borderClass}`}
+        />
+        {state === 'ok' && (
+          <span
+            aria-hidden
+            className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex w-6 h-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-black"
+          >
+            ✓
+          </span>
+        )}
+        {state === 'bad' && (
+          <span
+            aria-hidden
+            className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex w-6 h-6 items-center justify-center rounded-full bg-amber-500 text-white text-xs font-black"
+          >
+            !
+          </span>
+        )}
+      </div>
     </label>
   );
 }

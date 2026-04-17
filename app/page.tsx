@@ -18,6 +18,7 @@ import { ScrollProgress } from '@/components/ScrollProgress';
 import { BackToTop } from '@/components/BackToTop';
 import { HomeJsonLd } from '@/components/HomeJsonLd';
 import { MobileFab } from '@/components/MobileFab';
+import { ExitIntent } from '@/components/ExitIntent';
 
 const RiskCalc = dynamic(
   () => import('@/components/RiskCalc').then((m) => m.RiskCalc),
@@ -49,6 +50,7 @@ export default function Page() {
       <StickyMobileCta />
       <MobileFab />
       <CookieBanner />
+      <ExitIntent />
       <HomeJsonLd />
     </>
   );
