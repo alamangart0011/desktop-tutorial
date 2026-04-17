@@ -2,8 +2,11 @@ import dynamic from 'next/dynamic';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { TrustBar } from '@/components/TrustBar';
+import { PainTrigger } from '@/components/PainTrigger';
 import { Problem } from '@/components/Problem';
 import { Uz2Requirements } from '@/components/Uz2Requirements';
+import { Offer7Days } from '@/components/Offer7Days';
+import { Cases } from '@/components/Cases';
 import { Pricing } from '@/components/Pricing';
 import { Process } from '@/components/Process';
 import { ContactForm } from '@/components/ContactForm';
@@ -14,6 +17,7 @@ import { ScrollProgress } from '@/components/ScrollProgress';
 import { BackToTop } from '@/components/BackToTop';
 import { HomeJsonLd } from '@/components/HomeJsonLd';
 import { ExitIntent } from '@/components/ExitIntent';
+import { CallbackWidget } from '@/components/CallbackWidget';
 
 const RiskCalc = dynamic(
   () => import('@/components/RiskCalc').then((m) => m.RiskCalc),
@@ -27,10 +31,13 @@ export default function Page() {
       <main id="main">
         <Hero />
         <TrustBar />
+        <PainTrigger />
         <Problem />
         <Uz2Requirements />
         <RiskCalc />
+        <Offer7Days />
         <Process />
+        <Cases />
         <Pricing />
         <Faq />
         <ContactForm />
@@ -41,6 +48,7 @@ export default function Page() {
       <StickyMobileCta />
       <CookieBanner />
       <ExitIntent />
+      <CallbackWidget />
       <HomeJsonLd />
     </>
   );

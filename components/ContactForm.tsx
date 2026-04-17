@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
-import { BRAND } from './constants';
+import { BRAND, FORM } from './constants';
 import {
   PhoneIcon,
   MailIcon,
@@ -11,6 +11,7 @@ import {
   ArrowRightIcon,
   CheckIcon,
   AlertTriangleIcon,
+  CheckCircleIcon,
 } from './Icons';
 
 type Fields = {
@@ -48,16 +49,39 @@ function maskPhone(raw: string): string {
   return p.join('');
 }
 
+type Status = 'idle' | 'sending' | 'sent' | 'mailto-fallback';
+
 export function ContactForm() {
   const [f, setF] = useState<Fields>(EMPTY);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>('idle');
   const [err, setErr] = useState<string | null>(null);
 
   function set<K extends keyof Fields>(k: K, v: Fields[K]) {
     setF((p) => ({ ...p, [k]: v }));
   }
 
-  function submit(e: FormEvent) {
+  function buildBody() {
+    return [
+      `Организация: ${f.org}`,
+      `ФИО: ${f.name}`,
+      `Должность: ${f.role || '—'}`,
+      `Телефон: ${f.phone}`,
+      `E-mail: ${f.email}`,
+      `Регион: ${f.region || '—'}`,
+      '',
+      'Сообщение:',
+      f.message || '—',
+    ].join('\n');
+  }
+
+  function openMailtoFallback() {
+    const subject = `Заявка: подключение к ГИС «Профилактика» — ${f.org}`;
+    const url = `mailto:${BRAND.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(buildBody())}`;
+    window.location.href = url;
+    setStatus('mailto-fallback');
+  }
+
+  async function submit(e: FormEvent) {
     e.preventDefault();
     setErr(null);
     if (!f.org || !f.name || !f.phone || !f.email) {
@@ -65,7 +89,7 @@ export function ContactForm() {
       return;
     }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email)) {
-      setErr('Проверьте e-mail.');
+      setErr('Проверьте e-mail — формат name@example.ru.');
       return;
     }
     if (f.phone.replace(/\D/g, '').length < 11) {
@@ -76,23 +100,51 @@ export function ContactForm() {
       setErr('Согласитесь с Политикой обработки ПДн (152-ФЗ), чтобы продолжить.');
       return;
     }
-    const body = [
-      'Заявка с лендинга ГИС «Профилактика»',
-      '',
-      `Организация: ${f.org}`,
-      `ФИО: ${f.name}`,
-      `Должность: ${f.role}`,
-      `Телефон: ${f.phone}`,
-      `E-mail: ${f.email}`,
-      `Регион: ${f.region}`,
-      '',
-      'Сообщение:',
-      f.message || '—',
-    ].join('\n');
-    const subject = `Заявка: подключение к ГИС «Профилактика» — ${f.org}`;
-    const url = `mailto:${BRAND.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = url;
-    setSent(true);
+
+    // Если Web3Forms access_key настроен — отправляем через их API
+    if (FORM.accessKey) {
+      setStatus('sending');
+      try {
+        const res = await fetch(FORM.endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            access_key: FORM.accessKey,
+            subject: `Заявка: подключение к ГИС «Профилактика» — ${f.org}`,
+            from_name: `${f.name} · ${f.org}`,
+            organization: f.org,
+            full_name: f.name,
+            role: f.role,
+            phone: f.phone,
+            email: f.email,
+            region: f.region,
+            message: f.message,
+            summary: buildBody(),
+            redirect: false,
+          }),
+        });
+        const data = await res.json().catch(() => ({ success: false }));
+        if (res.ok && data?.success !== false) {
+          setStatus('sent');
+          if (typeof window !== 'undefined') {
+            const w = window as unknown as { ym?: (id: string, e: string, goal: string) => void };
+            w.ym?.(String((window as unknown as { __YM_ID?: string }).__YM_ID ?? ''), 'reachGoal', 'form-submit');
+          }
+          return;
+        }
+        throw new Error('Сервер вернул ошибку');
+      } catch {
+        // Сеть/сервис недоступны — graceful fallback на mailto
+        openMailtoFallback();
+        return;
+      }
+    }
+
+    // Access key не задан — работаем через mailto
+    openMailtoFallback();
   }
 
   return (
@@ -298,28 +350,74 @@ export function ContactForm() {
               {err}
             </div>
           )}
-          {sent && !err && (
+          {status === 'sent' && (
             <div
               role="status"
               aria-live="polite"
-              className="mt-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs px-3 py-2"
+              className="mt-4 rounded-2xl bg-emerald-50 border-2 border-emerald-300 p-5 text-center"
+            >
+              <div className="inline-flex w-12 h-12 items-center justify-center rounded-full bg-emerald-500 text-white mb-2">
+                <CheckCircleIcon className="w-7 h-7" strokeWidth={2.5} />
+              </div>
+              <div className="font-extrabold text-emerald-900 text-base">
+                Заявка принята
+              </div>
+              <div className="mt-1 text-sm text-emerald-800 leading-snug">
+                Инженер {BRAND.shortName} перезвонит в течение рабочего дня
+                по номеру <span className="font-semibold">{f.phone}</span> и
+                подготовит расчёт под вашу организацию.
+              </div>
+              <div className="mt-3 text-[11px] text-emerald-700">
+                Проверьте e-mail — продублируем подтверждение на{' '}
+                <span className="font-semibold">{f.email}</span>.
+              </div>
+            </div>
+          )}
+          {status === 'mailto-fallback' && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="mt-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs px-3 py-2"
             >
               Открыли ваш почтовый клиент с готовым письмом. Если не открылось — напишите напрямую на{' '}
               <a href={`mailto:${BRAND.email}`} className="font-semibold underline">
                 {BRAND.email}
-              </a>
-              .
+              </a>{' '}
+              или позвоните{' '}
+              <a href={`tel:${BRAND.phoneRaw}`} className="font-semibold underline">
+                {BRAND.phone}
+              </a>.
             </div>
           )}
 
-          <button
-            type="submit"
-            data-goal="contact"
-            className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--color-brand)] to-[var(--color-brand-2)] text-white font-bold px-5 py-4 text-base hover:shadow-xl transition active:scale-[0.99] min-h-[52px]"
-          >
-            Отправить заявку
-            <ArrowRightIcon className="w-5 h-5" />
-          </button>
+          {status !== 'sent' && (
+            <button
+              type="submit"
+              data-goal="form-submit"
+              disabled={status === 'sending'}
+              className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--color-brand)] to-[var(--color-brand-2)] text-white font-bold px-5 py-4 text-base hover:shadow-xl transition active:scale-[0.99] min-h-[52px] disabled:opacity-70 disabled:cursor-wait"
+            >
+              {status === 'sending' ? (
+                <>
+                  <svg
+                    className="w-5 h-5 animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeOpacity="0.25" />
+                    <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                  </svg>
+                  Отправляем…
+                </>
+              ) : (
+                <>
+                  Отправить заявку
+                  <ArrowRightIcon className="w-5 h-5" />
+                </>
+              )}
+            </button>
+          )}
 
           <div className="mt-4 grid grid-cols-2 gap-2">
             <a
@@ -338,7 +436,9 @@ export function ContactForm() {
             </a>
           </div>
           <p className="mt-3 text-[11px] text-slate-500">
-            Нажимая «Отправить», вы открываете почтовый клиент с заполненным письмом на {BRAND.email}.
+            {FORM.accessKey
+              ? `Заявка уходит напрямую в ${BRAND.email}. Перезваниваем в рабочий день.`
+              : `Сейчас форма открывает почтовый клиент с заполненным письмом на ${BRAND.email}.`}
           </p>
         </form>
       </div>

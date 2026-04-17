@@ -44,10 +44,18 @@ export const ANALYTICS = {
   mailruVerification: '',
 } as const;
 
+// Форма отправки заявок. Web3Forms — бесплатный relay, зарегистрировать на
+// https://web3forms.com/ (не требует аккаунта, только верификация e-mail),
+// вписать сюда access_key. Пока пусто — форма работает через mailto-fallback.
+export const FORM = {
+  endpoint: 'https://api.web3forms.com/submit',
+  accessKey: '', // TODO: вставить access_key после регистрации
+} as const;
+
 export const NAV = [
   { href: '#uz2', label: 'ФСТЭК УЗ2' },
-  { href: '#risk', label: 'Штраф' },
-  { href: '#process', label: 'Этапы' },
+  { href: '#offer-7d', label: '7 дней' },
+  { href: '#cases', label: 'Кейсы' },
   { href: '#pricing', label: 'Пакеты' },
   { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },

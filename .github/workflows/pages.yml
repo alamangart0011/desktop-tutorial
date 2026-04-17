@@ -28,20 +28,20 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Build static export
+      - name: Build static export (custom domain gisprof.ru → served from /)
         env:
           STATIC_EXPORT: '1'
-          BASE_PATH: /desktop-tutorial
-        run: npm run build
+          BASE_PATH: ''
+        run: npm run build:export
 
       - name: Disable Jekyll
         run: touch out/.nojekyll
 
-      - name: Deploy to gh-pages
+      - name: Deploy to site branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
-          publish_branch: gh-pages
+          publish_branch: site
           force_orphan: true
           commit_message: "deploy: ${{ github.sha }}"

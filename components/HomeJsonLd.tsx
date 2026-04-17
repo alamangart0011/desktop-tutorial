@@ -116,7 +116,7 @@ export function HomeJsonLd() {
       { '@type': 'HowToTool', name: 'Яндекс.Браузер или Chromium-Gost' },
     ],
     step: [
-      { '@type': 'HowToStep', position: 1, name: 'Экспресс-аудит', text: 'Обследование ИСПДн, оценка готовности по 21 Приказу ФСТЭК, согласование класса УЗ.', url: BRAND.site + '/#check' },
+      { '@type': 'HowToStep', position: 1, name: 'Экспресс-аудит', text: 'Обследование ИСПДн, оценка готовности по 21 Приказу ФСТЭК, согласование класса УЗ.', url: BRAND.site + '/#risk' },
       { '@type': 'HowToStep', position: 2, name: 'Дорожная карта и КП', text: 'Фиксированная смета, состав СЗИ/СКЗИ, перечень документов и сроки в договоре.', url: BRAND.site + '/#pricing' },
       { '@type': 'HowToStep', position: 3, name: 'Документы ПДн', text: 'Готовим Уведомление в Роскомнадзор, Акт обследования, Модель угроз, Акт классификации, ТЗ на СЗПДн, ПМИ, Технический паспорт.', url: BRAND.site + '/#uz2' },
       { '@type': 'HowToStep', position: 4, name: 'Поставка и монтаж СЗИ', text: 'Secret Net Studio, ПАК «Соболь», КриптоПро NGate, антивирус, СОВ, СДЗ, отечественная ОС.', url: BRAND.site + '/#uz2' },
@@ -206,7 +206,7 @@ export function HomeJsonLd() {
       { '@type': 'ListItem', position: 1, name: 'Внедрение и подключение к ГИС', url: BRAND.site + '/#process' },
       { '@type': 'ListItem', position: 2, name: 'Обучение и методология (КДНиЗП, школы, опека)', url: BRAND.site + '/#process' },
       { '@type': 'ListItem', position: 3, name: 'Техподдержка 24/7, SLA 4 часа', url: BRAND.site + '/#process' },
-      { '@type': 'ListItem', position: 4, name: 'Аудит готовности и аттестация ИСПДн', url: BRAND.site + '/#check' },
+      { '@type': 'ListItem', position: 4, name: 'Аудит готовности и аттестация ИСПДн', url: BRAND.site + '/#risk' },
     ],
   };
 

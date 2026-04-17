@@ -297,7 +297,7 @@ export default function RootLayout({
       { '@type': 'WebPageElement', name: 'О ГИС «Профилактика»', url: BRAND.site + '/#about' },
       { '@type': 'WebPageElement', name: 'Для кого обязательно подключение', url: BRAND.site + '/#audience' },
       { '@type': 'WebPageElement', name: 'Требования 21 Приказа ФСТЭК (УЗ2)', url: BRAND.site + '/#uz2' },
-      { '@type': 'WebPageElement', name: 'Чек-лист готовности', url: BRAND.site + '/#check' },
+      { '@type': 'WebPageElement', name: 'Калькулятор риска штрафа', url: BRAND.site + '/#risk' },
       { '@type': 'WebPageElement', name: 'Калькулятор стоимости', url: BRAND.site + '/#calc' },
       { '@type': 'WebPageElement', name: 'Калькулятор штрафа', url: BRAND.site + '/#risk' },
       { '@type': 'WebPageElement', name: 'Пакеты услуг', url: BRAND.site + '/#pricing' },
@@ -346,7 +346,7 @@ export default function RootLayout({
         >
           Перейти к содержанию
         </a>
-        <div id="main" tabIndex={-1}>
+        <div id="app-root">
           {children}
         </div>
         <AccessibilityToolbar />
