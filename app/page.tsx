@@ -34,6 +34,7 @@ import { CookieBanner } from '@/components/CookieBanner';
 import { ScrollProgress } from '@/components/ScrollProgress';
 import { BackToTop } from '@/components/BackToTop';
 import { SectionRail } from '@/components/SectionRail';
+import { HomeJsonLd } from '@/components/HomeJsonLd';
 
 const ReadinessCheck = dynamic(
   () => import('@/components/ReadinessCheck').then((m) => m.ReadinessCheck),
@@ -90,6 +91,7 @@ export default function Page() {
       <BackToTop />
       <StickyMobileCta />
       <CookieBanner />
+      <HomeJsonLd />
     </>
   );
 }
