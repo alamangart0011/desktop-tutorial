@@ -12,6 +12,14 @@
 set -eo pipefail
 cd "$(dirname "$0")/.."
 
+# Гарантируем pinned Next (из package.json) вместо автоподкачки latest через npx.
+# Без этого на чистой машине npx стянет next@16 с Turbopack и упадёт на workspace-root.
+if [ ! -d node_modules ] || [ ! -x node_modules/.bin/next ]; then
+    echo "[install] npm install (первый запуск / нет node_modules)"
+    npm install --no-audit --no-fund
+fi
+NEXT_BIN="./node_modules/.bin/next"
+
 # Ключи variant'ов и их host'ы (параллельные массивы — совместимо с bash 3.2 macOS).
 # Должны соответствовать VARIANTS в lib/variants.ts.
 ALL_VARIANTS=(main           gisprofilaktika      pp411    gis411rf                          profilaktikaspb       spbgis)
@@ -53,7 +61,7 @@ for v in "${TO_BUILD[@]}"; do
     SITE_VARIANT="$v" \
         NEXT_PUBLIC_SITE_VARIANT="$v" \
         STATIC_EXPORT=1 \
-        npx next build
+        "$NEXT_BIN" build
 
     target="dist/$host"
     rm -rf "$target"
