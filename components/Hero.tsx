@@ -52,7 +52,12 @@ export function Hero() {
               </span>
             </h1>
 
-            <p className="mt-5 text-[1.05rem] md:text-xl text-white leading-relaxed max-w-2xl font-medium">
+            <p className="mt-5 text-[1.05rem] md:text-xl text-white leading-relaxed max-w-2xl font-semibold">
+              Получили предписание прокуратуры или Роскомнадзора по ГИС&nbsp;«Профилактика»?
+              Закроем вопрос за&nbsp;7&nbsp;дней — или вернём предоплату.
+            </p>
+
+            <p className="mt-4 text-[1.02rem] md:text-lg text-white/90 leading-relaxed max-w-2xl">
               Документы, защита ПДн, подключение через Госуслуги и обучение
               сотрудников — берём на себя. Аттестацию и установку СЗИ выполняют
               аккредитованные лицензиаты ФСТЭК/ФСБ на субподряде.

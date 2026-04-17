@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
-import { BRAND, FORM } from './constants';
+import { BRAND, FORM, ANALYTICS } from './constants';
 import {
   PhoneIcon,
   MailIcon,
@@ -130,8 +130,13 @@ export function ContactForm() {
         if (res.ok && data?.success !== false) {
           setStatus('sent');
           if (typeof window !== 'undefined') {
-            const w = window as unknown as { ym?: (id: string, e: string, goal: string) => void };
-            w.ym?.(String((window as unknown as { __YM_ID?: string }).__YM_ID ?? ''), 'reachGoal', 'form-submit');
+            const id = ANALYTICS.yandexMetrikaId;
+            if (id && id !== '00000000') {
+              const w = window as unknown as {
+                ym?: (id: string, e: string, goal: string) => void;
+              };
+              w.ym?.(id, 'reachGoal', 'form-submit-success');
+            }
           }
           return;
         }
@@ -393,7 +398,7 @@ export function ContactForm() {
           {status !== 'sent' && (
             <button
               type="submit"
-              data-goal="form-submit"
+              data-goal="form-submit-click"
               disabled={status === 'sending'}
               className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--color-brand)] to-[var(--color-brand-2)] text-white font-bold px-5 py-4 text-base hover:shadow-xl transition active:scale-[0.99] min-h-[52px] disabled:opacity-70 disabled:cursor-wait"
             >

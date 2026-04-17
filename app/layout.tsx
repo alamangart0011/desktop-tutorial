@@ -307,7 +307,10 @@ export default function RootLayout({
     ],
   };
 
-  const metrikaId = ANALYTICS.yandexMetrikaId;
+  const metrikaRaw = ANALYTICS.yandexMetrikaId;
+  // Placeholder '00000000' не инициализирует счётчик — замените на настоящий ID.
+  const metrikaId =
+    metrikaRaw && metrikaRaw !== '00000000' ? metrikaRaw : '';
 
   return (
     <html lang="ru" className={manrope.variable}>

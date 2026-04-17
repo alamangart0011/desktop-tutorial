@@ -37,8 +37,11 @@ export const MIRRORS = [
 
 export const INDEXNOW_KEY = 'b2f3e9c5a1d84fe9a7c0d6e1f4b2a8d3';
 
+// Яндекс.Метрика: заглушка-плейсхолдер. Счётчик инициализируется только если
+// значение — реальный ID (цифры). Замените '00000000' на свой номер после
+// создания счётчика на https://metrika.yandex.ru/
 export const ANALYTICS = {
-  yandexMetrikaId: '',
+  yandexMetrikaId: '00000000',
   yandexVerification: '',
   googleVerification: '',
   mailruVerification: '',
@@ -53,10 +56,13 @@ export const FORM = {
 } as const;
 
 export const NAV = [
+  { href: '#promo', label: 'Акция' },
   { href: '#uz2', label: 'ФСТЭК УЗ2' },
   { href: '#offer-7d', label: '7 дней' },
+  { href: '#clients', label: 'Клиенты' },
   { href: '#cases', label: 'Кейсы' },
   { href: '#pricing', label: 'Пакеты' },
+  { href: '#guarantee', label: 'Гарантии' },
   { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },
 ] as const;

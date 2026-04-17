@@ -2,12 +2,15 @@ import dynamic from 'next/dynamic';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { TrustBar } from '@/components/TrustBar';
+import { UrgencyTimer } from '@/components/UrgencyTimer';
 import { PainTrigger } from '@/components/PainTrigger';
 import { Problem } from '@/components/Problem';
 import { Uz2Requirements } from '@/components/Uz2Requirements';
 import { Offer7Days } from '@/components/Offer7Days';
+import { Clients } from '@/components/Clients';
 import { Cases } from '@/components/Cases';
 import { Pricing } from '@/components/Pricing';
+import { MoneyBackGuarantee } from '@/components/MoneyBackGuarantee';
 import { Process } from '@/components/Process';
 import { ContactForm } from '@/components/ContactForm';
 import { Footer } from '@/components/Footer';
@@ -31,14 +34,17 @@ export default function Page() {
       <main id="main">
         <Hero />
         <TrustBar />
+        <UrgencyTimer />
         <PainTrigger />
         <Problem />
         <Uz2Requirements />
         <RiskCalc />
         <Offer7Days />
         <Process />
+        <Clients />
         <Cases />
         <Pricing />
+        <MoneyBackGuarantee />
         <Faq />
         <ContactForm />
       </main>
