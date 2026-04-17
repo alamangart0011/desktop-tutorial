@@ -432,8 +432,8 @@ export default function RootLayout({
 m[i].l=1*new Date();
 for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
 k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-ym(${metrikaId}, "init", {clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, ecommerce:"dataLayer"});
+(window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=${metrikaId}", "ym");
+ym(${metrikaId}, "init", {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
 document.addEventListener("click", function(e){
   var el = e.target.closest("[data-goal]");
   if (!el) return;
