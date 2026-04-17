@@ -118,6 +118,7 @@ export function Audience() {
           </div>
           <a
             href="#contact"
+            data-goal="audience-contact"
             className="inline-flex items-center justify-center rounded-xl bg-white text-[var(--color-brand)] font-semibold px-5 py-3 hover:bg-slate-100 transition"
           >
             Определить свой профиль

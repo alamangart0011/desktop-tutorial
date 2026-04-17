@@ -96,6 +96,7 @@ export function Comparison() {
         <div className="mt-8 flex flex-wrap gap-3">
           <a
             href="#contact"
+            data-goal="comparison-contact"
             className="inline-flex items-center justify-center rounded-xl bg-[var(--color-brand)] text-white font-semibold px-5 py-3 hover:bg-[var(--color-brand-2)] transition"
           >
             Получить КП с фиксированной ценой

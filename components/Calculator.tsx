@@ -172,6 +172,7 @@ export function Calculator() {
             <div className="mt-auto pt-6 grid gap-2">
               <a
                 href="#contact"
+                data-goal="calculator-contact"
                 className="inline-flex items-center justify-center rounded-xl bg-white text-[var(--color-brand)] font-semibold px-5 py-3 hover:bg-white/90 transition"
               >
                 Получить точный расчёт

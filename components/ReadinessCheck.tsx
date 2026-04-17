@@ -133,6 +133,7 @@ export function ReadinessCheck() {
             </p>
             <a
               href="#contact"
+              data-goal={submitted ? 'readiness-result-contact' : 'readiness-contact'}
               className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[var(--color-ink)] text-white font-semibold px-5 py-3 hover:bg-[var(--color-brand)] transition"
             >
               {submitted ? verdict.cta : 'Оставить заявку на аудит'}

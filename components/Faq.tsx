@@ -70,7 +70,11 @@ export function Faq() {
           {filtered.length === 0 && (
             <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-600">
               Ничего не нашлось. Задайте вопрос напрямую —{' '}
-              <a href="#contact" className="text-[var(--color-brand)] font-semibold underline">
+              <a
+                href="#contact"
+                data-goal="faq-empty-contact"
+                className="text-[var(--color-brand)] font-semibold underline"
+              >
                 в форме контактов
               </a>
               .
@@ -85,6 +89,7 @@ export function Faq() {
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : x.i)}
+                  data-goal="faq-open"
                   className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 hover:bg-white transition"
                   aria-expanded={isOpen}
                 >

@@ -161,6 +161,7 @@ export function Header() {
               <a
                 href="#contact"
                 onClick={() => setOpen(false)}
+                data-goal="header-mobile-contact"
                 className="btn-primary text-sm"
               >
                 Заявка
