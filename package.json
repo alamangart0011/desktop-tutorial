@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:export": "STATIC_EXPORT=1 BASE_PATH='' next build && node scripts/make-relative.mjs",
     "start": "next start",
     "lint": "next lint"
   },

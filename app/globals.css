@@ -572,3 +572,92 @@ html[data-a11y-theme^="contrast-"] .a11y-chip.is-active {
 html[data-a11y-theme^="contrast-"] .a11y-chip.is-active * {
   color: #fff !important;
 }
+
+/* ---- CSS-only scroll reveal (progressive enhancement) ---- */
+/* Works automatically in Chrome 115+/Safari TP — no JS needed. */
+/* Non-supporting browsers see content at full opacity (no flash). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    section {
+      animation: sv-fade-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+    section:first-of-type {
+      animation: none;
+    }
+  }
+}
+@keyframes sv-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Gentle tilt + lift on interactive cards ---- */
+.card-soft {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .card-soft:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -24px rgba(11, 59, 140, 0.25);
+  }
+}
+
+/* ---- Subtle accent underline for section headings ---- */
+.h-accent::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-brand-2), var(--color-accent));
+}
+
+/* ---- Shimmer for trust badges ---- */
+@keyframes shimmer-sheen {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-on-hover {
+  background-image: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  background-position: -200% 0;
+}
+.shimmer-on-hover:hover {
+  animation: shimmer-sheen 1.2s ease-out;
+}
+
+/* ---- Gradient border helper for premium cards ---- */
+.grad-border {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+}
+.grad-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--color-brand-2), var(--color-accent));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
