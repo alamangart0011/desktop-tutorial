@@ -11,6 +11,7 @@ import { Audience } from '@/components/Audience';
 import { Integrations } from '@/components/Integrations';
 import { LegalUpdates } from '@/components/LegalUpdates';
 import { Methodology } from '@/components/Methodology';
+import { Team } from '@/components/Team';
 import { MidCta } from '@/components/MidCta';
 import { Guarantees } from '@/components/Guarantees';
 import { Glossary } from '@/components/Glossary';
@@ -71,6 +72,7 @@ export default function Page() {
         <QuickLead />
         <Reasons />
         <Methodology />
+        <Team />
         <Trust />
         <Achievements />
         <Comparison />

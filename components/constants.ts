@@ -35,6 +35,7 @@ export const NAV = [
   { href: '#guarantees', label: 'Гарантии' },
   { href: '#process', label: 'Как работаем' },
   { href: '#methodology', label: 'Методология' },
+  { href: '#team', label: 'Команда' },
   { href: '#reviews', label: 'Отзывы' },
   { href: '#regions', label: 'География' },
   { href: '#glossary', label: 'Глоссарий' },
