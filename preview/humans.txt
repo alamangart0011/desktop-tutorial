@@ -1,0 +1,12 @@
+/* TEAM */
+Команда: НПК «Оборон-Экран»
+Специализация: информационная безопасность, СЗИ, аттестация ИСПДн
+Сайт: https://oboron-it.ru
+Контакт: mail@oboron-it.ru
+Телефон: +7 (812) 660-80-01
+Расположение: Санкт-Петербург, Россия
+
+/* STACK */
+Next.js 15, React 19, Tailwind CSS v4, TypeScript
+Деплой: standalone Node / Yandex Cloud
+SEO: JSON-LD, OG, Sitemap, Speakable, HowTo, Course, DefinedTermSet
