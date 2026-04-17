@@ -45,11 +45,9 @@ export const ANALYTICS = {
 } as const;
 
 export const NAV = [
-  { href: '#audience', label: 'Для кого' },
   { href: '#uz2', label: 'ФСТЭК УЗ2' },
   { href: '#risk', label: 'Штраф' },
-  { href: '#reasons', label: 'Почему мы' },
-  { href: '#reviews', label: 'Отзывы' },
+  { href: '#process', label: 'Этапы' },
   { href: '#pricing', label: 'Пакеты' },
   { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },

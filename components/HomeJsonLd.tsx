@@ -1,6 +1,5 @@
 import { BRAND, MIRRORS } from './constants';
 import { FAQ_QA } from './faq-data';
-import { RATING, REVIEWS } from './reviews-data';
 
 export function HomeJsonLd() {
   const ldService = {
@@ -71,24 +70,6 @@ export function HomeJsonLd() {
         url: BRAND.site + '/#pricing',
       },
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: RATING.value,
-      reviewCount: RATING.count,
-      bestRating: RATING.best,
-      worstRating: RATING.worst,
-    },
-    review: REVIEWS.map((r) => ({
-      '@type': 'Review',
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: r.rating,
-        bestRating: 5,
-      },
-      author: { '@type': 'Person', name: r.author },
-      datePublished: r.date,
-      reviewBody: r.text,
-    })),
   };
 
   const ldProduct = {
@@ -100,13 +81,6 @@ export function HomeJsonLd() {
       'Готовое решение по подключению к ГИС «Профилактика»: документы ПДн, СЗИ/СКЗИ, аттестация ИСПДн (УЗ2), ЕСИА/СМЭВ, обучение сотрудников, техподдержка 24/7.',
     brand: { '@type': 'Brand', name: BRAND.name },
     category: 'Услуги информационной безопасности',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: RATING.value,
-      reviewCount: RATING.count,
-      bestRating: RATING.best,
-      worstRating: RATING.worst,
-    },
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'RUB',
@@ -169,8 +143,8 @@ export function HomeJsonLd() {
     '@id': BRAND.site + '#breadcrumbs',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Главная', item: BRAND.site + '/' },
-      { '@type': 'ListItem', position: 2, name: 'Информационная безопасность', item: BRAND.site + '/#reasons' },
-      { '@type': 'ListItem', position: 3, name: 'Подключение к государственным информационным системам', item: BRAND.site + '/#audience' },
+      { '@type': 'ListItem', position: 2, name: 'Информационная безопасность', item: BRAND.site + '/#uz2' },
+      { '@type': 'ListItem', position: 3, name: 'Подключение к государственным информационным системам', item: BRAND.site + '/#process' },
       { '@type': 'ListItem', position: 4, name: 'ГИС «Профилактика»', item: BRAND.site + '/' },
     ],
   };

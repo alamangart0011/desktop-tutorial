@@ -2,13 +2,8 @@ import dynamic from 'next/dynamic';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { TrustBar } from '@/components/TrustBar';
-import { Stats } from '@/components/Stats';
 import { Problem } from '@/components/Problem';
-import { Audience } from '@/components/Audience';
 import { Uz2Requirements } from '@/components/Uz2Requirements';
-import { LegalUpdates } from '@/components/LegalUpdates';
-import { Reasons } from '@/components/Reasons';
-import { Reviews } from '@/components/Reviews';
 import { Pricing } from '@/components/Pricing';
 import { Process } from '@/components/Process';
 import { ContactForm } from '@/components/ContactForm';
@@ -32,16 +27,11 @@ export default function Page() {
       <main id="main">
         <Hero />
         <TrustBar />
-        <Stats />
         <Problem />
-        <Audience />
         <Uz2Requirements />
-        <LegalUpdates />
         <RiskCalc />
-        <Reasons />
-        <Reviews />
-        <Pricing />
         <Process />
+        <Pricing />
         <Faq />
         <ContactForm />
       </main>

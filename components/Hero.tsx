@@ -4,14 +4,14 @@ import {
   CheckIcon,
   ShieldCheckIcon,
   FileCheckIcon,
-  AwardIcon,
+  HandshakeIcon,
   ClockIcon,
 } from './Icons';
 
 const HERO_BADGES = [
   { Icon: ShieldCheckIcon, t: 'По ПП РФ № 411' },
   { Icon: FileCheckIcon, t: '8 документов ПДн' },
-  { Icon: AwardIcon, t: 'СЗИ по ФСТЭК № 21' },
+  { Icon: HandshakeIcon, t: 'Аттестация — лицензиат ФСТЭК' },
   { Icon: ClockIcon, t: 'Срок 35–45 дней' },
 ];
 
@@ -53,13 +53,13 @@ export function Hero() {
             </h1>
 
             <p className="mt-5 text-[1.05rem] md:text-xl text-white leading-relaxed max-w-2xl font-medium">
-              Берём на себя всё: документы, защиту персональных данных,
-              аттестацию по ФСТЭК, подключение через Госуслуги и обучение
-              сотрудников.
+              Документы, защита ПДн, подключение через Госуслуги и обучение
+              сотрудников — берём на себя. Аттестацию и установку СЗИ выполняют
+              аккредитованные лицензиаты ФСТЭК/ФСБ на субподряде.
             </p>
             <p className="mt-3 text-base md:text-lg text-white/85 leading-relaxed max-w-2xl">
               Запуск за 35–45 рабочих дней. Фиксированная цена в договоре.
-              Минимальное участие с вашей стороны — почти всю работу делаем мы.
+              Вы получаете готовый пакет и подписанный акт — без головной боли.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
