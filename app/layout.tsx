@@ -210,19 +210,20 @@ export default function RootLayout({
         <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="" />
         <link rel="dns-prefetch" href="https://mc.yandex.ru" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <meta name="format-detection" content="telephone=yes" />
         <meta name="geo.region" content="RU-SPE" />
         <meta name="geo.placename" content={BRAND.address} />
         <meta name="referrer" content="strict-origin-when-cross-origin" />
       </head>
       <body>
         <a
-          href="#top"
+          href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg focus:text-[var(--color-brand)]"
         >
           Перейти к содержанию
         </a>
-        {children}
+        <div id="main" tabIndex={-1}>
+          {children}
+        </div>
 
         <script
           type="application/ld+json"
