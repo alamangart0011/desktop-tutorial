@@ -38,10 +38,14 @@ export function Calculator() {
       (acc, m) => (active[m.k] ? acc * m.m : acc),
       1,
     );
-    const value = Math.round((raw * mult) / 10_000) * 10_000;
-    const low = Math.max(b.floor, Math.round((value * 0.85) / 10_000) * 10_000);
-    const high = Math.min(b.ceiling, Math.round((value * 1.15) / 10_000) * 10_000);
-    return { low, high };
+    const rounded = Math.round((raw * mult) / 10_000) * 10_000;
+    const value = Math.min(b.ceiling, Math.max(b.floor, rounded));
+    const rawLow = Math.round((value * 0.85) / 10_000) * 10_000;
+    const rawHigh = Math.round((value * 1.15) / 10_000) * 10_000;
+    const low = Math.min(value, Math.max(b.floor, rawLow));
+    const high = Math.max(value, Math.min(b.ceiling, rawHigh));
+    const atCeiling = rounded >= b.ceiling;
+    return { low, high, atCeiling };
   }, [tier, arm, active]);
 
   const fmt = (n: number) =>
@@ -159,6 +163,12 @@ export function Calculator() {
               Диапазон ориентировочный. Состав работ, точная смета и график фиксируются после
               экспресс-аудита (3–5 рабочих дней).
             </div>
+            {result.atCeiling && (
+              <div className="mt-3 rounded-xl bg-amber-300/20 border border-amber-200/40 p-3 text-xs text-amber-50">
+                Упёрлись в потолок пакета «{tier}». Для точного расчёта посмотрите пакет уровнем выше —
+                цифры ниже уже частично ограничены.
+              </div>
+            )}
             <div className="mt-auto pt-6 grid gap-2">
               <a
                 href="#contact"
