@@ -1,0 +1,40 @@
+/** @type {import('next').NextConfig} */
+const isExport = process.env.STATIC_EXPORT === '1';
+const basePath = process.env.BASE_PATH ?? '';
+
+const securityHeaders = [
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+  },
+  { key: 'X-XSS-Protection', value: '1; mode=block' },
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload',
+  },
+];
+
+const nextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+  compress: true,
+  productionBrowserSourceMaps: false,
+  ...(isExport
+    ? {
+        output: 'export',
+        trailingSlash: true,
+        images: { unoptimized: true },
+        basePath: basePath || undefined,
+        assetPrefix: basePath || undefined,
+      }
+    : {
+        async headers() {
+          return [{ source: '/:path*', headers: securityHeaders }];
+        },
+      }),
+};
+
+export default nextConfig;
