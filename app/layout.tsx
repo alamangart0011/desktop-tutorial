@@ -150,8 +150,8 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    ...(ANALYTICS.yandexVerification
-      ? { yandex: ANALYTICS.yandexVerification }
+    ...((VARIANT.yandexVerification || ANALYTICS.yandexVerification)
+      ? { yandex: VARIANT.yandexVerification || ANALYTICS.yandexVerification }
       : {}),
     ...(ANALYTICS.googleVerification
       ? { google: ANALYTICS.googleVerification }
