@@ -265,9 +265,8 @@ emit_https_block() {
     cat <<NGINX
 
 server {
-    listen 443 ssl;
-    http2 on;
-    listen [::]:443 ssl;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name $aliases;
 
     ssl_certificate     /etc/letsencrypt/live/$host/fullchain.pem;
@@ -323,9 +322,8 @@ NGINX
             cat <<NGINX
 
 server {
-    listen 443 ssl;
-    http2 on;
-    listen [::]:443 ssl;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name www.$host;
     ssl_certificate     /etc/letsencrypt/live/$host/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/$host/privkey.pem;
@@ -376,9 +374,8 @@ NGINX
         cat <<NGINX
 
 server {
-    listen 443 ssl;
-    http2 on;
-    listen [::]:443 ssl;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name $r www.$r;
     ssl_certificate     /etc/letsencrypt/live/$r/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/$r/privkey.pem;
