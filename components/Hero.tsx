@@ -102,6 +102,23 @@ export function Hero() {
               ))}
             </ul>
 
+            <dl className="mt-8 grid grid-cols-3 gap-3 md:gap-5 rounded-2xl bg-white/10 border border-white/15 p-4 md:p-5">
+              {[
+                { n: '127+', l: 'организаций прошли экспресс-аудит' },
+                { n: '7 дней', l: 'закрываем предписание или возврат 100%' },
+                { n: 'с 2019', l: 'в ИБ и защите ПДн' },
+              ].map(({ n, l }) => (
+                <div key={l} className="text-center md:text-left">
+                  <dt className="text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-none">
+                    {n}
+                  </dt>
+                  <dd className="mt-1.5 text-[11px] md:text-xs text-white/80 leading-snug">
+                    {l}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
             <p className="mt-8 text-xs text-white/80">
               {BRAND.name} · {BRAND.address} ·{' '}
               <a

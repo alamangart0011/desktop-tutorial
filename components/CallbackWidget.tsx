@@ -183,6 +183,47 @@ export function CallbackWidget() {
                     Позвонить сейчас — {BRAND.phone}
                   </a>
 
+                  <div className="grid grid-cols-2 gap-2">
+                    <a
+                      href={`https://wa.me/${BRAND.phoneRaw.replace(/\D/g, '')}?text=${encodeURIComponent(
+                        'Здравствуйте! Интересует подключение к ГИС «Профилактика».',
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-goal="callback-whatsapp"
+                      onClick={() => setOpen(false)}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] text-white font-semibold px-3 py-2.5 text-xs hover:bg-[#1ebe5a] transition"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        aria-hidden
+                      >
+                        <path d="M17.5 14.4c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.1-.8 1-1 1.2-.4.2-.6.1a8.4 8.4 0 0 1-2.5-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5s0-.4 0-.5l-.9-2.2c-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4A3 3 0 0 0 6 8.9c0 1.5 1 2.9 1.2 3.1s2 3.2 5 4.5a16 16 0 0 0 1.7.6c.7.2 1.3.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4Zm-5.5 7A9.4 9.4 0 0 1 2.6 12 9.4 9.4 0 0 1 12 2.6 9.4 9.4 0 0 1 21.4 12a9.4 9.4 0 0 1-9.4 9.4Zm0-20.4a11 11 0 0 0-9.4 16.7L1 23l3.4-1.1a11 11 0 1 0 7.6-18.9Z" />
+                      </svg>
+                      WhatsApp
+                    </a>
+                    <a
+                      href="https://t.me/+78126608001"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-goal="callback-telegram"
+                      onClick={() => setOpen(false)}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#26A5E4] text-white font-semibold px-3 py-2.5 text-xs hover:bg-[#1e8fc6] transition"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        aria-hidden
+                      >
+                        <path d="M9.8 14.9 9.6 18c.3 0 .4-.1.6-.3l1.5-1.4 3 2.2c.6.3 1 .2 1.1-.5l2-9.4c.2-.8-.3-1.1-.9-.9L4.9 12.2c-.8.3-.8.8-.1 1l3 .9 7-4.4c.3-.2.6-.1.4.1l-5.4 5.1Z" />
+                      </svg>
+                      Telegram
+                    </a>
+                  </div>
+
                   <p className="text-[10px] text-slate-500 text-center leading-snug">
                     Отправляя форму, вы соглашаетесь с обработкой ПДн
                     по 152-ФЗ для обратной связи

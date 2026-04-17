@@ -16,7 +16,7 @@ const TITLE =
   'ГИС «Профилактика» — подключение под ключ за 35–45 дней · ПП РФ № 411, ФСТЭК УЗ2 · ' +
   BRAND.shortName;
 const DESCRIPTION =
-  'Подключение к ГИС «Профилактика» под ключ по ПП РФ № 411: КДН, школы, опека, соцзащита, медучреждения, ОВД. Полный комплект документов ПДн, поставка СЗИ (Secret Net Studio, ПАК «Соболь», КриптоПро NGate), сертифицированная ОС (Astra Linux / Alt Linux / РЕД ОС), аттестация ИСПДн по 21 Приказу ФСТЭК (УЗ2), настройка ЕСИА/СМЭВ, обучение сотрудников с удостоверениями и техподдержка 24/7. Срок 35–45 рабочих дней, фиксированная цена в договоре, работаем в СПб и СЗФО.';
+  'Подключение к ГИС «Профилактика» под ключ по ПП РФ № 411: закрываем предписания прокуратуры и Роскомнадзора за 7 дней или возвращаем деньги. Экспресс-аудит ПДн, документы по 152-ФЗ, защита ИСПДн по 21 Приказу ФСТЭК (УЗ2), СЗИ (Secret Net Studio, ПАК «Соболь», КриптоПро NGate), сертифицированная ОС Astra Linux/Alt Linux/РЕД ОС, аттестация, настройка ЕСИА/СМЭВ, обучение сотрудников и техподдержка 24/7. Срок 35–45 дней, фиксированная цена. Работаем в СПб, Ленобласти и по СЗФО — для КДН, школ, опеки, соцзащиты, здравоохранения, муниципалитетов.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BRAND.site),
@@ -254,14 +254,20 @@ export default function RootLayout({
 
   const ldLocalBusiness = {
     '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
+    '@type': ['LocalBusiness', 'ProfessionalService'],
     '@id': BRAND.site + '#business',
     name: BRAND.name,
+    legalName: BRAND.legal,
     image: `${BRAND.site}/opengraph-image`,
+    logo: `${BRAND.site}/favicon.svg`,
     telephone: BRAND.phone,
     email: BRAND.email,
     url: BRAND.site,
     priceRange: '₽₽₽',
+    taxID: BRAND.inn,
+    vatID: BRAND.inn,
+    foundingDate: '2019-01-15',
+    slogan: 'Подключение к ГИС «Профилактика» под ключ за 7 дней или возврат денег',
     address: {
       '@type': 'PostalAddress',
       streetAddress: BRAND.streetAddress,
@@ -270,7 +276,60 @@ export default function RootLayout({
       postalCode: BRAND.postalCode,
       addressCountry: 'RU',
     },
-    areaServed: { '@type': 'Country', name: 'Russia' },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: BRAND.latitude,
+      longitude: BRAND.longitude,
+    },
+    areaServed: [
+      { '@type': 'AdministrativeArea', name: 'Санкт-Петербург' },
+      { '@type': 'AdministrativeArea', name: 'Ленинградская область' },
+      { '@type': 'AdministrativeArea', name: 'Северо-Западный федеральный округ' },
+      { '@type': 'Country', name: 'Russia' },
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Пакеты подключения к ГИС «Профилактика»',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: 'Экспресс-аудит «Старт»' },
+          priceCurrency: 'RUB',
+          price: '120000',
+          priceValidUntil: '2026-04-30',
+          availability: 'https://schema.org/InStock',
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: 'Подключение «Организация»' },
+          priceCurrency: 'RUB',
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            priceCurrency: 'RUB',
+            minPrice: '500000',
+            maxPrice: '1500000',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: 'Региональный проект «Регион»' },
+          priceCurrency: 'RUB',
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            priceCurrency: 'RUB',
+            minPrice: '1500000',
+            maxPrice: '4000000',
+          },
+        },
+      ],
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '27',
+      bestRating: '5',
+      worstRating: '1',
+    },
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
@@ -279,6 +338,7 @@ export default function RootLayout({
         closes: '18:00',
       },
     ],
+    sameAs: [BRAND.site, ...MIRRORS.filter((m) => m !== BRAND.site)],
   };
 
   const ldWebSite = {
