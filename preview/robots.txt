@@ -1,0 +1,11 @@
+User-Agent: *
+Allow: /
+
+User-Agent: Yandex
+Allow: /
+
+User-Agent: YandexBot
+Allow: /
+
+Host: oboron-it.ru
+Sitemap: https://oboron-it.ru/sitemap.xml
