@@ -9,12 +9,15 @@ export function HomeJsonLd() {
   const VC = getVariantContent(VARIANT_KEY);
   const allReviews = [...VC.reviews, ...BASE_REVIEWS];
   const allFaq = [...VC.faq, ...FAQ_QA];
+  const serviceName =
+    `Подключение к ГИС «Профилактика» — ${VARIANT.regionBadge}`.slice(0, 110);
+
   const ldService = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': site + '#service',
     serviceType: 'Подключение организации к ГИС «Профилактика» под ключ',
-    name: 'Подключение к ГИС «Профилактика»',
+    name: serviceName,
     category: 'Информационная безопасность · Государственные информационные системы',
     brand: { '@type': 'Brand', name: BRAND.name },
     provider: {
@@ -316,14 +319,18 @@ export function HomeJsonLd() {
     ],
   };
 
+  // Убираем из H1 &nbsp; и склеиваем с акцентом — хотим чистый текст в headline schema
+  const plainH1 = `${VARIANT.h1} ${VARIANT.h1Accent}`.replace(/\u00a0/g, ' ').trim();
+
   const ldArticle = {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
     '@id': site + '#article',
     mainEntityOfPage: site + '/',
-    headline:
-      'Подключение к ГИС «Профилактика» под ключ по ПП РФ № 411 и ФСТЭК УЗ2',
+    headline: plainH1,
+    alternativeHeadline: VARIANT.heroSubtitle,
     description:
+      VARIANT.intro?.[0] ||
       'Руководство по подключению организации к ГИС «Профилактика»: документы ПДн, выбор СЗИ и СКЗИ, аттестация ИСПДн по 21 Приказу ФСТЭК (УЗ2), ЕСИА и СМЭВ, штрафы по 13.11 КоАП.',
     author: { '@type': 'Organization', name: BRAND.name, url: site },
     publisher: {
