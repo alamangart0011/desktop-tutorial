@@ -1,19 +1,16 @@
 User-Agent: *
 Allow: /
 Disallow: /api/
-Disallow: /_next/
 Disallow: /thanks
 
 User-Agent: Yandex
 Allow: /
 Disallow: /api/
-Disallow: /_next/
 Disallow: /thanks
 
 User-Agent: YandexBot
 Allow: /
 Disallow: /api/
-Disallow: /_next/
 Disallow: /thanks
 
 User-Agent: YandexImages
@@ -34,7 +31,6 @@ Allow: /
 User-Agent: Googlebot
 Allow: /
 Disallow: /api/
-Disallow: /_next/
 Disallow: /thanks
 
 User-Agent: Googlebot-Image
@@ -43,7 +39,6 @@ Allow: /
 User-Agent: Bingbot
 Allow: /
 Disallow: /api/
-Disallow: /_next/
 Disallow: /thanks
 
 User-Agent: Mail.Ru

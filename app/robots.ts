@@ -9,17 +9,17 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: ['/'],
-        disallow: ['/api/', '/_next/', '/thanks'],
+        disallow: ['/api/', '/thanks'],
       },
       {
         userAgent: 'Yandex',
         allow: ['/'],
-        disallow: ['/api/', '/_next/', '/thanks'],
+        disallow: ['/api/', '/thanks'],
       },
       {
         userAgent: 'YandexBot',
         allow: ['/'],
-        disallow: ['/api/', '/_next/', '/thanks'],
+        disallow: ['/api/', '/thanks'],
       },
       {
         userAgent: 'YandexImages',
@@ -44,7 +44,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'Googlebot',
         allow: ['/'],
-        disallow: ['/api/', '/_next/', '/thanks'],
+        disallow: ['/api/', '/thanks'],
       },
       {
         userAgent: 'Googlebot-Image',
@@ -53,7 +53,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'Bingbot',
         allow: ['/'],
-        disallow: ['/api/', '/_next/', '/thanks'],
+        disallow: ['/api/', '/thanks'],
       },
       {
         userAgent: 'Mail.Ru',
