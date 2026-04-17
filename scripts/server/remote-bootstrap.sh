@@ -146,24 +146,99 @@ for host in "${HOSTS[@]}"; do
     fi
 done
 
-# ---------- 6. Nginx HTTP-only блоки (для ACME challenge) + DNS-проверка ----------
+# ---------- 6. DNS-проверка через 3 резолвера (Cloudflare + Google + Yandex) ----------
+# Только если все 3 видят правильный IP — считаем что DNS прогрузился глобально.
+# Это защищает от ложных certbot-вызовов когда часть кешей ещё на парковке.
+dns_check() {
+    local host="$1" ok=0 fail=""
+    for ns in 1.1.1.1 8.8.8.8 77.88.8.8; do
+        local r
+        r="$(dig +short +time=3 +tries=1 A "$host" @$ns 2>/dev/null | tail -1 || true)"
+        if [[ "$r" == "$SELF_IP" ]]; then
+            ok=$((ok+1))
+        else
+            fail="$fail $ns→'${r:-нет}'"
+        fi
+    done
+    if [[ $ok -ge 3 ]]; then
+        echo "OK"
+    else
+        echo "FAIL$fail"
+    fi
+}
+
 READY=()
 WAITING=()
 for host in "${HOSTS[@]}"; do
-    RES="$(dig +short +time=3 +tries=1 A "$host" @1.1.1.1 | tail -1 || true)"
-    if [[ "$RES" == "$SELF_IP" ]]; then
+    R="$(dns_check "$host")"
+    if [[ "$R" == "OK" ]]; then
         READY+=("$host")
     else
-        WAITING+=("$host (DNS='$RES', ожидаем '$SELF_IP')")
+        WAITING+=("$host ($R)")
     fi
 done
 log "DNS готовы: ${READY[*]:-—}"
 [[ ${#WAITING[@]} -gt 0 ]] && warn "DNS ждём: ${WAITING[*]}"
 
-# ---------- 7. Nginx HTTP-only конфиг (для certbot) ----------
-# На этом этапе пишем только :80 блоки — certbot сам добавит :443.
-NGINX_CONF=/etc/nginx/sites-available/gisprof-multi.conf
+# ---------- 7. Webroot для ACME-challenge (общий для всех доменов) ----------
+ACME_ROOT=/var/www/acme
+mkdir -p "$ACME_ROOT/.well-known/acme-challenge"
+chown -R www-data:www-data "$ACME_ROOT"
 
+# ---------- 8. Получение сертификатов через webroot (НЕ трогаем nginx-конфиг) ----------
+# 1) убедимся что есть минимальный HTTP-конфиг для ACME
+#    (этот блок отдаёт challenge для ВСЕХ доменов, что бы дальше ни происходило)
+ACME_CONF=/etc/nginx/sites-available/acme-fallback.conf
+cat > "$ACME_CONF" <<NGINX
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    root $ACME_ROOT;
+    location ^~ /.well-known/acme-challenge/ { allow all; default_type "text/plain"; }
+    location / { return 444; }
+}
+NGINX
+ln -sf "$ACME_CONF" /etc/nginx/sites-enabled/acme-fallback.conf
+
+# Удаляем старые конфиги, чтобы не было конфликта server_name
+for old in gisprof.ru default; do
+    [[ -L /etc/nginx/sites-enabled/$old ]] && rm -f /etc/nginx/sites-enabled/$old && log "Выключил sites-enabled/$old"
+done
+
+# временно деактивируем мульти-конфиг чтобы не было конфликтов на этом шаге
+[[ -L /etc/nginx/sites-enabled/gisprof-multi.conf ]] && rm -f /etc/nginx/sites-enabled/gisprof-multi.conf
+
+nginx -t && systemctl reload nginx
+
+for host in "${READY[@]}"; do
+    if [[ -d "/etc/letsencrypt/live/$host" ]]; then
+        log "cert уже есть для $host"
+        continue
+    fi
+    args="-d $host"
+    [[ "$host" != xn----7sbab2ce0afk.xn--p1ai ]] && args="$args -d www.$host"
+    log "certbot (webroot) → $host"
+    certbot certonly --webroot -w "$ACME_ROOT" $args \
+        --non-interactive --agree-tos \
+        -m "$LEAD_EMAIL" --no-eff-email \
+        || warn "certbot не смог для $host (DNS ещё не везде, или Jino перехватил HTTP)"
+done
+
+# Для редирект-доменов
+for r in "${REDIRECT_ONLY[@]}"; do
+    R="$(dns_check "$r")"
+    if [[ "$R" == "OK" && ! -d "/etc/letsencrypt/live/$r" ]]; then
+        log "certbot (webroot) → $r"
+        certbot certonly --webroot -w "$ACME_ROOT" -d "$r" -d "www.$r" \
+            --non-interactive --agree-tos \
+            -m "$LEAD_EMAIL" --no-eff-email \
+            || warn "certbot не смог для $r"
+    fi
+done
+
+# ---------- 9. Полная nginx-конфигурация (HTTP + HTTPS) ----------
+NGINX_CONF=/etc/nginx/sites-available/gisprof-multi.conf
 {
 cat <<NGINX
 # Автоматически сгенерировано remote-bootstrap.sh — $(date -Iseconds)
@@ -173,24 +248,44 @@ map \$sent_http_content_type \$expires_val {
     ~*(text|application).(html|xml)\$   -1;
     ~*(image|font|javascript|css)      max;
 }
+
+# Общий ACME-challenge (на случай отсутствующего HTTPS)
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    root $ACME_ROOT;
+    location ^~ /.well-known/acme-challenge/ { allow all; default_type "text/plain"; }
+    location / { return 444; }
+}
 NGINX
 
-for host in "${HOSTS[@]}"; do
-    if [[ ! -d "/home/$DEPLOY_USER/sites/$host" ]]; then continue; fi
-    aliases="$host www.$host"
-    [[ "$host" == xn----7sbab2ce0afk.xn--p1ai ]] && aliases="$host"
+emit_https_block() {
+    local host="$1" docroot="$2" aliases="$3"
     cat <<NGINX
 
-# ----- $host -----
 server {
-    listen 80;
-    listen [::]:80;
+    listen 443 ssl;
+    http2 on;
+    listen [::]:443 ssl;
     server_name $aliases;
-    root /home/$DEPLOY_USER/sites/$host;
+
+    ssl_certificate     /etc/letsencrypt/live/$host/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$host/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    root $docroot;
     index index.html;
     charset utf-8;
     expires \$expires_val;
-    location ^~ /.well-known/acme-challenge/ { allow all; default_type "text/plain"; }
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
     location = /api/lead {
         fastcgi_pass gisprof_php;
         fastcgi_param SCRIPT_FILENAME \$document_root/api/lead.php;
@@ -201,9 +296,71 @@ server {
     location / { try_files \$uri \$uri/index.html \$uri.html =404; }
 }
 NGINX
+}
+
+for host in "${HOSTS[@]}"; do
+    if [[ ! -d "/home/$DEPLOY_USER/sites/$host" ]]; then continue; fi
+    aliases="$host www.$host"
+    [[ "$host" == xn----7sbab2ce0afk.xn--p1ai ]] && aliases="$host"
+    docroot="/home/$DEPLOY_USER/sites/$host"
+
+    if [[ -d "/etc/letsencrypt/live/$host" ]]; then
+        # 80 → 443
+        cat <<NGINX
+
+# ----- $host (HTTPS) -----
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $aliases;
+    location ^~ /.well-known/acme-challenge/ { root $ACME_ROOT; }
+    location / { return 301 https://$host\$request_uri; }
+}
+NGINX
+        emit_https_block "$host" "$docroot" "$aliases"
+        # www → без www через 301 на HTTPS
+        if [[ "$host" != xn----7sbab2ce0afk.xn--p1ai ]]; then
+            cat <<NGINX
+
+server {
+    listen 443 ssl;
+    http2 on;
+    listen [::]:443 ssl;
+    server_name www.$host;
+    ssl_certificate     /etc/letsencrypt/live/$host/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$host/privkey.pem;
+    return 301 https://$host\$request_uri;
+}
+NGINX
+        fi
+    else
+        # cert ещё нет — обычный HTTP-сайт
+        cat <<NGINX
+
+# ----- $host (HTTP only — ждём cert) -----
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $aliases;
+    root $docroot;
+    index index.html;
+    charset utf-8;
+    expires \$expires_val;
+    location ^~ /.well-known/acme-challenge/ { root $ACME_ROOT; }
+    location = /api/lead {
+        fastcgi_pass gisprof_php;
+        fastcgi_param SCRIPT_FILENAME \$document_root/api/lead.php;
+        include fastcgi_params;
+        client_max_body_size 64k;
+    }
+    location ~ ^/api/.*\\.php\$ { return 404; }
+    location / { try_files \$uri \$uri/index.html \$uri.html =404; }
+}
+NGINX
+    fi
 done
 
-# редирект gis-prof.ru → gisprof.ru (HTTP only пока)
+# Редирект-домены: gis-prof.ru → gisprof.ru
 for r in "${REDIRECT_ONLY[@]}"; do
     cat <<NGINX
 
@@ -211,49 +368,33 @@ server {
     listen 80;
     listen [::]:80;
     server_name $r www.$r;
-    location ^~ /.well-known/acme-challenge/ { root /home/$DEPLOY_USER/sites/gisprof.ru; }
+    location ^~ /.well-known/acme-challenge/ { root $ACME_ROOT; }
     location / { return 301 https://gisprof.ru\$request_uri; }
 }
 NGINX
+    if [[ -d "/etc/letsencrypt/live/$r" ]]; then
+        cat <<NGINX
+
+server {
+    listen 443 ssl;
+    http2 on;
+    listen [::]:443 ssl;
+    server_name $r www.$r;
+    ssl_certificate     /etc/letsencrypt/live/$r/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$r/privkey.pem;
+    return 301 https://gisprof.ru\$request_uri;
+}
+NGINX
+    fi
 done
 } > "$NGINX_CONF"
 
-# Удаляем старые конфиги, чтобы не было конфликта server_name
-for old in gisprof.ru default; do
-    [[ -L /etc/nginx/sites-enabled/$old ]] && rm -f /etc/nginx/sites-enabled/$old && log "Выключил sites-enabled/$old"
-done
+# Активируем мульти-конфиг, отключаем ACME-fallback (он теперь внутри мульти)
+rm -f /etc/nginx/sites-enabled/acme-fallback.conf
 ln -sf "$NGINX_CONF" /etc/nginx/sites-enabled/gisprof-multi.conf
 
-nginx -t
-systemctl reload nginx
-log "nginx: HTTP-only конфиг активен"
-
-# ---------- 8. Let's Encrypt для готовых по DNS ----------
-for host in "${READY[@]}"; do
-    aliases="-d $host"
-    [[ "$host" != xn----7sbab2ce0afk.xn--p1ai ]] && aliases="-d $host -d www.$host"
-    if [[ ! -d "/etc/letsencrypt/live/$host" ]]; then
-        log "certbot → $host"
-        certbot --nginx $aliases \
-            --non-interactive --agree-tos \
-            -m "$LEAD_EMAIL" --redirect --no-eff-email \
-            || warn "certbot не смог для $host"
-    else
-        log "cert уже есть для $host"
-    fi
-done
-# Для редирект-доменов — только если DNS готов
-for r in "${REDIRECT_ONLY[@]}"; do
-    RES="$(dig +short +time=3 A "$r" @1.1.1.1 | tail -1 || true)"
-    if [[ "$RES" == "$SELF_IP" && ! -d "/etc/letsencrypt/live/$r" ]]; then
-        certbot --nginx -d "$r" -d "www.$r" \
-            --non-interactive --agree-tos \
-            -m "$LEAD_EMAIL" --redirect --no-eff-email \
-            || warn "certbot не смог для $r"
-    fi
-done
-
 nginx -t && systemctl reload nginx
+log "nginx: финальная конфигурация активна (HTTP+HTTPS для готовых, HTTP-only для ожидающих)"
 
 # ---------- 9. Cron на автоподхват ----------
 cat > /etc/cron.d/gisprof-autopull <<'EOF'
@@ -269,22 +410,29 @@ ufw allow 'Nginx Full' 2>/dev/null || true
 yes | ufw enable 2>/dev/null || true
 systemctl enable --now fail2ban 2>/dev/null || true
 
-# ---------- 11. Тест /api/lead ----------
-sleep 1
-TEST_URL="http://gisprof.ru/api/lead"
-[[ -d /etc/letsencrypt/live/gisprof.ru ]] && TEST_URL="https://gisprof.ru/api/lead"
-log "Тест: POST $TEST_URL"
-RESP=$(curl -sS -o /tmp/lead.json -w "%{http_code}" \
-    -H 'Content-Type: application/json' -X POST "$TEST_URL" \
-    --data '{"organization":"bootstrap-test","full_name":"Bootstrap Test","phone":"+7 (812) 000-00-00","email":"test@example.com","message":"Auto-ping"}' || echo 000)
-echo "  HTTP $RESP → $(cat /tmp/lead.json 2>/dev/null)"
+# ---------- 11. Тест /api/lead на каждом готовом домене ----------
+sleep 2
+log "Тест /api/lead на готовых HTTPS-доменах"
+for h in "${HOSTS[@]}"; do
+    [[ -d "/etc/letsencrypt/live/$h" ]] || continue
+    code=$(curl -sS -o /tmp/lead.json -w "%{http_code}" --max-time 8 \
+        --resolve "$h:443:$SELF_IP" \
+        -H 'Content-Type: application/json' -X POST "https://$h/api/lead" \
+        --data '{"organization":"bootstrap-test","full_name":"Bootstrap","phone":"+7 (812) 000-00-00","email":"t@example.com","message":"ping"}' 2>/dev/null || echo 000)
+    body="$(cat /tmp/lead.json 2>/dev/null | head -c 120)"
+    if [[ "$code" == "200" ]]; then
+        echo "   ✓ $h → HTTP $code"
+    else
+        echo "   · $h → HTTP $code | $body"
+    fi
+done
 
 # ---------- 12. Итог ----------
 echo ""
 echo "═══════════════════════════════════════════════════════════"
 echo " ГОТОВО"
 echo "═══════════════════════════════════════════════════════════"
-echo " HTTPS готов:"
+echo " HTTPS готов (cert + 443 listener):"
 for h in "${HOSTS[@]}" "${REDIRECT_ONLY[@]}"; do
     [[ -d /etc/letsencrypt/live/$h ]] && echo "   ✓ https://$h"
 done
