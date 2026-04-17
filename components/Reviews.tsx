@@ -1,8 +1,15 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { REVIEWS, RATING } from './reviews-data';
+import { REVIEWS as BASE_REVIEWS, RATING as BASE_RATING } from './reviews-data';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
+import { VARIANT_KEY } from '@/lib/variants';
+import { getVariantContent } from '@/lib/variant-content';
+
+const VC = getVariantContent(VARIANT_KEY);
+// Вариант-специфичные отзывы ставим первыми; это и локальные кейсы для региональных доменов
+const REVIEWS = [...VC.reviews, ...BASE_REVIEWS];
+const RATING = { ...BASE_RATING, count: REVIEWS.length };
 
 function Stars({ value, size = 16 }: { value: number; size?: number }) {
   return (
@@ -58,11 +65,11 @@ export function Reviews() {
               Отзывы заказчиков
             </span>
             <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight h-accent">
-              КДН, школы, опека и соцзащита уже работают в системе
+              {VC.reviewsHeading}
             </h2>
             <p className="mt-3 text-[var(--color-ink-2)] leading-relaxed">
-              Обезличенные по согласованию с заказчиками (ПДн руководителей и наименования
-              учреждений не публикуем по 152-ФЗ). Полные референсы — под NDA.
+              {VC.reviewsSub} Обезличенные по согласованию с заказчиками (ПДн руководителей не
+              публикуем по 152-ФЗ). Полные референсы — под NDA.
             </p>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm">

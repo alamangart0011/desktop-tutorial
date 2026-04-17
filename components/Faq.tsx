@@ -3,6 +3,12 @@
 import { useMemo, useState } from 'react';
 import { FAQ_QA } from './faq-data';
 import { SearchIcon, XIcon, PlusIcon } from './Icons';
+import { VARIANT_KEY } from '@/lib/variants';
+import { getVariantContent } from '@/lib/variant-content';
+
+const VC = getVariantContent(VARIANT_KEY);
+// Ставим вариант-специфичные вопросы первыми, затем общий корпус FAQ
+const FAQ_MERGED = [...VC.faq, ...FAQ_QA];
 
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
@@ -10,8 +16,8 @@ export function Faq() {
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
-    if (!query) return FAQ_QA.map((x, i) => ({ ...x, i }));
-    return FAQ_QA.map((x, i) => ({ ...x, i })).filter(
+    if (!query) return FAQ_MERGED.map((x, i) => ({ ...x, i }));
+    return FAQ_MERGED.map((x, i) => ({ ...x, i })).filter(
       (x) => x.q.toLowerCase().includes(query) || x.a.toLowerCase().includes(query)
     );
   }, [q]);
@@ -24,10 +30,10 @@ export function Faq() {
             Вопросы и ответы
           </span>
           <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-[var(--color-ink)]">
-            FAQ по ГИС «Профилактика», ФСТЭК и документам
+            {VC.faqHeading}
           </h2>
           <p className="mt-3 text-sm text-[var(--color-ink-2)]">
-            Поиск по {FAQ_QA.length} вопросам — введите «штраф», «СЗИ», «Astra», «СМЭВ» и т. п.
+            {VC.faqSub} Поиск по {FAQ_MERGED.length} вопросам.
           </p>
         </div>
 
@@ -56,7 +62,7 @@ export function Faq() {
             )}
           </div>
           <div className="mt-2 text-xs text-slate-600" aria-live="polite">
-            Найдено: {filtered.length} из {FAQ_QA.length}
+            Найдено: {filtered.length} из {FAQ_MERGED.length}
           </div>
         </div>
 

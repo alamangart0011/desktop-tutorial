@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { VARIANT_KEY } from '@/lib/variants';
+import { getVariantContent } from '@/lib/variant-content';
 
 type Item = {
   v: string;
@@ -11,29 +13,7 @@ type Item = {
   prefix?: string;
 };
 
-const ITEMS: Item[] = [
-  {
-    v: '35–45',
-    u: 'рабочих дней',
-    d: 'Полный цикл подключения под ключ: документы ПДн, СЗИ, аттестация.',
-  },
-  {
-    v: 'УЗ2',
-    u: '21 Приказ ФСТЭК',
-    d: 'Уровень защищённости, обязательный для ГИС «Профилактика».',
-  },
-  {
-    v: '8',
-    u: 'документов ПДн',
-    d: 'Готовим комплект, действует 3 года, продлеваем по SLA.',
-    num: 8,
-  },
-  {
-    v: 'до 5 млн ₽',
-    u: 'штраф юр. лицам',
-    d: 'По 13.11 КоАП — не подключились / утечка ПДн несовершеннолетних.',
-  },
-];
+const ITEMS: Item[] = getVariantContent(VARIANT_KEY).stats;
 
 function useInView<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
