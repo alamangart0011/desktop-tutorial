@@ -35,6 +35,7 @@ import { ScrollProgress } from '@/components/ScrollProgress';
 import { BackToTop } from '@/components/BackToTop';
 import { SectionRail } from '@/components/SectionRail';
 import { HomeJsonLd } from '@/components/HomeJsonLd';
+import { Reveal } from '@/components/Reveal';
 
 const ReadinessCheck = dynamic(
   () => import('@/components/ReadinessCheck').then((m) => m.ReadinessCheck),
@@ -52,37 +53,56 @@ export default function Page() {
     <>
       <Header />
       <main>
+        {/* 1. Hook: оффер и сигналы срочности */}
         <Hero />
         <Stats />
-        <Problem />
-        <SystemBreakdown />
-        <Audience />
-        <Uz2Requirements />
-        <TechStack />
-        <Integrations />
-        <LegalUpdates />
-        <MidCta />
-        <RiskCalc />
-        <ReadinessCheck />
-        <Calculator />
-        <Services />
-        <Pricing />
-        <Guarantees />
-        <Process />
-        <LeadMagnet />
-        <QuickLead />
-        <Reasons />
-        <Methodology />
-        <Team />
-        <Trust />
-        <Achievements />
-        <Comparison />
-        <Cases />
-        <Reviews />
-        <Regions />
-        <Glossary />
-        <DocLinks />
-        <Faq />
+
+        {/* 2. Боль и квалификация аудитории */}
+        <Reveal><Problem /></Reveal>
+        <Reveal><Audience /></Reveal>
+
+        {/* 3. Разбор системы и нормативка */}
+        <Reveal><SystemBreakdown /></Reveal>
+        <Reveal><Uz2Requirements /></Reveal>
+        <Reveal><TechStack /></Reveal>
+        <Reveal><Integrations /></Reveal>
+        <Reveal><LegalUpdates /></Reveal>
+
+        {/* 4. Первый мощный CTA + калькулятор штрафа */}
+        <Reveal><RiskCalc /></Reveal>
+        <Reveal><MidCta /></Reveal>
+
+        {/* 5. Доверие и экспертиза (БЛОК «Почему мы») */}
+        <Reveal><Reasons /></Reveal>
+        <Reveal><Methodology /></Reveal>
+        <Reveal><Trust /></Reveal>
+        <Reveal><Team /></Reveal>
+        <Reveal><Achievements /></Reveal>
+
+        {/* 6. Социальное доказательство */}
+        <Reveal><Reviews /></Reveal>
+        <Reveal><Cases /></Reveal>
+        <Reveal><Comparison /></Reveal>
+
+        {/* 7. Услуги, цена, гарантии — покупка */}
+        <Reveal><Services /></Reveal>
+        <Reveal><Pricing /></Reveal>
+        <Reveal><Guarantees /></Reveal>
+        <Reveal><Process /></Reveal>
+
+        {/* 8. Интерактивные лид-магниты */}
+        <Reveal><ReadinessCheck /></Reveal>
+        <Reveal><Calculator /></Reveal>
+        <Reveal><LeadMagnet /></Reveal>
+        <Reveal><QuickLead /></Reveal>
+
+        {/* 9. География и справочники (SEO + long-tail) */}
+        <Reveal><Regions /></Reveal>
+        <Reveal><Glossary /></Reveal>
+        <Reveal><DocLinks /></Reveal>
+        <Reveal><Faq /></Reveal>
+
+        {/* 10. Финальный CTA — форма заявки */}
         <ContactForm />
       </main>
       <Footer />

@@ -2,33 +2,56 @@ import { BRAND } from './constants';
 
 export function Hero() {
   return (
-    <section id="top" className="hero-gradient text-white relative overflow-hidden">
+    <section
+      id="top"
+      className="hero-gradient text-white relative overflow-hidden"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full bg-[var(--color-brand-2)]/25 blur-3xl floaty"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-24 -left-24 w-[380px] h-[380px] rounded-full bg-[var(--color-accent)]/15 blur-3xl floaty"
+        style={{ animationDelay: '1.5s' }}
+      />
+
       <div className="container-x py-16 md:py-24 lg:py-28 relative">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3 py-1.5 text-xs font-medium text-white/90 mb-6">
+        <div className="max-w-3xl hero-stagger">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3 py-1.5 text-xs font-medium text-white/90">
             <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
             ГИС работает с 01.12.2025 — штрафы по 13.11 КоАП уже применяются
           </div>
-          <h1 className="text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] md:leading-[1.05] text-balance">
-            Подключим вашу организацию к ГИС&nbsp;«Профилактика» под&nbsp;ключ
+
+          <h1 className="mt-6 text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] md:leading-[1.05] text-balance">
+            Подключим вашу организацию<br className="hidden md:inline" /> к ГИС&nbsp;«Профилактика» <span className="bg-gradient-to-r from-[var(--color-accent)] to-[#6ee7b7] bg-clip-text text-transparent">под&nbsp;ключ</span>
           </h1>
-          <p className="mt-5 text-base md:text-lg text-white/80 leading-relaxed max-w-2xl">
-            Документы, аттестация ИСПДн по 21 Приказу ФСТЭК (УЗ2), установка СЗИ и СКЗИ,
+
+          <p className="mt-5 text-base md:text-lg text-white/85 leading-relaxed max-w-2xl">
+            Документы, аттестация ИСПДн по Приказу ФСТЭК № 21 (УЗ2), установка СЗИ и СКЗИ,
             настройка доступа через ЕСИА и обучение сотрудников. Срок — 35–45 рабочих дней.
             Минимальное участие заказчика.
           </p>
+
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <a
               href="#check"
               data-goal="hero-check"
-              className="inline-flex items-center justify-center rounded-xl bg-[var(--color-accent)] text-[#052e1e] font-semibold px-6 py-4 hover:brightness-110 transition"
+              className="btn-primary text-base px-6 py-4"
+              style={{
+                background:
+                  'linear-gradient(135deg, var(--color-accent) 0%, #6ee7b7 100%)',
+                color: '#052e1e',
+                boxShadow: '0 14px 30px -12px rgba(16,185,129,0.6)',
+              }}
             >
               Проверить готовность за 2 минуты
+              <span aria-hidden>→</span>
             </a>
             <a
               href="#contact"
               data-goal="hero-contact"
-              className="inline-flex items-center justify-center rounded-xl bg-white/10 border border-white/20 text-white font-semibold px-6 py-4 hover:bg-white/20 transition"
+              className="btn-ghost text-base px-6 py-4"
             >
               Получить коммерческое предложение
             </a>
@@ -49,10 +72,25 @@ export function Hero() {
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-xs text-white/60">
+
+          <p className="mt-8 text-xs text-white/70">
             {BRAND.name} · {BRAND.address} · {BRAND.phone}
           </p>
         </div>
+      </div>
+
+      <div className="relative h-8 overflow-hidden">
+        <svg
+          aria-hidden
+          viewBox="0 0 1440 120"
+          preserveAspectRatio="none"
+          className="absolute inset-0 w-full h-full"
+        >
+          <path
+            d="M0,80 C240,120 480,0 720,40 C960,80 1200,120 1440,60 L1440,120 L0,120 Z"
+            fill="var(--color-paper)"
+          />
+        </svg>
       </div>
     </section>
   );

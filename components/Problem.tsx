@@ -1,26 +1,32 @@
 export function Problem() {
   const pains = [
     {
+      icon: '⚡',
       t: 'Подключение уже обязательно',
       d: 'ПП РФ № 411 сделал подключение обязательным с 01.12.2025. Без соблюдения ТУ Минпросвещения доступ в систему не дадут, а штрафы по 13.11 КоАП уже применяются.',
     },
     {
+      icon: '🛡',
       t: 'Не хватает сертифицированных СЗИ',
       d: 'СЗИ от НСД, СКЗИ (КриптоПро NGate Client), ПАК «Соболь», СОВ, антивирус, анализ защищённости — без них УЗ2 не выполнить.',
     },
     {
+      icon: '💻',
       t: 'Нет отечественной ОС',
       d: 'Windows не подойдёт. Нужна Astra Linux, Alt Linux или РЕД ОС, сертифицированная ФСТЭК.',
     },
     {
+      icon: '₽',
       t: 'Штрафы до 5 млн ₽',
       d: 'За несоответствие требованиям по ПДн несовершеннолетних — 13.11 КоАП: до 200 тыс. ₽ должностным лицам и до 5 млн ₽ юр. лицам.',
     },
     {
+      icon: '📄',
       t: 'Нет документов ПДн',
       d: 'Уведомление в РКН, Модель угроз, Акт классификации, ТЗ, ПМИ, Технический паспорт, Протокол и Заключение — комплект собирают неделями.',
     },
     {
+      icon: '🚨',
       t: 'Попытка подключения с нарушениями = инцидент ИБ',
       d: 'Федеральный оператор фиксирует это как инцидент и инициирует расследование причин и условий.',
     },
@@ -40,19 +46,28 @@ export function Problem() {
           </p>
         </div>
         <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {pains.map((p) => (
-            <div
+          {pains.map((p, i) => (
+            <article
               key={p.t}
-              className="rounded-2xl bg-white border border-slate-200 p-6 hover:border-[var(--color-brand-2)] transition"
+              className="card-soft p-6 relative overflow-hidden group"
+              style={{ transitionDelay: `${i * 40}ms` }}
             >
-              <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 font-bold flex items-center justify-center mb-4">
-                !
+              <div
+                aria-hidden
+                className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <div className="relative">
+                <div className="w-11 h-11 rounded-xl bg-red-50 text-red-600 text-xl font-black flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  {p.icon}
+                </div>
+                <div className="font-bold text-lg text-[var(--color-ink)]">
+                  {p.t}
+                </div>
+                <p className="mt-2 text-sm text-[var(--color-ink-2)] leading-relaxed">
+                  {p.d}
+                </p>
               </div>
-              <div className="font-bold text-lg text-[var(--color-ink)]">{p.t}</div>
-              <p className="mt-2 text-sm text-[var(--color-ink-2)] leading-relaxed">
-                {p.d}
-              </p>
-            </div>
+            </article>
           ))}
         </div>
       </div>
