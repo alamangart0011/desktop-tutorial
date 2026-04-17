@@ -101,54 +101,78 @@ export function ContactForm() {
       return;
     }
 
-    // Если Web3Forms access_key настроен — отправляем через их API
+    const payload = {
+      subject: `Заявка: подключение к ГИС «Профилактика» — ${f.org}`,
+      from_name: `${f.name} · ${f.org}`,
+      organization: f.org,
+      full_name: f.name,
+      role: f.role,
+      phone: f.phone,
+      email: f.email,
+      region: f.region,
+      message: f.message,
+      summary: buildBody(),
+      source: typeof window !== 'undefined' ? window.location.href : '',
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+    };
+
+    function trackSuccess() {
+      if (typeof window === 'undefined') return;
+      const id = ANALYTICS.yandexMetrikaId;
+      if (!id || id === '00000000') return;
+      const w = window as unknown as {
+        ym?: (id: string, e: string, goal: string) => void;
+      };
+      w.ym?.(id, 'reachGoal', 'form-submit-success');
+    }
+
+    setStatus('sending');
+
+    // 1) Собственный VPS-endpoint /api/lead
+    if (FORM.endpointSelf) {
+      try {
+        const res = await fetch(FORM.endpointSelf, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          const data = await res.json().catch(() => ({ ok: true }));
+          if (data?.ok !== false) {
+            setStatus('sent');
+            trackSuccess();
+            return;
+          }
+        }
+      } catch {
+        // Тихо падаем на следующий канал
+      }
+    }
+
+    // 2) Web3Forms (если заполнен access key)
     if (FORM.accessKey) {
-      setStatus('sending');
       try {
         const res = await fetch(FORM.endpoint, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
             access_key: FORM.accessKey,
-            subject: `Заявка: подключение к ГИС «Профилактика» — ${f.org}`,
-            from_name: `${f.name} · ${f.org}`,
-            organization: f.org,
-            full_name: f.name,
-            role: f.role,
-            phone: f.phone,
-            email: f.email,
-            region: f.region,
-            message: f.message,
-            summary: buildBody(),
+            ...payload,
             redirect: false,
           }),
         });
         const data = await res.json().catch(() => ({ success: false }));
         if (res.ok && data?.success !== false) {
           setStatus('sent');
-          if (typeof window !== 'undefined') {
-            const id = ANALYTICS.yandexMetrikaId;
-            if (id && id !== '00000000') {
-              const w = window as unknown as {
-                ym?: (id: string, e: string, goal: string) => void;
-              };
-              w.ym?.(id, 'reachGoal', 'form-submit-success');
-            }
-          }
+          trackSuccess();
           return;
         }
-        throw new Error('Сервер вернул ошибку');
       } catch {
-        // Сеть/сервис недоступны — graceful fallback на mailto
-        openMailtoFallback();
-        return;
+        // Падаем на mailto
       }
     }
 
-    // Access key не задан — работаем через mailto
+    // 3) Финальный запасной канал — mailto
     openMailtoFallback();
   }
 
@@ -441,7 +465,7 @@ export function ContactForm() {
             </a>
           </div>
           <p className="mt-3 text-[11px] text-slate-500">
-            {FORM.accessKey
+            {FORM.endpointSelf || FORM.accessKey
               ? `Заявка уходит напрямую в ${BRAND.email}. Перезваниваем в рабочий день.`
               : `Сейчас форма открывает почтовый клиент с заполненным письмом на ${BRAND.email}.`}
           </p>

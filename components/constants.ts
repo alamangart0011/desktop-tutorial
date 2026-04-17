@@ -47,12 +47,15 @@ export const ANALYTICS = {
   mailruVerification: '',
 } as const;
 
-// Форма отправки заявок. Web3Forms — бесплатный relay, зарегистрировать на
-// https://web3forms.com/ (не требует аккаунта, только верификация e-mail),
-// вписать сюда access_key. Пока пусто — форма работает через mailto-fallback.
+// Форма отправки заявок. Проверяется по порядку:
+// 1) endpointSelf   — собственный PHP endpoint на VPS (/api/lead, см. scripts/server-setup-forms.sh)
+// 2) Web3Forms      — внешний relay (web3forms.com), используется если accessKey заполнен
+// 3) mailto:BRAND.email — запасной канал, открывает почтовый клиент пользователя.
+// Нужно заполнить один из первых двух — желательно endpointSelf.
 export const FORM = {
+  endpointSelf: '/api/lead',
   endpoint: 'https://api.web3forms.com/submit',
-  accessKey: '', // TODO: вставить access_key после регистрации
+  accessKey: '', // TODO: вставить access_key после регистрации на web3forms.com
 } as const;
 
 export const NAV = [
