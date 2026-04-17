@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { Stats } from '@/components/Stats';
+import { Achievements } from '@/components/Achievements';
 import { Problem } from '@/components/Problem';
 import { SystemBreakdown } from '@/components/SystemBreakdown';
 import { Uz2Requirements } from '@/components/Uz2Requirements';
@@ -31,6 +32,7 @@ import { StickyMobileCta } from '@/components/StickyMobileCta';
 import { CookieBanner } from '@/components/CookieBanner';
 import { ScrollProgress } from '@/components/ScrollProgress';
 import { BackToTop } from '@/components/BackToTop';
+import { SectionRail } from '@/components/SectionRail';
 
 const ReadinessCheck = dynamic(
   () => import('@/components/ReadinessCheck').then((m) => m.ReadinessCheck),
@@ -70,6 +72,7 @@ export default function Page() {
         <Reasons />
         <Methodology />
         <Trust />
+        <Achievements />
         <Comparison />
         <Cases />
         <Reviews />
@@ -81,6 +84,7 @@ export default function Page() {
       </main>
       <Footer />
       <ScrollProgress />
+      <SectionRail />
       <BackToTop />
       <StickyMobileCta />
       <CookieBanner />
