@@ -316,7 +316,8 @@ server {
     location / { return 301 https://$host\$request_uri; }
 }
 NGINX
-        emit_https_block "$host" "$docroot" "$aliases"
+        # HTTPS основной — только canonical host (без www, чтобы избежать conflicting server_name)
+        emit_https_block "$host" "$docroot" "$host"
         # www → без www через 301 на HTTPS
         if [[ "$host" != xn----7sbab2ce0afk.xn--p1ai ]]; then
             cat <<NGINX
