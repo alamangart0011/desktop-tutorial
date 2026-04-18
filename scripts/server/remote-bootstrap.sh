@@ -153,6 +153,18 @@ for host in "${HOSTS[@]}"; do
             mkdir -p "$target/api"
             install -m 644 /opt/gisprof-src/public/api/lead.php "$target/api/lead.php"
         fi
+        # Clean-param для Яндекса — убирает UTM-дубли из индекса.
+        # Next.js robots.ts не поддерживает Clean-param, дописываем вручную.
+        if [[ -f "$target/robots.txt" ]] && ! grep -q "^Clean-param:" "$target/robots.txt"; then
+            cat >> "$target/robots.txt" <<'ROBOTS_EXTRA'
+
+# Яндекс — не индексировать дубли с метками рекламных кампаний
+User-agent: Yandex
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&utm_referrer /
+Clean-param: yclid&gclid&fbclid&ysclid&_openstat /
+Clean-param: yclid /
+ROBOTS_EXTRA
+        fi
         chown -R "$DEPLOY_USER:www-data" "$target"
         find "$target" -type d -exec chmod 755 {} \;
         find "$target" -type f -exec chmod 644 {} \;
@@ -355,6 +367,27 @@ server {
     # Запрет доступа к служебным/скрытым файлам
     location ~ /\\.(?!well-known) { deny all; access_log off; log_not_found off; }
     location ~ /(composer\\.(json|lock)|package(-lock)?\\.json|\\.env.*|\\.git.*)\$ { deny all; }
+
+    # Next.js статика с хэшированными именами — кэшируем на год (immutable).
+    # Это ускоряет повторные визиты и даёт Lighthouse 100 по cache-policy.
+    location /_next/static/ {
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+        access_log off;
+        try_files \$uri =404;
+    }
+
+    # Шрифты, изображения, иконки — долгий кэш.
+    location ~* \\.(?:svg|png|jpg|jpeg|webp|avif|gif|ico|woff|woff2|ttf|eot)\$ {
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+        access_log off;
+        try_files \$uri =404;
+    }
+
+    # robots.txt / sitemap / IndexNow-ключ — short-cache, чтобы пушеры видели свежее.
+    location = /robots.txt { expires 1h; add_header Cache-Control "public, max-age=3600"; try_files \$uri =404; }
+    location = /sitemap.xml { expires 1h; add_header Cache-Control "public, max-age=3600"; try_files \$uri =404; }
 
     location / { try_files \$uri \$uri/index.html \$uri.html =404; }
 }

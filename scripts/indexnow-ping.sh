@@ -26,7 +26,22 @@ bad() { printf "  ${RED}✗${RST} %s\n" "$*"; }
 
 KEY="b2f3e9c5a1d84fe9a7c0d6e1f4b2a8d3"
 HOSTS=(gisprof.ru gisprofilaktika.ru pp411.ru profilaktika-spb.ru spb-gis.ru xn---411-k4d4a4d.xn--p1ai)
-PATHS=(/ /privacy /thanks)
+# Якорные секции — Яндекс обрабатывает #anchor как самостоятельную цель IndexNow.
+# Включаем все смысловые блоки: квиз, УЗ2, калькулятор риска, видео, пакеты, FAQ, кейсы.
+PATHS=(
+    /
+    /#quiz
+    /#uz2
+    /#risk
+    /#how-it-works
+    /#offer-7d
+    /#pricing
+    /#cases
+    /#guarantee
+    /#faq
+    /#contact
+    /privacy
+)
 
 hdr "IndexNow — принудительная переиндексация 6 доменов"
 

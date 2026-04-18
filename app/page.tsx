@@ -24,6 +24,7 @@ import { CallbackWidget } from '@/components/CallbackWidget';
 import { LiveViewers } from '@/components/LiveViewers';
 import { SlotsLeftBar } from '@/components/SlotsLeftBar';
 import { RecentLeads } from '@/components/RecentLeads';
+import { SeoContent } from '@/components/SeoContent';
 
 const RiskCalc = dynamic(
   () => import('@/components/RiskCalc').then((m) => m.RiskCalc),
@@ -61,6 +62,7 @@ export default function Page() {
         <QuickLead />
         <MoneyBackGuarantee />
         <Faq />
+        <SeoContent />
         <ContactForm />
       </main>
       <Footer />

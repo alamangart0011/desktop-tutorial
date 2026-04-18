@@ -359,7 +359,55 @@ export function HomeJsonLd() {
     ],
   };
 
+  // Яндекс/Google знают про сайт как about и ищут по нему — WebSite с SearchAction
+  // даёт sitelinks-поиск и бранд-сниппет.
+  const ldWebSite = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': site + '#website',
+    url: site,
+    name: BRAND.name + ' — подключение к ГИС «Профилактика»',
+    alternateName: [
+      'Оборон-Экран · ГИС Профилактика',
+      'gisprof.ru',
+      'ПП 411 подключение',
+    ],
+    publisher: { '@id': site + '#localbusiness' },
+    inLanguage: 'ru-RU',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: site + '/?q={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
+  // VideoObject — для секции «Как это работает за 90 секунд».
+  // Даже без видео-файла это сигнал поисковикам, что на странице есть
+  // мультимедиа-ответ, + Яндекс.Видео может подтянуть.
+  const ldVideo = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    '@id': site + '#how-it-works-video',
+    name: 'Как мы подключаем к ГИС «Профилактика» — 90 секунд',
+    description:
+      'Пошаговое объяснение процесса подключения организации к ГИС «Профилактика»: от экспресс-аудита до приёмки и Заключения на 3 года.',
+    thumbnailUrl: [site + '/opengraph-image'],
+    uploadDate: '2026-03-01',
+    duration: 'PT90S',
+    contentUrl: site + '/#how-it-works',
+    embedUrl: site + '/#how-it-works',
+    inLanguage: 'ru-RU',
+    publisher: { '@id': site + '#localbusiness' },
+  };
+
+  // Quiz как HowTo (дополнительный) — Яндекс любит HowTo + FAQ дубликат это ок
+  // так как разные контексты. Сделано в главном ldHowTo уже.
+
   const graphs = [
+    ldWebSite,
     ldService,
     ldProduct,
     ldHowTo,
@@ -370,6 +418,7 @@ export function HomeJsonLd() {
     ldItemListServices,
     ldGovServiceAbout,
     ldArticle,
+    ldVideo,
     ldLocalBusiness,
   ];
 

@@ -79,6 +79,14 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: 'MJ12bot',
         disallow: ['/'],
       },
+      {
+        userAgent: 'DotBot',
+        disallow: ['/'],
+      },
+      {
+        userAgent: 'BLEXBot',
+        disallow: ['/'],
+      },
     ],
     sitemap: [
       `${SITE}/sitemap.xml`,
