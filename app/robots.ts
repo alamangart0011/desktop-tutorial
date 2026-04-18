@@ -1,7 +1,11 @@
 import type { MetadataRoute } from 'next';
-import { BRAND } from '@/components/constants';
+import { VARIANT } from '@/lib/variants';
 
 export const dynamic = 'force-static';
+
+// Канонический URL и host для конкретного варианта, чтобы Яндекс не склеил 6 доменов как зеркала.
+const SITE = VARIANT.canonicalBase;
+const HOST = VARIANT.host;
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -77,9 +81,9 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: [
-      `${BRAND.site}/sitemap.xml`,
-      `${BRAND.site}/turbo.xml`,
+      `${SITE}/sitemap.xml`,
+      `${SITE}/turbo.xml`,
     ],
-    host: BRAND.siteHost,
+    host: HOST,
   };
 }

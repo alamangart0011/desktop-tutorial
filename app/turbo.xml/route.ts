@@ -1,7 +1,15 @@
 import { BRAND } from '@/components/constants';
 import { FAQ_QA } from '@/components/faq-data';
+import { VARIANT, VARIANT_KEY } from '@/lib/variants';
+import { getVariantContent } from '@/lib/variant-content';
 
 export const dynamic = 'force-static';
+
+// Турбо-канал должен указывать на канонический URL варианта, иначе Яндекс склеит 6 доменов как зеркала.
+const SITE = VARIANT.canonicalBase;
+const VC = getVariantContent(VARIANT_KEY);
+// Объединяем variant-специфичные и общие FAQ, как на сайте
+const ALL_FAQ = [...VC.faq, ...FAQ_QA];
 
 const escapeXml = (s: string) =>
   s
@@ -17,12 +25,13 @@ export function GET() {
   const now = new Date().toUTCString();
   const pubDate = new Date().toUTCString();
 
+  const turboH1 = `${VARIANT.h1} ${VARIANT.h1Accent}`.replace(/\u00a0/g, ' ');
   const turboPageBody = `
 <header>
-  <h1>ГИС «Профилактика» — подключение под ключ за 35–45 дней</h1>
+  <h1>${escapeXml(turboH1)}</h1>
   <figure>
-    <img src="${BRAND.site}/opengraph-image" />
-    <figcaption>Подключение к ГИС «Профилактика» по ПП РФ № 411 и 21 Приказу ФСТЭК (УЗ2)</figcaption>
+    <img src="${SITE}/opengraph-image" />
+    <figcaption>${escapeXml(VARIANT.regionBadge)} · ПП РФ № 411 · 21 Приказ ФСТЭК (УЗ2)</figcaption>
   </figure>
 </header>
 <p><strong>${escapeXml(BRAND.name)}</strong> — подключаем КДНиЗП, школы, опеку, соцзащиту, медучреждения и ОВД к федеральной ГИС «Профилактика» по Постановлению Правительства РФ № 411 от 01.04.2025. Базируемся в Санкт-Петербурге, работаем по СЗФО и дистанционно по РФ.</p>
@@ -41,7 +50,7 @@ export function GET() {
 <h2>Штрафы</h2>
 <p>Нарушение требований по обработке ПДн несовершеннолетних — до 5 млн ₽ для юрлиц по ст. 13.11 КоАП. Штрафы уже применяются с 01.12.2025.</p>
 <h2>Ответы на частые вопросы</h2>
-${FAQ_QA.map((qa) => `<h3>${escapeXml(qa.q)}</h3><p>${escapeXml(qa.a)}</p>`).join('\n')}
+${ALL_FAQ.map((qa) => `<h3>${escapeXml(qa.q)}</h3><p>${escapeXml(qa.a)}</p>`).join('\n')}
 <p>Связаться: <a href="tel:${BRAND.phoneRaw}">${escapeXml(BRAND.phone)}</a> · <a href="mailto:${BRAND.email}">${escapeXml(BRAND.email)}</a></p>
 `.trim();
 
@@ -51,21 +60,21 @@ ${FAQ_QA.map((qa) => `<h3>${escapeXml(qa.q)}</h3><p>${escapeXml(qa.a)}</p>`).joi
      xmlns:turbo="http://turbo.yandex.ru"
      version="2.0">
   <channel>
-    <title>${escapeXml(BRAND.name)} — ГИС «Профилактика»</title>
-    <link>${BRAND.site}/</link>
-    <description>${escapeXml('Подключение к ГИС «Профилактика» под ключ по ПП РФ № 411 и 21 Приказу ФСТЭК (УЗ2).')}</description>
+    <title>${escapeXml(VARIANT.title)}</title>
+    <link>${SITE}/</link>
+    <description>${escapeXml(VARIANT.ogDescription)}</description>
     <language>ru</language>
     <lastBuildDate>${now}</lastBuildDate>
     <pubDate>${pubDate}</pubDate>
     <turbo:analytics type="Yandex" id=""></turbo:analytics>
     <item turbo="true">
-      <link>${BRAND.site}/</link>
-      <turbo:source>${BRAND.site}/</turbo:source>
-      <turbo:topic>ГИС «Профилактика» — подключение под ключ за 35–45 дней</turbo:topic>
+      <link>${SITE}/</link>
+      <turbo:source>${SITE}/</turbo:source>
+      <turbo:topic>${escapeXml(turboH1)}</turbo:topic>
       <pubDate>${pubDate}</pubDate>
       <author>${escapeXml(BRAND.name)}</author>
-      <title>${escapeXml('ГИС «Профилактика» — подключение под ключ за 35–45 дней · ПП РФ № 411 · ФСТЭК УЗ2')}</title>
-      <description>${cdata('Подключение КДН, школ, опеки, соцзащиты к ГИС «Профилактика». Документы ПДн, СЗИ, аттестация ИСПДн, обучение, техподдержка.')}</description>
+      <title>${escapeXml(VARIANT.title)}</title>
+      <description>${cdata(VARIANT.description)}</description>
       <turbo:content>${cdata(turboPageBody)}</turbo:content>
     </item>
   </channel>
