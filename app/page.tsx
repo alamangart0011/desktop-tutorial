@@ -22,6 +22,8 @@ import { HomeJsonLd } from '@/components/HomeJsonLd';
 import { ExitIntent } from '@/components/ExitIntent';
 import { CallbackWidget } from '@/components/CallbackWidget';
 import { LiveViewers } from '@/components/LiveViewers';
+import { SlotsLeftBar } from '@/components/SlotsLeftBar';
+import { RecentLeads } from '@/components/RecentLeads';
 
 const RiskCalc = dynamic(
   () => import('@/components/RiskCalc').then((m) => m.RiskCalc),
@@ -32,6 +34,9 @@ const CostQuiz = dynamic(
 );
 const QuickLead = dynamic(
   () => import('@/components/QuickLead').then((m) => m.QuickLead),
+);
+const VideoHowItWorks = dynamic(
+  () => import('@/components/VideoHowItWorks').then((m) => m.VideoHowItWorks),
 );
 
 export default function Page() {
@@ -48,6 +53,7 @@ export default function Page() {
         <RiskCalc />
         <CostQuiz />
         <Offer7Days />
+        <VideoHowItWorks />
         <Process />
         <Clients />
         <Cases />
@@ -65,6 +71,8 @@ export default function Page() {
       <ExitIntent />
       <CallbackWidget />
       <LiveViewers />
+      <RecentLeads />
+      <SlotsLeftBar />
       <HomeJsonLd />
     </>
   );
