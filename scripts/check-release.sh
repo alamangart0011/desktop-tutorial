@@ -62,15 +62,14 @@ resolve_ip() {
 }
 
 # ---------- 1. DNS ----------
+# Не используем declare -A — macOS по-умолчанию на bash 3.2.
 hdr "1. DNS-резолвинг"
-declare -A IPS
 FIRST_IP=""
 for d in "${DOMAINS_CONTENT[@]}" "$DOMAIN_REDIRECT"; do
     ip=$(resolve_ip "$d")
     if [[ -z "$ip" ]]; then
         bad "$d — не резолвится (DNS-зоны нет или A-запись пропущена)"
     else
-        IPS[$d]=$ip
         [[ -z "$FIRST_IP" ]] && FIRST_IP="$ip"
         if [[ "$ip" != "$FIRST_IP" ]]; then
             yel "$d → $ip (отличается от $FIRST_IP — разные серверы?)"
@@ -189,8 +188,10 @@ else
 fi
 
 # ---------- 6. Контент: уникальный H1/title на каждом домене ----------
+# bash 3.2-совместимо: используем tmp-файл для хранения title→domain.
 hdr "6. Контент — уникальность зеркал (Яндекс не должен склеить)"
-declare -A TITLES H1S
+TMP_TITLES=$(mktemp -t checkrel) || TMP_TITLES="/tmp/checkrel.$$"
+: > "$TMP_TITLES"
 for d in "${DOMAINS_CONTENT[@]}"; do
     html=$(curl -s --max-time 10 "https://$d/" 2>/dev/null)
     if [[ -z "$html" ]]; then
@@ -199,28 +200,24 @@ for d in "${DOMAINS_CONTENT[@]}"; do
     fi
     t=$(echo "$html" | tr -d '\n' | grep -oE '<title[^>]*>[^<]+' | head -1 | sed 's/<title[^>]*>//')
     h1=$(echo "$html" | tr -d '\n' | grep -oE '<h1[^>]*>[^<]+' | head -1 | sed 's/<h1[^>]*>//')
-    TITLES[$d]="$t"
-    H1S[$d]="$h1"
     if [[ -z "$t" || -z "$h1" ]]; then
         bad "$d — не удалось извлечь title/h1"
     else
         inf "$d → title: $(echo "$t" | cut -c1-60)…"
+        printf "%s\t%s\n" "$t" "$d" >> "$TMP_TITLES"
     fi
 done
-# Проверяем уникальность title между доменами
-declare -A SEEN
-dup=0
-for d in "${!TITLES[@]}"; do
-    t="${TITLES[$d]}"
-    [[ -z "$t" ]] && continue
-    if [[ -n "${SEEN[$t]:-}" ]]; then
-        bad "title DUPLICATE: $d и ${SEEN[$t]} имеют одинаковый <title>"
-        dup=$((dup+1))
-    else
-        SEEN[$t]=$d
-    fi
-done
-(( dup == 0 )) && ok "все 6 доменов имеют разные <title> (Яндекс их не склеит)"
+# Проверяем уникальность title через sort+uniq
+dups=$(awk -F'\t' '{print $1}' "$TMP_TITLES" | sort | uniq -d)
+if [[ -z "$dups" ]]; then
+    ok "все 6 доменов имеют разные <title> (Яндекс их не склеит)"
+else
+    while IFS= read -r dup_title; do
+        hosts=$(awk -F'\t' -v t="$dup_title" '$1==t{print $2}' "$TMP_TITLES" | tr '\n' ' ')
+        bad "title DUPLICATE: '$dup_title' на доменах: $hosts"
+    done <<< "$dups"
+fi
+rm -f "$TMP_TITLES"
 
 # ---------- 7. robots.txt + sitemap на каждом домене ----------
 hdr "7. robots.txt и sitemap.xml"
@@ -273,13 +270,19 @@ done
 # ---------- 10. JSON-LD ----------
 hdr "10. Structured data (JSON-LD)"
 html=$(curl -s --max-time 10 "https://gisprof.ru/" 2>/dev/null)
-for schema in Organization LocalBusiness Service FAQPage BreadcrumbList; do
-    if echo "$html" | grep -q "\"@type\":\\s*\"$schema\""; then
+# LocalBusiness принимаем также как ProfessionalService (валидный subtype).
+for schema in Organization Service FAQPage BreadcrumbList; do
+    if echo "$html" | grep -qE "\"@type\"[[:space:]]*:[[:space:]]*\"$schema\""; then
         ok "schema.org/$schema найден"
     else
         yel "schema.org/$schema не найден (проверьте HomeJsonLd.tsx)"
     fi
 done
+if echo "$html" | grep -qE "\"@type\"[[:space:]]*:[[:space:]]*\"(LocalBusiness|ProfessionalService)\""; then
+    ok "schema.org/LocalBusiness (или ProfessionalService) найден"
+else
+    yel "schema.org/LocalBusiness не найден"
+fi
 
 # ---------- 11. HTTP → HTTPS редирект ----------
 hdr "11. HTTP → HTTPS редирект"
@@ -309,6 +312,33 @@ fi
 
 if (( FAIL == 0 && WARN == 0 )); then
     printf "\n${BLD}${GRN}Всё работает. Можно запускать Директ.${RST}\n"
+fi
+
+# ---------- Диагностика упавших доменов ----------
+DOWN_DOMAINS=""
+for d in "${DOMAINS_CONTENT[@]}"; do
+    code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "https://$d/" 2>/dev/null)
+    if [[ "$code" != "200" ]]; then DOWN_DOMAINS="$DOWN_DOMAINS $d"; fi
+done
+if [[ -n "$DOWN_DOMAINS" ]]; then
+    printf "\n${BLD}${BLU}==> Диагностика упавших доменов${RST}\n"
+    VPS_IP=$(resolve_ip "gisprof.ru")
+    printf "  IP VPS (по gisprof.ru): ${BLD}%s${RST}\n" "$VPS_IP"
+    for d in $DOWN_DOMAINS; do
+        ip=$(resolve_ip "$d")
+        if [[ -z "$ip" ]]; then
+            printf "  ${RED}%s${RST}: DNS ${RED}НЕ резолвится${RST} → добавьте A-запись: ${BLD}A %s → %s${RST}\n" "$d" "$d" "$VPS_IP"
+        elif [[ "$ip" != "$VPS_IP" ]]; then
+            printf "  ${YEL}%s${RST}: DNS → ${RED}%s${RST} (не VPS!) → замените A-запись на ${BLD}%s${RST}\n" "$d" "$ip" "$VPS_IP"
+        else
+            printf "  ${YEL}%s${RST}: DNS → %s (VPS), но HTTPS не отвечает → nginx не знает этот host ИЛИ certbot провалился\n" "$d" "$ip"
+        fi
+    done
+    printf "\n  ${BLD}Что делать:${RST}\n"
+    printf "  1. Если DNS не на %s — в кабинете reg.ru / Cloudflare добавьте A-запись\n" "$VPS_IP"
+    printf "  2. Если DNS ок — зайдите на VPS по ssh и выполните:\n"
+    printf "     ${DIM}cd /opt/gisprof-src && git pull && bash scripts/server/remote-bootstrap.sh${RST}\n"
+    printf "  3. После починки запустите этот скрипт снова.\n"
 fi
 
 exit $(( FAIL > 0 ? 1 : 0 ))
