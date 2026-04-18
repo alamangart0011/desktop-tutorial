@@ -18,7 +18,7 @@
 
 - [ ] A-запись `gisprof.ru` → IP VPS; TTL 300.
 - [ ] A-запись `www.gisprof.ru` → IP VPS.
-- [ ] Те же A-записи для: `gisprofilaktika.ru`, `pp411.ru`, `xn----7sbab2ce0afk.xn--p1ai`, `profilaktika-spb.ru`, `spb-gis.ru`.
+- [ ] Те же A-записи для: `gisprofilaktika.ru`, `pp411.ru`, `xn---411-k4d4a4d.xn--p1ai`, `profilaktika-spb.ru`, `spb-gis.ru`.
 - [ ] `gis-prof.ru` — A-запись на тот же IP (будет 301 → `gisprof.ru`).
 - [ ] Auto-renew доменов включён (24 мес).
 - [ ] DNSSEC включён у регистратора (reg.ru → Настройки → DNSSEC).

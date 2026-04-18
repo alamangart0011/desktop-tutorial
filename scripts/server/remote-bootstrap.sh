@@ -37,7 +37,7 @@ HOSTS=(
     gisprof.ru
     gisprofilaktika.ru
     pp411.ru
-    xn----7sbab2ce0afk.xn--p1ai
+    xn---411-k4d4a4d.xn--p1ai
     profilaktika-spb.ru
     spb-gis.ru
 )
@@ -217,7 +217,7 @@ for host in "${READY[@]}"; do
         continue
     fi
     args="-d $host"
-    [[ "$host" != xn----7sbab2ce0afk.xn--p1ai ]] && args="$args -d www.$host"
+    [[ "$host" != xn---411-k4d4a4d.xn--p1ai ]] && args="$args -d www.$host"
     log "certbot (webroot) → $host"
     certbot certonly --webroot -w "$ACME_ROOT" $args \
         --non-interactive --agree-tos \
@@ -335,7 +335,7 @@ NGINX
 for host in "${HOSTS[@]}"; do
     if [[ ! -d "/home/$DEPLOY_USER/sites/$host" ]]; then continue; fi
     aliases="$host www.$host"
-    [[ "$host" == xn----7sbab2ce0afk.xn--p1ai ]] && aliases="$host"
+    [[ "$host" == xn---411-k4d4a4d.xn--p1ai ]] && aliases="$host"
     docroot="/home/$DEPLOY_USER/sites/$host"
 
     if [[ -d "/etc/letsencrypt/live/$host" ]]; then
@@ -354,7 +354,7 @@ NGINX
         # HTTPS основной — только canonical host (без www, чтобы избежать conflicting server_name)
         emit_https_block "$host" "$docroot" "$host"
         # www → без www через 301 на HTTPS
-        if [[ "$host" != xn----7sbab2ce0afk.xn--p1ai ]]; then
+        if [[ "$host" != xn---411-k4d4a4d.xn--p1ai ]]; then
             cat <<NGINX
 
 server {

@@ -155,7 +155,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
   },
 
   gis411rf: {
-    host: 'xn----7sbab2ce0afk.xn--p1ai',
+    host: 'xn---411-k4d4a4d.xn--p1ai',
     aliases: ['\u0433\u0438\u0441-411.\u0440\u0444'],
     title: 'ГИС-411.РФ — подключение к ГИС «Профилактика» по всей России',
     h1: 'ГИС-411:',
@@ -183,7 +183,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
       'подключение к гис 411',
       'гис профилактика Россия',
     ],
-    canonicalBase: 'https://xn----7sbab2ce0afk.xn--p1ai',
+    canonicalBase: 'https://xn---411-k4d4a4d.xn--p1ai',
   },
 
   profilaktikaspb: {

@@ -23,7 +23,7 @@ NEXT_BIN="./node_modules/.bin/next"
 # Ключи variant'ов и их host'ы (параллельные массивы — совместимо с bash 3.2 macOS).
 # Должны соответствовать VARIANTS в lib/variants.ts.
 ALL_VARIANTS=(main           gisprofilaktika      pp411    gis411rf                          profilaktikaspb       spbgis)
-ALL_HOSTS=(   gisprof.ru     gisprofilaktika.ru   pp411.ru xn----7sbab2ce0afk.xn--p1ai        profilaktika-spb.ru   spb-gis.ru)
+ALL_HOSTS=(   gisprof.ru     gisprofilaktika.ru   pp411.ru xn---411-k4d4a4d.xn--p1ai        profilaktika-spb.ru   spb-gis.ru)
 
 if [ -n "${VARIANTS:-}" ]; then
     # shellcheck disable=SC2206

@@ -11,7 +11,7 @@ DOMAINS_CONTENT=(
     gisprof.ru
     gisprofilaktika.ru
     pp411.ru
-    xn----7sbab2ce0afk.xn--p1ai
+    xn---411-k4d4a4d.xn--p1ai
     profilaktika-spb.ru
     spb-gis.ru
 )
@@ -79,7 +79,7 @@ for d in "${DOMAINS_CONTENT[@]}" "$DOMAIN_REDIRECT"; do
     fi
     wip=$(resolve_ip "www.$d")
     if [[ -z "$wip" ]]; then
-        [[ "$d" == "xn----7sbab2ce0afk.xn--p1ai" ]] || yel "www.$d — нет A-записи (надо для 301-редиректа)"
+        [[ "$d" == "xn---411-k4d4a4d.xn--p1ai" ]] || yel "www.$d — нет A-записи (надо для 301-редиректа)"
     fi
 done
 

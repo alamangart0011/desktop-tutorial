@@ -78,7 +78,7 @@ sudo nginx -t
 
 # C) SSL для каждого домена
 for d in gisprof.ru gisprofilaktika.ru pp411.ru \
-         xn----7sbab2ce0afk.xn--p1ai \
+         xn---411-k4d4a4d.xn--p1ai \
          profilaktika-spb.ru spb-gis.ru gis-prof.ru; do
     sudo certbot --nginx -d "$d" -d "www.$d" \
         --non-interactive --agree-tos -m mail@oboron-it.ru --redirect

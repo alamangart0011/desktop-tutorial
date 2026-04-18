@@ -9,7 +9,7 @@
 set +e
 
 VPS_IP="${VPS_IP:-72.56.9.195}"
-DOMAINS=(gisprof.ru gisprofilaktika.ru pp411.ru xn----7sbab2ce0afk.xn--p1ai profilaktika-spb.ru spb-gis.ru)
+DOMAINS=(gisprof.ru gisprofilaktika.ru pp411.ru xn---411-k4d4a4d.xn--p1ai profilaktika-spb.ru spb-gis.ru)
 ACME_ROOT="/var/www/acme"
 
 echo "=========================================="

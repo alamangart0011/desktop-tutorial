@@ -26,7 +26,7 @@ bad() { printf "  ${RED}✗${RST} %s\n" "$*"; }
 yel() { printf "  ${YEL}!${RST} %s\n" "$*"; }
 
 VPS=72.56.9.195
-DOMAINS=(gisprof.ru gisprofilaktika.ru pp411.ru spb-gis.ru profilaktika-spb.ru xn----7sbab2ce0afk.xn--p1ai gis-prof.ru)
+DOMAINS=(gisprof.ru gisprofilaktika.ru pp411.ru spb-gis.ru profilaktika-spb.ru xn---411-k4d4a4d.xn--p1ai gis-prof.ru)
 BROKEN_A=()
 BROKEN_NS=()
 

@@ -110,5 +110,5 @@ bash <(curl -fsSL https://raw.githubusercontent.com/alamangart0011/desktop-tutor
 hdr "ГОТОВО"
 printf "Если остались ${RED}КРИТИЧЕСКИЕ${RST}, вероятно DNS 2 доменов не указан на %s.\n" "$VPS"
 printf "Проверьте в кабинете регистратора A-записи для:\n"
-printf "  ${BLD}gisprofilaktika.ru${RST}, ${BLD}xn----7sbab2ce0afk.xn--p1ai${RST} (гис-411.рф), ${BLD}spb-gis.ru${RST}\n"
+printf "  ${BLD}gisprofilaktika.ru${RST}, ${BLD}xn---411-k4d4a4d.xn--p1ai${RST} (гис-411.рф), ${BLD}spb-gis.ru${RST}\n"
 printf "Должны быть: ${BLD}A → %s${RST} (TTL 300).\n" "$VPS"

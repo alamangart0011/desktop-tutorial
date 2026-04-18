@@ -33,7 +33,7 @@ export const MIRRORS = [
   'https://gis-prof.ru',
   'https://gisprofilaktika.ru',
   'https://pp411.ru',
-  'https://xn----7sbab2ce0afk.xn--p1ai',
+  'https://xn---411-k4d4a4d.xn--p1ai',
   'https://profilaktika-spb.ru',
   'https://spb-gis.ru',
 ] as const;
