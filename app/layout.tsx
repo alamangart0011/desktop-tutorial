@@ -415,6 +415,9 @@ export default function RootLayout({
           href="/turbo.xml"
         />
         <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+        <link rel="author" type="text/plain" href="/humans.txt" />
+        {/* llms.txt — для LLM-краулеров (Anthropic, OpenAI, Perplexity, Google AI). Спецификация https://llmstxt.org/ */}
+        <link rel="alternate" type="text/markdown" title="LLMs.txt" href="/llms.txt" />
         <link rel="canonical" href={SITE_URL + '/'} />
         <link rel="alternate" hrefLang="ru-RU" href={SITE_URL + '/'} />
         <link rel="alternate" hrefLang="x-default" href={SITE_URL + '/'} />
