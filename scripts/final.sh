@@ -43,20 +43,24 @@ fi
 # ---------- 2. Диагностика DNS ----------
 hdr "2. Диагностика DNS (A + NS через 8.8.8.8)"
 for d in "${DOMAINS[@]}"; do
-    NS=$(dig +short @8.8.8.8 NS "$d" 2>/dev/null | head -1)
     IPS=$(dig +short @8.8.8.8 A "$d" 2>/dev/null | tr '\n' ',' | sed 's/,$//')
+    NS=$(dig +short @8.8.8.8 NS "$d" 2>/dev/null | head -1)
+    # Фоллбэк: если 8.8.8.8 не отдал NS (кэш TLD), спрашиваем 1.1.1.1 / 77.88.8.8
+    [[ -z "$NS" ]] && NS=$(dig +short @1.1.1.1 NS "$d" 2>/dev/null | head -1)
+    [[ -z "$NS" ]] && NS=$(dig +short @77.88.8.8 NS "$d" 2>/dev/null | head -1)
 
-    if [[ -z "$NS" ]]; then
-        bad "$d — нет NS-записей (зона не делегирована в DNS reg.ru)"
-        BROKEN_NS+=("$d")
-        continue
-    fi
-
-    if [[ -z "$IPS" ]]; then
-        bad "$d → нет A-записи (добавьте A @ $VPS в reg.ru)"
-        BROKEN_A+=("$d")
-    elif [[ "$IPS" == "$VPS" ]]; then
+    # Главный критерий — A-запись. Если A ведёт на VPS, зона работает,
+    # даже если NS резолвер по каким-то причинам вернул пусто.
+    if [[ "$IPS" == "$VPS" ]]; then
         ok "$d → $VPS ✓"
+    elif [[ -z "$IPS" ]]; then
+        if [[ -z "$NS" ]]; then
+            bad "$d — нет NS и нет A (зона не делегирована у регистратора)"
+            BROKEN_NS+=("$d")
+        else
+            bad "$d → нет A-записи (добавьте A @ $VPS в DNS-зоне)"
+            BROKEN_A+=("$d")
+        fi
     else
         bad "$d → $IPS (должно быть только $VPS)"
         BROKEN_A+=("$d")
