@@ -47,8 +47,11 @@ export function Hero() {
             </div>
 
             <h1 className="mt-6 text-[2.25rem] sm:text-5xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-balance">
-              {VARIANT.h1}{' '}
-              <span className="bg-gradient-to-r from-[var(--color-accent)] to-[#6ee7b7] bg-clip-text text-transparent">
+              <span id="hero-h1-main">{VARIANT.h1}</span>{' '}
+              <span
+                id="hero-h1-accent"
+                className="bg-gradient-to-r from-[var(--color-accent)] to-[#6ee7b7] bg-clip-text text-transparent"
+              >
                 {VARIANT.h1Accent}
               </span>
             </h1>

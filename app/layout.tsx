@@ -130,7 +130,14 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: TITLE,
     description: DESCRIPTION,
-    images: ['/opengraph-image'],
+    images: [
+      {
+        url: '/opengraph-image',
+        alt: 'ГИС «Профилактика» — подключение под ключ · ПП РФ № 411 · ФСТЭК УЗ2',
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   robots: {
     index: true,
@@ -220,6 +227,12 @@ export const metadata: Metadata = {
     MobileOptimized: '375',
     'format-detection': 'telephone=yes',
     'theme-color': '#0b3b8c',
+    'twitter:label1': 'Срок',
+    'twitter:data1': '7 дней или возврат 100 %',
+    'twitter:label2': 'Регион',
+    'twitter:data2': 'Санкт-Петербург и СЗФО',
+    'og:image:secure_url': SITE_URL + '/opengraph-image',
+    'og:updated_time': new Date().toISOString(),
   },
 };
 
@@ -411,7 +424,7 @@ export default function RootLayout({
         <meta httpEquiv="Content-Language" content="ru" />
         <meta httpEquiv="x-dns-prefetch-control" content="on" />
       </head>
-      <body>
+      <body data-ymid={metrikaId || ''}>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg focus:text-[var(--color-brand)]"

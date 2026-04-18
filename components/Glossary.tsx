@@ -70,15 +70,23 @@ export const GLOSSARY = [
 ];
 
 export function Glossary() {
+  const setId = 'https://schema.org/DefinedTermSet/gis-profilaktika';
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'DefinedTermSet',
+    '@id': setId,
     name: 'Глоссарий ГИС «Профилактика»',
-    hasDefinedTerm: GLOSSARY.map((g) => ({
+    description:
+      'Терминология подключения к ГИС «Профилактика», 152-ФЗ, 21 Приказ ФСТЭК, КриптоПро, Secret Net Studio.',
+    inLanguage: 'ru-RU',
+    numberOfItems: GLOSSARY.length,
+    hasDefinedTerm: GLOSSARY.map((g, i) => ({
       '@type': 'DefinedTerm',
+      '@id': setId + '#term-' + (i + 1),
       name: g.term,
       description: g.def,
-      inDefinedTermSet: 'https://schema.org/DefinedTermSet',
+      termCode: g.term,
+      inDefinedTermSet: setId,
     })),
   };
 

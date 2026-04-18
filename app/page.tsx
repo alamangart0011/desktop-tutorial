@@ -25,6 +25,9 @@ import { LiveViewers } from '@/components/LiveViewers';
 import { SlotsLeftBar } from '@/components/SlotsLeftBar';
 import { RecentLeads } from '@/components/RecentLeads';
 import { SeoContent } from '@/components/SeoContent';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { HeroAB } from '@/components/HeroAB';
+import { ContextualCta } from '@/components/ContextualCta';
 
 const RiskCalc = dynamic(
   () => import('@/components/RiskCalc').then((m) => m.RiskCalc),
@@ -39,18 +42,24 @@ const QuickLead = dynamic(
 const VideoHowItWorks = dynamic(
   () => import('@/components/VideoHowItWorks').then((m) => m.VideoHowItWorks),
 );
+const Glossary = dynamic(
+  () => import('@/components/Glossary').then((m) => m.Glossary),
+);
 
 export default function Page() {
   return (
     <>
       <Header />
+      <Breadcrumbs />
       <main id="main">
         <Hero />
+        <HeroAB />
         <TrustBar />
         <UrgencyTimer />
         <PainTrigger />
         <Problem />
         <Uz2Requirements />
+        <ContextualCta variant="audit" />
         <RiskCalc />
         <CostQuiz />
         <Offer7Days />
@@ -58,10 +67,13 @@ export default function Page() {
         <Process />
         <Clients />
         <Cases />
+        <ContextualCta variant="quiz" />
         <Pricing />
         <QuickLead />
         <MoneyBackGuarantee />
         <Faq />
+        <ContextualCta variant="phone" />
+        <Glossary />
         <SeoContent />
         <ContactForm />
       </main>
