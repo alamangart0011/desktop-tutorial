@@ -67,8 +67,9 @@ $cfg = [
 ];
 
 // ---------- Rate limit (простой, по файлу) ----------
-$ip = $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-$ip = trim(explode(',', $ip)[0]);
+$rawIp = $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+$rawIp = trim(explode(',', $rawIp)[0]);
+$ip = filter_var($rawIp, FILTER_VALIDATE_IP) ?: '0.0.0.0';
 $rateDir = $cfg['log_dir'] . '/rl';
 if (!is_dir($rateDir)) {
     @mkdir($rateDir, 0770, true);
@@ -112,6 +113,12 @@ if (!empty($data['_hp']) || !empty($data['website'])) {
     json_response(200, ['ok' => true]);
 }
 
+// Time-to-fill honeypot — человек не заполняет форму быстрее 1.5 сек.
+$fillMs = isset($data['fill_ms']) ? (int)$data['fill_ms'] : 0;
+if ($fillMs > 0 && $fillMs < 1500) {
+    json_response(200, ['ok' => true]);
+}
+
 $pick = static function (string $k, int $max = 500) use ($data): string {
     $v = $data[$k] ?? '';
     if (!is_scalar($v)) {
@@ -120,6 +127,38 @@ $pick = static function (string $k, int $max = 500) use ($data): string {
     $v = trim((string)$v);
     return mb_substr($v, 0, $max);
 };
+
+// Вариант домена — определяем по Origin/Referer/HTTP_HOST (что пришло в заголовках),
+// не доверяя тому что клиент прислал в payload.variant.
+$originHost = '';
+foreach (['HTTP_ORIGIN', 'HTTP_REFERER'] as $h) {
+    if (!empty($_SERVER[$h])) {
+        $u = parse_url($_SERVER[$h]);
+        if (!empty($u['host'])) {
+            $originHost = strtolower($u['host']);
+            break;
+        }
+    }
+}
+if ($originHost === '' && !empty($_SERVER['HTTP_HOST'])) {
+    $originHost = strtolower((string)$_SERVER['HTTP_HOST']);
+}
+
+// UTM — из payload.utm (массив) либо отдельных ключей.
+$utm = [];
+if (!empty($data['utm']) && is_array($data['utm'])) {
+    foreach ($data['utm'] as $k => $v) {
+        if (!is_scalar($v)) continue;
+        $k = preg_replace('/[^a-z_]/', '', strtolower((string)$k));
+        if ($k === '') continue;
+        $utm[$k] = mb_substr(trim((string)$v), 0, 200);
+    }
+}
+foreach (['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'yclid', 'gclid'] as $k) {
+    if (!isset($utm[$k]) && !empty($data[$k])) {
+        $utm[$k] = mb_substr(trim((string)$data[$k]), 0, 200);
+    }
+}
 
 $lead = [
     'organization' => $pick('organization') ?: $pick('org'),
@@ -131,6 +170,10 @@ $lead = [
     'message'      => $pick('message', 2000),
     'subject'      => $pick('subject', 200),
     'source'       => $pick('source', 300),
+    'variant'      => $originHost,
+    'referrer'     => $pick('referrer', 300),
+    'utm'          => $utm,
+    'fill_ms'      => $fillMs,
     'user_agent'   => mb_substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 300),
     'ip'           => $ip,
     'ts'           => gmdate('c'),
@@ -159,7 +202,14 @@ $logFile = $cfg['log_dir'] . '/leads.jsonl';
 );
 
 // ---------- Email (через sendmail/msmtp) ----------
-$subject = $lead['subject'] !== '' ? $lead['subject'] : ('Заявка с gisprof.ru — ' . $lead['organization']);
+$variantLabel = $lead['variant'] !== '' ? $lead['variant'] : 'gisprof.ru';
+$subject = $lead['subject'] !== ''
+    ? $lead['subject']
+    : ('Заявка (' . $variantLabel . ') — ' . $lead['organization']);
+$utmBlock = [];
+foreach ($lead['utm'] as $k => $v) {
+    $utmBlock[] = $k . '=' . $v;
+}
 $bodyLines = [
     'Организация: ' . $lead['organization'],
     'ФИО: '         . $lead['full_name'],
@@ -172,15 +222,22 @@ $bodyLines = [
     $lead['message'] !== '' ? $lead['message'] : '—',
     '',
     '— — —',
-    'Источник: ' . ($lead['source'] ?: '—'),
+    'Вариант:  ' . $variantLabel,
+    'Источник: ' . ($lead['source']   ?: '—'),
+    'Реферер:  ' . ($lead['referrer'] ?: '—'),
+    'UTM:      ' . ($utmBlock ? implode(' · ', $utmBlock) : '—'),
+    'Заполнено за: ' . ($lead['fill_ms'] ? round($lead['fill_ms'] / 1000, 1) . ' сек' : '—'),
     'IP: '       . $lead['ip'],
     'UA: '       . $lead['user_agent'],
     'Время: '    . $lead['ts'],
 ];
 $body = implode("\n", $bodyLines);
+// Защита от email header injection: режем \r\n\0 во всех заголовках.
+$stripHeader = static fn (string $s): string => preg_replace('/[\r\n\0]+/', '', $s);
+$safeReplyTo = filter_var($lead['email'], FILTER_VALIDATE_EMAIL) ? $lead['email'] : $cfg['from_email'];
 $mailHeaders = [
-    'From: ' . sprintf('%s <%s>', mb_encode_mimeheader($cfg['from_name']), $cfg['from_email']),
-    'Reply-To: ' . $lead['email'],
+    'From: ' . sprintf('%s <%s>', mb_encode_mimeheader($cfg['from_name']), $stripHeader($cfg['from_email'])),
+    'Reply-To: ' . $stripHeader($safeReplyTo),
     'X-Mailer: gisprof-lead/1.0',
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=utf-8',
@@ -190,14 +247,20 @@ $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
 
 // ---------- Telegram ----------
 if ($cfg['tg_token'] !== '' && $cfg['tg_chat'] !== '') {
-    $tgText = "<b>Новая заявка — gisprof.ru</b>\n"
+    $utmLine = '';
+    foreach ($lead['utm'] as $k => $v) {
+        $utmLine .= htmlspecialchars($k) . '=<code>' . htmlspecialchars($v) . '</code> ';
+    }
+    $tgText = '<b>Новая заявка — ' . htmlspecialchars($variantLabel) . "</b>\n"
         . 'Организация: ' . htmlspecialchars($lead['organization']) . "\n"
         . 'ФИО: '         . htmlspecialchars($lead['full_name'])   . "\n"
         . 'Должность: '   . htmlspecialchars($lead['role'] ?: '—') . "\n"
         . 'Телефон: <code>' . htmlspecialchars($lead['phone'])     . "</code>\n"
         . 'E-mail: <code>'  . htmlspecialchars($lead['email'])     . "</code>\n"
         . 'Регион: '       . htmlspecialchars($lead['region'] ?: '—') . "\n"
-        . 'Источник: '     . htmlspecialchars($lead['source'] ?: '—') . "\n\n"
+        . 'Источник: '     . htmlspecialchars($lead['source'] ?: '—') . "\n"
+        . ($utmLine ? ('UTM: ' . $utmLine . "\n") : '')
+        . "\n"
         . ($lead['message'] !== '' ? ('<i>' . htmlspecialchars($lead['message']) . '</i>') : '');
 
     $url = 'https://api.telegram.org/bot' . rawurlencode($cfg['tg_token']) . '/sendMessage';

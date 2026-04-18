@@ -18,6 +18,9 @@ export const BRAND = {
   inn: '7801322348',
   ogrn: '1167847438670',
   kpp: '780101001',
+  // Реестровый номер Оператора ПДн в Роскомнадзоре (https://rkn.gov.ru/).
+  // Пустая строка = «уведомление подано, ожидается внесение в реестр» (legal fallback).
+  rknRegistryNumber: '',
   site: 'https://gisprof.ru',
   siteHost: 'gisprof.ru',
   workingHours: 'Пн–Пт 09:00–18:00 (МСК)',

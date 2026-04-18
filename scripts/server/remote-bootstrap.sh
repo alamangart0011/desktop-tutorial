@@ -242,12 +242,25 @@ NGINX_CONF=/etc/nginx/sites-available/gisprof-multi.conf
 {
 cat <<NGINX
 # Автоматически сгенерировано remote-bootstrap.sh — $(date -Iseconds)
+server_tokens off;
 upstream gisprof_php { server unix:$PHP_SOCK; }
 map \$sent_http_content_type \$expires_val {
     default                         off;
     ~*(text|application).(html|xml)\$   -1;
     ~*(image|font|javascript|css)      max;
 }
+
+# gzip — экономия трафика на HTML/CSS/JS
+gzip on;
+gzip_vary on;
+gzip_proxied any;
+gzip_comp_level 5;
+gzip_min_length 1024;
+gzip_types text/plain text/css text/xml application/json application/javascript application/xml+rss application/atom+xml image/svg+xml;
+
+# Rate limiting: 2 заявки/сек на IP, burst 5, и общий rate для статики
+limit_req_zone \$binary_remote_addr zone=api_limit:10m rate=2r/s;
+limit_req_zone \$binary_remote_addr zone=site_limit:10m rate=30r/s;
 
 # Общий ACME-challenge (на случай отсутствующего HTTPS)
 server {
@@ -272,26 +285,49 @@ server {
     ssl_certificate     /etc/letsencrypt/live/$host/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/$host/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 1d;
+    ssl_session_tickets off;
+    ssl_stapling on;
+    ssl_stapling_verify on;
 
     root $docroot;
     index index.html;
     charset utf-8;
     expires \$expires_val;
 
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    # Security headers (приезжают на все ответы сайта)
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
     add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=()" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://yastatic.net https://*.yandex.ru; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://mc.yandex.ru https://*.yandex.ru; frame-src https://mc.yandex.ru https://yandex.ru https://*.yandex.ru; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests" always;
+    add_header Cross-Origin-Opener-Policy "same-origin-allow-popups" always;
 
+    # Базовый rate limit на всю статику
+    limit_req zone=site_limit burst=50 nodelay;
+
+    # API: строже — защита от спама
     location = /api/lead {
+        limit_req zone=api_limit burst=5 nodelay;
+        limit_except POST OPTIONS { deny all; }
         fastcgi_pass gisprof_php;
         fastcgi_param SCRIPT_FILENAME \$document_root/api/lead.php;
         include fastcgi_params;
         client_max_body_size 64k;
+        # Убираем security headers на API (JSON-response)
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "no-referrer" always;
     }
     location ~ ^/api/.*\\.php\$ { return 404; }
+
+    # Запрет доступа к служебным/скрытым файлам
+    location ~ /\\.(?!well-known) { deny all; access_log off; log_not_found off; }
+    location ~ /(composer\\.(json|lock)|package(-lock)?\\.json|\\.env.*|\\.git.*)\$ { deny all; }
+
     location / { try_files \$uri \$uri/index.html \$uri.html =404; }
 }
 NGINX

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { BRAND, FORM, ANALYTICS } from './constants';
 import {
   PhoneIcon,
@@ -55,6 +55,33 @@ export function ContactForm() {
   const [f, setF] = useState<Fields>(EMPTY);
   const [status, setStatus] = useState<Status>('idle');
   const [err, setErr] = useState<string | null>(null);
+  // Honeypot: если бот заполнил hidden-поле — форма уходит в no-op.
+  const [trap, setTrap] = useState('');
+  // Форма открыта с момента mount; людям нужно ≥ 2 секунд чтобы заполнить.
+  const openedAtRef = useRef<number>(typeof performance !== 'undefined' ? performance.now() : Date.now());
+  // UTM-метки из URL или sessionStorage (сохраняем при первом заходе).
+  const [utm, setUtm] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const captured: Record<string, string> = {};
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'yclid', 'gclid', 'from'].forEach((k) => {
+        const v = params.get(k);
+        if (v) captured[k] = v.slice(0, 200);
+      });
+      if (Object.keys(captured).length > 0) {
+        sessionStorage.setItem('gp_utm', JSON.stringify(captured));
+        setUtm(captured);
+      } else {
+        const saved = sessionStorage.getItem('gp_utm');
+        if (saved) setUtm(JSON.parse(saved));
+      }
+    } catch {
+      // sessionStorage disabled — fine, просто не ловим UTM.
+    }
+  }, []);
 
   function set<K extends keyof Fields>(k: K, v: Fields[K]) {
     setF((p) => ({ ...p, [k]: v }));
@@ -101,8 +128,12 @@ export function ContactForm() {
       return;
     }
 
+    const fillMs =
+      (typeof performance !== 'undefined' ? performance.now() : Date.now()) -
+      openedAtRef.current;
+    const variantHost = typeof window !== 'undefined' ? window.location.host : '';
     const payload = {
-      subject: `Заявка: подключение к ГИС «Профилактика» — ${f.org}`,
+      subject: `Заявка (${variantHost}): подключение к ГИС «Профилактика» — ${f.org}`,
       from_name: `${f.name} · ${f.org}`,
       organization: f.org,
       full_name: f.name,
@@ -113,8 +144,20 @@ export function ContactForm() {
       message: f.message,
       summary: buildBody(),
       source: typeof window !== 'undefined' ? window.location.href : '',
+      variant: variantHost,
+      referrer: typeof document !== 'undefined' ? document.referrer : '',
+      fill_ms: Math.round(fillMs),
+      utm,
       userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+      _hp: trap,
     };
+
+    // Человек заполняет форму ≥ 2 сек. Меньше — почти всегда бот.
+    if (fillMs < 1500 || trap) {
+      // Делаем вид что всё ок, но ничего не шлём.
+      setStatus('sent');
+      return;
+    }
 
     function trackSuccess() {
       if (typeof window === 'undefined') return;
@@ -287,6 +330,31 @@ export function ContactForm() {
           aria-labelledby="contact-form-title"
           className="rounded-2xl bg-white text-[var(--color-ink)] p-6 md:p-8 shadow-2xl self-start"
         >
+          {/* Honeypot: скрыт от людей, но видим для простых ботов. Заполнение = submit игнорируется. */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              left: '-9999px',
+              top: 'auto',
+              width: 1,
+              height: 1,
+              overflow: 'hidden',
+            }}
+          >
+            <label>
+              Ваш сайт (не заполняйте)
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={trap}
+                onChange={(e) => setTrap(e.target.value)}
+              />
+            </label>
+          </div>
+
           <h3 id="contact-form-title" className="font-extrabold text-xl">
             Заявка на подключение
           </h3>
