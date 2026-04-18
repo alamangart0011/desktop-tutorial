@@ -72,17 +72,16 @@ export function Hero() {
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <a
-                href="#risk"
-                data-goal="hero-check"
-                className="btn-primary group text-base px-6 py-4 min-h-[56px]"
+                href="#quiz"
+                data-goal="hero-quiz"
+                className="btn-primary cta-pulse group text-base px-6 py-4 min-h-[56px]"
                 style={{
                   background:
                     'linear-gradient(135deg, var(--color-accent) 0%, #6ee7b7 100%)',
                   color: '#052e1e',
-                  boxShadow: '0 14px 30px -12px rgba(16,185,129,0.6)',
                 }}
               >
-                Проверить риск штрафа за 2 минуты
+                Рассчитать стоимость за 60 секунд
                 <ArrowRightIcon className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </a>
               <a

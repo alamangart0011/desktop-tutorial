@@ -21,11 +21,18 @@ import { BackToTop } from '@/components/BackToTop';
 import { HomeJsonLd } from '@/components/HomeJsonLd';
 import { ExitIntent } from '@/components/ExitIntent';
 import { CallbackWidget } from '@/components/CallbackWidget';
+import { LiveViewers } from '@/components/LiveViewers';
 
 const RiskCalc = dynamic(
   () => import('@/components/RiskCalc').then((m) => m.RiskCalc),
 );
 const Faq = dynamic(() => import('@/components/Faq').then((m) => m.Faq));
+const CostQuiz = dynamic(
+  () => import('@/components/CostQuiz').then((m) => m.CostQuiz),
+);
+const QuickLead = dynamic(
+  () => import('@/components/QuickLead').then((m) => m.QuickLead),
+);
 
 export default function Page() {
   return (
@@ -39,11 +46,13 @@ export default function Page() {
         <Problem />
         <Uz2Requirements />
         <RiskCalc />
+        <CostQuiz />
         <Offer7Days />
         <Process />
         <Clients />
         <Cases />
         <Pricing />
+        <QuickLead />
         <MoneyBackGuarantee />
         <Faq />
         <ContactForm />
@@ -55,6 +64,7 @@ export default function Page() {
       <CookieBanner />
       <ExitIntent />
       <CallbackWidget />
+      <LiveViewers />
       <HomeJsonLd />
     </>
   );
