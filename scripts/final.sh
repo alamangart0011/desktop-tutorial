@@ -67,44 +67,34 @@ for d in "${DOMAINS[@]}"; do
     fi
 done
 
-# ---------- 3. Ранний exit, если DNS сломан ----------
+# ---------- 3. Предупреждение о кривых доменах (НЕ блокируем) ----------
 if [[ ${#BROKEN_NS[@]} -gt 0 || ${#BROKEN_A[@]} -gt 0 ]]; then
-    hdr "НЕ ГОТОВО: чините DNS в reg.ru"
+    hdr "DNS — предупреждения (deploy продолжится для рабочих доменов)"
     if [[ ${#BROKEN_NS[@]} -gt 0 ]]; then
         echo ""
-        echo "  ${BLD}Домены без делегирования NS:${RST}"
+        echo "  ${YEL}Без делегирования NS:${RST}"
         for d in "${BROKEN_NS[@]}"; do
-            echo "    · $d"
+            echo "    · $d — certbot НЕ сможет выдать cert"
         done
-        echo ""
-        echo "  ${YEL}Что делать:${RST}"
-        echo "  1. reg.ru → Мои домены → выберите домен"
-        echo "  2. Вкладка 'DNS-серверы' → 'Использовать DNS-серверы reg.ru'"
-        echo "     (ns1.reg.ru / ns2.reg.ru)"
-        echo "  3. Сохранить → ждать 15-60 минут пропагации"
-        echo "  4. Затем в 'Управление зоной' добавить A @ $VPS"
     fi
     if [[ ${#BROKEN_A[@]} -gt 0 ]]; then
         echo ""
-        echo "  ${BLD}Домены с неправильным A:${RST}"
+        echo "  ${YEL}С неправильным A-record:${RST}"
         for d in "${BROKEN_A[@]}"; do
-            echo "    · $d"
+            IPS=$(dig +short @8.8.8.8 A "$d" 2>/dev/null | tr '\n' ',' | sed 's/,$//')
+            echo "    · $d → ${IPS:-пусто}"
         done
         echo ""
-        echo "  ${YEL}Что делать:${RST}"
-        echo "  1. reg.ru → домен → 'Управление зоной'"
-        echo "  2. УДАЛИТЬ все старые A-записи (обычно $(echo '195.161.62.100'))"
-        echo "  3. Оставить/добавить: A @ $VPS, TTL 300"
-        echo "  4. То же для 'A www $VPS'"
+        echo "  ${DIM}У регистратора (reg.ru / Jino / …):${RST}"
+        echo "  1. Управление зоной → удалить все A, кроме 72.56.9.195"
+        echo "  2. TTL 300 чтобы быстрее пропагировалось"
     fi
     echo ""
-    echo "  После починки запустите финальный скрипт снова:"
-    echo "    bash <(curl -fsSL https://raw.githubusercontent.com/alamangart0011/desktop-tutorial/main/scripts/final.sh)"
-    exit 1
+    yel "Проблемные домены пропустим, рабочие задеплоим"
 fi
 
-# ---------- 4. DNS чистый — запускаем fix-vps ----------
-hdr "3. DNS чистый — запускаю fix-vps.sh (pull + certs + reload)"
+# ---------- 4. Запускаем fix-vps ВСЕГДА ----------
+hdr "3. Запуск fix-vps.sh (pull + certs + reload) — работает с тем, что готово"
 bash <(curl -fsSL https://raw.githubusercontent.com/alamangart0011/desktop-tutorial/main/scripts/fix-vps.sh)
 
 # ---------- 5. Итог ----------
