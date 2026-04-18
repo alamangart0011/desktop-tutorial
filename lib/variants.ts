@@ -41,7 +41,12 @@ export type SiteVariant = {
   regionBadge: string;
   /** Яндекс.Метрика: либо общий счётчик, либо per-domain (заполнить после регистрации). */
   metrikaId: string;
-  /** Яндекс.Вебмастер: per-domain токен подтверждения владения (meta-тег). Пусто — не рендерится. */
+  /**
+   * Яндекс.Вебмастер: per-domain токен подтверждения владения (meta-тег).
+   * ВАЖНО: реальный токен выдаёт панель webmaster.yandex.ru →
+   * «Добавить сайт» → «Мета-тег». Мы НЕ можем придумать свой.
+   * Пусто — meta-тег не рендерится (безопасно). Заполнять после деплоя.
+   */
   yandexVerification?: string;
   /** Дополнительный keyword-focus для ключевых слов в layout. */
   keywords: string[];
@@ -75,7 +80,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     geoRegion: "RU",
     regionBadge: 'По всей России · офис в Санкт-Петербурге',
     metrikaId: '108625530',
-    yandexVerification: '91a8c0e46602e10a',
+    yandexVerification: '',
     keywords: [
       'ГИС Профилактика',
       'подключение к ГИС Профилактика',
@@ -110,7 +115,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     geoRegion: "RU",
     regionBadge: 'Федеральный центр компетенций',
     metrikaId: '108625530',
-    yandexVerification: '3bff3551472b5d65',
+    yandexVerification: '',
     keywords: [
       'ГИС Профилактика официальный сайт',
       'что такое ГИС Профилактика',
@@ -143,7 +148,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     geoRegion: "RU",
     regionBadge: 'Правовое сопровождение · ФСТЭК/ФСБ',
     metrikaId: '108625530',
-    yandexVerification: 'a5e41ed55c8891d4',
+    yandexVerification: '',
     keywords: [
       'постановление 411',
       'ПП 411 от 01.04.2025',
@@ -175,7 +180,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     geoRegion: "RU",
     regionBadge: 'По всей России · удалённое внедрение',
     metrikaId: '108625530',
-    yandexVerification: '8b2080a21c6188e8',
+    yandexVerification: '',
     keywords: [
       'гис 411',
       'гис-411',
@@ -207,7 +212,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     geoRegion: "RU-SPE",
     regionBadge: 'Санкт-Петербург · выезд по районам',
     metrikaId: '108625530',
-    yandexVerification: '1a077e59c3ed2d6b',
+    yandexVerification: '',
     keywords: [
       'гис профилактика спб',
       'гис профилактика санкт-петербург',
@@ -239,7 +244,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     geoRegion: "RU-LEN",
     regionBadge: 'Ленинградская область · выезд инженера',
     metrikaId: '108625530',
-    yandexVerification: 'a155ffbda1c092a2',
+    yandexVerification: '',
     keywords: [
       'гис профилактика ленобласть',
       'гис профилактика ло',
