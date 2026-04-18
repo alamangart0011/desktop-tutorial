@@ -1,12 +1,21 @@
 import { ImageResponse } from 'next/og';
 import { BRAND } from '@/components/constants';
+import { VARIANT } from '@/lib/variants';
 
 export const dynamic = 'force-static';
-export const alt = 'Подключение к ГИС «Профилактика» под ключ — ' + BRAND.name;
+
+// OG image уникален по вариантам, чтобы Яндекс и соцсети видели разные превью на каждый домен.
+const plainH1 = `${VARIANT.h1} ${VARIANT.h1Accent}`.replace(/\u00a0/g, ' ').trim();
+
+export const alt = `${plainH1} — ${BRAND.name}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image() {
+  const hostPretty = VARIANT.host.startsWith('xn--')
+    ? 'гис-411.рф'
+    : VARIANT.host;
+
   return new ImageResponse(
     (
       <div
@@ -42,7 +51,7 @@ export default async function Image() {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontSize: 28, fontWeight: 800 }}>{BRAND.shortName}</div>
-            <div style={{ fontSize: 18, opacity: 0.8 }}>ГИС «Профилактика»</div>
+            <div style={{ fontSize: 18, opacity: 0.8 }}>{VARIANT.regionBadge}</div>
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -60,11 +69,11 @@ export default async function Image() {
           >
             ПП РФ № 411 · ФСТЭК № 21 · УЗ2
           </div>
-          <div style={{ fontSize: 72, fontWeight: 800, lineHeight: 1.05 }}>
-            Подключение к ГИС «Профилактика» под ключ
+          <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.05 }}>
+            {plainH1}
           </div>
-          <div style={{ fontSize: 28, opacity: 0.85, maxWidth: 900 }}>
-            Документы, СЗИ, аттестация ИСПДн, ЕСИА, обучение — 35–45 рабочих дней.
+          <div style={{ fontSize: 26, opacity: 0.85, maxWidth: 980 }}>
+            {VARIANT.heroSubtitle}
           </div>
         </div>
         <div
@@ -78,7 +87,7 @@ export default async function Image() {
         >
           <div>{BRAND.phone}</div>
           <div>{BRAND.email}</div>
-          <div>{BRAND.site.replace(/^https?:\/\//, '')}</div>
+          <div>{hostPretty}</div>
         </div>
       </div>
     ),
