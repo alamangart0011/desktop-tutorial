@@ -193,8 +193,15 @@ export const metadata: Metadata = {
     'apple-mobile-web-app-status-bar-style': 'default',
     'apple-mobile-web-app-title': BRAND.shortName,
     'og:locale:alternate': 'ru_RU',
-    'og:region': 'RU-SPE',
+    'og:region': VARIANT.geoRegion || 'RU-SPE',
     'og:country-name': 'Russia',
+    'geo.region': VARIANT.geoRegion || 'RU-SPE',
+    'geo.placename':
+      VARIANT.region === 'Санкт-Петербург'
+        ? 'Санкт-Петербург'
+        : VARIANT.region === 'Ленинградская область'
+          ? 'Ленинградская область'
+          : 'Russia',
     'article:publisher': SITE_URL,
     'geo.country': 'RU',
     'geo.position': `${BRAND.latitude};${BRAND.longitude}`,

@@ -35,6 +35,8 @@ export type SiteVariant = {
   ogDescription: string;
   /** Геофокус для Яндекс.Вебмастера. */
   region: 'Россия' | 'Санкт-Петербург' | 'Ленинградская область' | 'СЗФО';
+  /** ISO 3166-2 код региона для geo.region meta (RU-SPE, RU-LEN, RU). */
+  geoRegion?: 'RU' | 'RU-SPE' | 'RU-LEN';
   /** Метка в Hero (например «По всей России» или «в Санкт-Петербурге»). */
   regionBadge: string;
   /** Яндекс.Метрика: либо общий счётчик, либо per-domain (заполнить после регистрации). */
@@ -70,6 +72,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     ogDescription:
       'Подключим ведомство к ГИС «Профилактика» за 7 дней. Закрываем предписания прокуратуры, документы 152-ФЗ, УЗ2 ФСТЭК. Фикс. цена в договоре.',
     region: 'Россия',
+    geoRegion: "RU",
     regionBadge: 'По всей России · офис в Санкт-Петербурге',
     metrikaId: '108625530',
     yandexVerification: '91a8c0e46602e10a',
@@ -104,6 +107,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     ogDescription:
       'ГИС Профилактика: официальный порядок подключения по ПП № 411, УЗ2 ФСТЭК, 8 документов ПДн — под ключ за 35–45 дней.',
     region: 'Россия',
+    geoRegion: "RU",
     regionBadge: 'Федеральный центр компетенций',
     metrikaId: '108625530',
     yandexVerification: '3bff3551472b5d65',
@@ -136,6 +140,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     ogDescription:
       'ПП № 411 от 01.04.2025 — подключение к ГИС Профилактика. 20+ обязанных организаций. Штраф до 5 млн ₽. Закроем под ключ.',
     region: 'Россия',
+    geoRegion: "RU",
     regionBadge: 'Правовое сопровождение · ФСТЭК/ФСБ',
     metrikaId: '108625530',
     yandexVerification: 'a5e41ed55c8891d4',
@@ -167,6 +172,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     ogDescription:
       'ГИС-411: подключение к ГИС Профилактика по всей России под ключ. Удалённое внедрение. За 35–45 дней.',
     region: 'Россия',
+    geoRegion: "RU",
     regionBadge: 'По всей России · удалённое внедрение',
     metrikaId: '108625530',
     yandexVerification: '8b2080a21c6188e8',
@@ -198,6 +204,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     ogDescription:
       'ГИС Профилактика в Санкт-Петербурге — подключение школ и КДН под ключ. Выезд по районам СПб и ЛО.',
     region: 'Санкт-Петербург',
+    geoRegion: "RU-SPE",
     regionBadge: 'Санкт-Петербург · выезд по районам',
     metrikaId: '108625530',
     yandexVerification: '1a077e59c3ed2d6b',
@@ -229,6 +236,7 @@ export const VARIANTS: Record<string, SiteVariant> = {
     ogDescription:
       'ГИС Профилактика в Ленобласти — подключение учреждений под ключ. Выезд во все районы ЛО.',
     region: 'Ленинградская область',
+    geoRegion: "RU-LEN",
     regionBadge: 'Ленинградская область · выезд инженера',
     metrikaId: '108625530',
     yandexVerification: 'a155ffbda1c092a2',
