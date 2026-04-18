@@ -4,8 +4,9 @@
 Заточен под продажу услуги подключения организаций к федеральной ГИС «Профилактика
 безнадзорности и правонарушений несовершеннолетних» (ПП РФ № 411, 21 Приказ ФСТЭК, УЗ2).
 
-Прицельно собран под **TOP-1 в Яндексе** по теме «подключение ГИС Профилактика»: 10 JSON-LD,
-sitemap, robots, OG, manifest, Speakable, HowTo, Course, AggregateRating с отзывами.
+Прицельно собран под **TOP-1 в Яндексе** по теме «подключение ГИС Профилактика»: 13 JSON-LD,
+sitemap c якорями, robots с Clean-param, OG/Twitter rich, manifest, Speakable, HowTo, Course,
+DefinedTermSet (глоссарий), AggregateRating с отзывами, A/B-тест Hero, ContextualCta.
 
 ---
 
@@ -20,6 +21,48 @@ npm run lint     # ESLint
 ```
 
 Требования: Node.js ≥ 18.18 (рекомендуется 20+).
+
+---
+
+## Перед показом клиенту
+
+Один скрипт поднимает dev-сервер, прогоняет 31 проверку (рендер CTA, schema.org,
+robots/sitemap/manifest, Метрика) и говорит «можно показывать / нет»:
+
+```bash
+bash scripts/demo-show.sh           # проверить и остановить сервер
+bash scripts/demo-show.sh --keep    # оставить dev-сервер работать
+```
+
+Если все 31 ✓ — в браузере открыть **http://localhost:3000/** и пройти сценарий:
+
+1. **Hero** — кнопка «Рассчитать стоимость за 60 секунд» скроллит к квизу
+2. **Квиз** (5 шагов) — заполнить, на финале форма открывает `mailto:` с расчётом
+3. **Калькулятор риска штрафа** — ввести регион/тип/АРМ, увидеть сумму
+4. **ContextualCta** — три «зелёных» врезки между секциями (audit / quiz / phone)
+5. **Глоссарий** (17 терминов) — DefinedTermSet schema для богатого сниппета
+6. **Sticky CTA на мобильном** (открыть в DevTools 375px) — телефон + квиз
+7. **Exit-intent** — увести курсор за край окна (на десктопе) → модалка
+8. **Footer → Политика обработки ПДн** — открывается отдельная страница `/privacy`
+
+A/B-тест Hero H1: при первом визите cookie `heroAb` = A или B (50/50, 30 дней).
+Чтобы увидеть вариант B вручную:
+
+```js
+document.cookie = 'heroAb=B; path=/; max-age=2592000'; location.reload();
+```
+
+---
+
+## Прод-проверка 6 доменов
+
+```bash
+bash scripts/check-release.sh
+```
+
+Проверяет DNS, HTTPS, TLS, security-заголовки, /api/lead, robots, sitemap, Метрику,
+дубли — для всей доменной сети `gisprof.ru`, `gisprofilaktika.ru`, `pp411.ru`,
+`xn---411-k4d4a4d.xn--p1ai`, `profilaktika-spb.ru`, `spb-gis.ru` + редирект `gis-prof.ru`.
 
 ---
 
