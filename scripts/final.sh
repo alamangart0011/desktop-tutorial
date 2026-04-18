@@ -95,7 +95,7 @@ fi
 
 # ---------- 4. Запускаем fix-vps ВСЕГДА ----------
 hdr "3. Запуск fix-vps.sh (pull + certs + reload) — работает с тем, что готово"
-bash <(curl -fsSL https://raw.githubusercontent.com/alamangart0011/desktop-tutorial/main/scripts/fix-vps.sh)
+bash <(curl -fsSL -H "Cache-Control: no-cache" "https://raw.githubusercontent.com/alamangart0011/desktop-tutorial/main/scripts/fix-vps.sh?t=$(date +%s)")
 
 # ---------- 5. Итог ----------
 hdr "ФИНАЛ"

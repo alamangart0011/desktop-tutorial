@@ -105,7 +105,7 @@ REMOTE_SCRIPT
 
 # ---------- 4. Локальная проверка ----------
 hdr "4. Локальная проверка (check-release)"
-bash <(curl -fsSL https://raw.githubusercontent.com/alamangart0011/desktop-tutorial/main/scripts/check-release.sh) || true
+bash <(curl -fsSL -H "Cache-Control: no-cache" "https://raw.githubusercontent.com/alamangart0011/desktop-tutorial/main/scripts/check-release.sh?t=$(date +%s)") || true
 
 hdr "ГОТОВО"
 printf "Если остались ${RED}КРИТИЧЕСКИЕ${RST}, вероятно DNS 2 доменов не указан на %s.\n" "$VPS"
