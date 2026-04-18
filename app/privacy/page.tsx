@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BRAND } from '@/components/constants';
+import { VARIANT } from '@/lib/variants';
+
+// Site URL должен совпадать с текущим вариантом, иначе Яндекс увидит ссылку на main domain в тексте политики на всех 6 сайтах.
+const SITE = VARIANT.canonicalBase;
 
 export const metadata: Metadata = {
   title: 'Политика обработки персональных данных',
@@ -81,7 +85,7 @@ export default function PrivacyPage() {
               <li>
                 E-mail: <a href={`mailto:${BRAND.email}`} className="text-[var(--color-brand)]">{BRAND.email}</a>
               </li>
-              <li>Сайт: {BRAND.site}</li>
+              <li>Сайт: {SITE}</li>
               <li>Режим работы: {BRAND.workingHours}</li>
             </ul>
           </section>
@@ -90,7 +94,7 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-bold mt-8">3. Какие персональные данные мы обрабатываем</h2>
             <p>
               Оператор обрабатывает следующие персональные данные субъектов, добровольно
-              переданных через формы на сайте {BRAND.site}:
+              переданных через формы на сайте {SITE}:
             </p>
             <ul className="list-disc pl-5 space-y-1">
               <li>фамилия, имя, отчество;</li>
@@ -180,7 +184,7 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-bold mt-8">11. Изменение Политики</h2>
             <p>
               Оператор имеет право вносить изменения в настоящую Политику. Актуальная редакция
-              всегда доступна по адресу {BRAND.site}/privacy. Дата последнего обновления указана
+              всегда доступна по адресу {SITE}/privacy. Дата последнего обновления указана
               в начале документа.
             </p>
           </section>

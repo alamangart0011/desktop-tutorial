@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import { BRAND, NAV } from './constants';
+import { VARIANT } from '@/lib/variants';
 import { ExternalLinkIcon } from './Icons';
+
+// Ссылка «назад на сайт» в Footer должна вести на текущий вариант, иначе на pp411.ru ссылка уходит на gisprof.ru.
+const SITE = VARIANT.canonicalBase;
+const SITE_PRETTY = VARIANT.host.startsWith('xn--')
+  ? 'гис-411.рф'
+  : VARIANT.host;
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -19,7 +26,7 @@ export function Footer() {
     >
       <meta itemProp="name" content={BRAND.name} />
       <meta itemProp="legalName" content={BRAND.legal} />
-      <meta itemProp="url" content={BRAND.site} />
+      <meta itemProp="url" content={SITE} />
       <meta itemProp="taxID" content={BRAND.inn} />
       <div className="container-x py-12 grid grid-cols-1 md:grid-cols-[1.2fr,1fr,1fr] gap-8 md:gap-10">
         <div>
@@ -144,12 +151,11 @@ export function Footer() {
             </Link>
             <span className="opacity-50">·</span>
             <a
-              href={BRAND.site}
-              target="_blank"
+              href={SITE}
               rel="noreferrer noopener"
               className="inline-flex items-center gap-1 text-white/85 hover:text-white transition"
             >
-              {BRAND.site}
+              {SITE_PRETTY}
               <ExternalLinkIcon className="w-3 h-3" />
             </a>
           </div>
