@@ -7,8 +7,19 @@ import { VARIANT_KEY } from '@/lib/variants';
 import { getVariantContent } from '@/lib/variant-content';
 
 const VC = getVariantContent(VARIANT_KEY);
-// Ставим вариант-специфичные вопросы первыми, затем общий корпус FAQ
-const FAQ_MERGED = [...VC.faq, ...FAQ_QA];
+// Ставим вариант-специфичные вопросы первыми, затем общий корпус FAQ.
+// Дедуп по тексту вопроса — варианта-специфичные перекрывают общие (приходят раньше).
+const FAQ_MERGED = (() => {
+  const seen = new Set<string>();
+  const out: { q: string; a: string }[] = [];
+  for (const item of [...VC.faq, ...FAQ_QA]) {
+    const key = item.q.trim().toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(item);
+  }
+  return out;
+})();
 
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
@@ -84,7 +95,7 @@ export function Faq() {
             const isOpen = open === x.i;
             return (
               <div
-                key={x.q}
+                key={`${x.i}-${x.q}`}
                 className="rounded-2xl border border-slate-200 bg-[var(--color-paper)] overflow-hidden transition hover:border-[var(--color-brand-2)]/40"
               >
                 <button
