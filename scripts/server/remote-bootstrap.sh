@@ -257,9 +257,21 @@ gzip_comp_level 5;
 gzip_min_length 1024;
 gzip_types text/plain text/css text/xml application/json application/javascript application/xml+rss application/atom+xml image/svg+xml;
 
-# Rate limiting: 2 заявки/сек на IP, burst 5, и общий rate для статики
-limit_req_zone \$binary_remote_addr zone=api_limit:10m rate=2r/s;
-limit_req_zone \$binary_remote_addr zone=site_limit:10m rate=30r/s;
+# Rate limiting: 2 заявки/сек на IP, burst 5, и общий rate для статики.
+# Localhost + VPS-own-IP (curl --resolve) пускаем мимо лимитера,
+# чтобы внутренние smoke-tests и healthcheck-и не били 429.
+geo \$limit_exempt {
+    default        0;
+    127.0.0.1      1;
+    ::1            1;
+    $SELF_IP       1;
+}
+map \$limit_exempt \$limit_key {
+    0              \$binary_remote_addr;
+    1              "";
+}
+limit_req_zone \$limit_key zone=api_limit:10m rate=2r/s;
+limit_req_zone \$limit_key zone=site_limit:10m rate=30r/s;
 
 # Общий ACME-challenge (на случай отсутствующего HTTPS)
 server {
@@ -289,8 +301,9 @@ server {
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 1d;
     ssl_session_tickets off;
-    ssl_stapling on;
-    ssl_stapling_verify on;
+    # OCSP stapling отключаем: на Let's Encrypt R10/R11 Ubuntu-резолвер
+    # стабильно пишет «no OCSP responder URL», шумит в логах без пользы.
+    ssl_stapling off;
 
     root $docroot;
     index index.html;
@@ -458,6 +471,7 @@ for h in "${HOSTS[@]}"; do
     else
         echo "   · $h → HTTP $code | $body"
     fi
+    sleep 1   # интервал между тестами: запас на rate_limit
 done
 
 # ---------- 12. Итог ----------
