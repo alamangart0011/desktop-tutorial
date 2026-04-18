@@ -250,7 +250,7 @@ map \$sent_http_content_type \$expires_val {
     ~*(image|font|javascript|css)      max;
 }
 
-# gzip — Ubuntu nginx.conf уже включает `gzip on` и `gzip_vary on`,
+# gzip: Ubuntu nginx.conf уже включает gzip on и gzip_vary on,
 # дублировать их нельзя (nginx: directive is duplicate). Только дополняем.
 gzip_proxied any;
 gzip_comp_level 5;
