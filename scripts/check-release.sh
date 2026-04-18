@@ -62,17 +62,26 @@ resolve_ip() {
 }
 
 # curl_d <domain> <curl-args...> — если локальный DNS не совпадает с VPS,
-# вставляем --resolve чтобы достучаться до актуального VPS-нода. URL-часть
-# в аргументах должна быть именно https://<domain>/... или https://<domain>/path
+# вставляем --resolve чтобы достучаться до актуального VPS-нода. До 3 попыток
+# с паузой 2 сек — защищаем от DNS-флаппинга dual A-record.
 curl_d() {
     local d="$1"; shift
-    local ip args
-    ip=$(resolve_ip "$d")
-    args=()
-    if [[ -n "$VPS_IP" && -n "$ip" && "$ip" != "$VPS_IP" ]]; then
-        args+=(--resolve "$d:443:$VPS_IP" --resolve "$d:80:$VPS_IP")
-    fi
-    curl "${args[@]}" "$@"
+    local ip args attempt out
+    for attempt in 1 2 3; do
+        ip=$(resolve_ip "$d")
+        args=()
+        if [[ -n "$VPS_IP" && -n "$ip" && "$ip" != "$VPS_IP" ]]; then
+            args+=(--resolve "$d:443:$VPS_IP" --resolve "$d:80:$VPS_IP")
+        fi
+        out=$(curl "${args[@]}" "$@" 2>/dev/null) || true
+        if [[ -n "$out" ]]; then
+            echo "$out"
+            return 0
+        fi
+        [[ $attempt -lt 3 ]] && sleep 2
+    done
+    echo "$out"
+    return 1
 }
 
 # ---------- 1. DNS ----------
@@ -102,19 +111,35 @@ hdr "2. HTTPS доступность + TLS"
 # IP VPS — первый, который мы увидели для gisprof.ru (опорный домен)
 VPS_IP=$(resolve_ip "gisprof.ru")
 [[ -z "$VPS_IP" ]] && VPS_IP="$FIRST_IP"
+
+# try_curl: до 5 попыток с паузой 3 сек; для доменов с DNS-флаппингом
+# перерезолвим IP на каждой попытке и при необходимости цепляем --resolve.
+try_curl_code() {
+    local d="$1" code="000" attempt resolve_arg ip
+    for attempt in 1 2 3 4 5; do
+        ip=$(resolve_ip "$d")
+        resolve_arg=""
+        if [[ -n "$VPS_IP" && -n "$ip" && "$ip" != "$VPS_IP" ]]; then
+            resolve_arg="--resolve $d:443:$VPS_IP"
+        fi
+        code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 $resolve_arg \
+            -H "User-Agent: check-release/1.0" "https://$d/" 2>/dev/null)
+        if [[ "$code" == "200" || "$code" == "301" || "$code" == "302" ]]; then
+            echo "$code|$ip|$resolve_arg"
+            return 0
+        fi
+        [[ $attempt -lt 5 ]] && sleep 3
+    done
+    echo "$code|$ip|$resolve_arg"
+    return 1
+}
+
 for d in "${DOMAINS_CONTENT[@]}"; do
-    # Если локальный DNS не совпадает с VPS — пробуем через --resolve.
-    local_ip=$(resolve_ip "$d")
-    resolve_arg=""
-    if [[ -n "$VPS_IP" && "$local_ip" != "$VPS_IP" ]]; then
-        resolve_arg="--resolve $d:443:$VPS_IP"
-    fi
-    code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 $resolve_arg \
-        -H "User-Agent: check-release/1.0" "https://$d/" 2>/dev/null)
+    IFS='|' read -r code local_ip resolve_arg <<< "$(try_curl_code "$d")"
     case "$code" in
         200)
             if [[ -n "$resolve_arg" ]]; then
-                yel "https://$d/ → HTTP 200 только через --resolve $VPS_IP (ваш DNS-кэш/регистратор отдаёт $local_ip)"
+                yel "https://$d/ → HTTP 200 через --resolve $VPS_IP (DNS-кэш/регистратор отдаёт $local_ip — почистите dual A-record)"
             else
                 ok "https://$d/ → HTTP 200"
             fi
@@ -122,9 +147,9 @@ for d in "${DOMAINS_CONTENT[@]}"; do
         301|302) yel "https://$d/ → HTTP $code (редирект — норма для www, но на корне странно)" ;;
         000)
             if [[ -n "$resolve_arg" ]]; then
-                bad "https://$d/ — не отвечает ни через DNS ($local_ip), ни через VPS ($VPS_IP)"
+                bad "https://$d/ — не отвечает ни через DNS ($local_ip), ни через VPS ($VPS_IP) после 5 попыток"
             else
-                bad "https://$d/ — не отвечает (порт 443 закрыт? Нет certbot-сертификата?)"
+                bad "https://$d/ — не отвечает после 5 попыток (порт 443 закрыт? Нет certbot-сертификата?)"
             fi
             ;;
         *)   bad "https://$d/ → HTTP $code" ;;
@@ -134,16 +159,20 @@ done
 # TLS-валидность
 hdr "2b. Сертификаты Let's Encrypt"
 for d in "${DOMAINS_CONTENT[@]}"; do
-    local_ip=$(resolve_ip "$d")
-    # Если DNS не на VPS — openssl подключаемся напрямую к VPS, SNI = $d
-    connect_host="$d:443"
-    if [[ -n "$VPS_IP" && "$local_ip" != "$VPS_IP" ]]; then
-        connect_host="$VPS_IP:443"
-    fi
-    exp=$(echo | openssl s_client -servername "$d" -connect "$connect_host" -verify_return_error 2>/dev/null \
-        | openssl x509 -noout -enddate 2>/dev/null | sed 's/notAfter=//')
+    exp=""
+    for attempt in 1 2 3 4 5; do
+        local_ip=$(resolve_ip "$d")
+        connect_host="$d:443"
+        if [[ -n "$VPS_IP" && "$local_ip" != "$VPS_IP" ]]; then
+            connect_host="$VPS_IP:443"
+        fi
+        exp=$(echo | openssl s_client -servername "$d" -connect "$connect_host" -verify_return_error 2>/dev/null \
+            | openssl x509 -noout -enddate 2>/dev/null | sed 's/notAfter=//')
+        [[ -n "$exp" ]] && break
+        [[ $attempt -lt 5 ]] && sleep 3
+    done
     if [[ -z "$exp" ]]; then
-        bad "$d — TLS handshake провален (нет сертификата или fake)"
+        bad "$d — TLS handshake провален после 5 попыток (нет сертификата или fake)"
         continue
     fi
     exp_s=$(date -j -f "%b %d %T %Y %Z" "$exp" +%s 2>/dev/null || date -d "$exp" +%s 2>/dev/null)
