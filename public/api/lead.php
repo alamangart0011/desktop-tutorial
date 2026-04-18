@@ -63,6 +63,7 @@ $cfg = [
     'tg_chat'     => $env['TG_CHAT_ID']       ?? '',
     'rate_window' => (int)($env['RATE_LIMIT_WINDOW'] ?? 600),
     'rate_max'    => (int)($env['RATE_LIMIT_MAX']    ?? 8),
+    'rate_exempt' => $env['RATE_LIMIT_EXEMPT_IPS']   ?? '127.0.0.1,::1',
     'log_dir'     => $env['LEAD_LOG_DIR']     ?? '/var/log/gisprof',
 ];
 
@@ -70,26 +71,30 @@ $cfg = [
 $rawIp = $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 $rawIp = trim(explode(',', $rawIp)[0]);
 $ip = filter_var($rawIp, FILTER_VALIDATE_IP) ?: '0.0.0.0';
-$rateDir = $cfg['log_dir'] . '/rl';
-if (!is_dir($rateDir)) {
-    @mkdir($rateDir, 0770, true);
-}
-$rateFile = $rateDir . '/' . preg_replace('/[^a-f0-9:.]/i', '_', $ip) . '.log';
-$now = time();
-$windowStart = $now - $cfg['rate_window'];
-$stamps = [];
-if (is_readable($rateFile)) {
-    foreach (file($rateFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $ts) {
-        if ((int)$ts >= $windowStart) {
-            $stamps[] = (int)$ts;
+$exemptIps = array_filter(array_map('trim', explode(',', $cfg['rate_exempt'])));
+$isExempt = in_array($ip, $exemptIps, true);
+if (!$isExempt) {
+    $rateDir = $cfg['log_dir'] . '/rl';
+    if (!is_dir($rateDir)) {
+        @mkdir($rateDir, 0770, true);
+    }
+    $rateFile = $rateDir . '/' . preg_replace('/[^a-f0-9:.]/i', '_', $ip) . '.log';
+    $now = time();
+    $windowStart = $now - $cfg['rate_window'];
+    $stamps = [];
+    if (is_readable($rateFile)) {
+        foreach (file($rateFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $ts) {
+            if ((int)$ts >= $windowStart) {
+                $stamps[] = (int)$ts;
+            }
         }
     }
+    if (count($stamps) >= $cfg['rate_max']) {
+        json_response(429, ['ok' => false, 'error' => 'rate_limited']);
+    }
+    $stamps[] = $now;
+    @file_put_contents($rateFile, implode("\n", $stamps));
 }
-if (count($stamps) >= $cfg['rate_max']) {
-    json_response(429, ['ok' => false, 'error' => 'rate_limited']);
-}
-$stamps[] = $now;
-@file_put_contents($rateFile, implode("\n", $stamps));
 
 // ---------- Тело запроса ----------
 $raw = file_get_contents('php://input') ?: '';

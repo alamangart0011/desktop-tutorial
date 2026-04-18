@@ -85,11 +85,22 @@ TG_BOT_TOKEN=
 TG_CHAT_ID=
 RATE_LIMIT_WINDOW=600
 RATE_LIMIT_MAX=8
+RATE_LIMIT_EXEMPT_IPS=127.0.0.1,::1,$SELF_IP
 LEAD_LOG_DIR=/var/log/gisprof
 EOF
+else
+    # Ensure exempt list contains localhost + VPS own IP (idempotent)
+    if ! grep -q '^RATE_LIMIT_EXEMPT_IPS=' "$ENV_FILE"; then
+        echo "RATE_LIMIT_EXEMPT_IPS=127.0.0.1,::1,$SELF_IP" >> "$ENV_FILE"
+    else
+        sed -i "s|^RATE_LIMIT_EXEMPT_IPS=.*|RATE_LIMIT_EXEMPT_IPS=127.0.0.1,::1,$SELF_IP|" "$ENV_FILE"
+    fi
 fi
 chown root:www-data "$ENV_FILE"
 chmod 640 "$ENV_FILE"
+
+# Чистим счётчики rate-limit от прошлых bootstrap-тестов (иначе 429 висит)
+rm -f /var/log/gisprof/rl/*.log 2>/dev/null || true
 
 mkdir -p /var/log/gisprof/rl
 chown -R www-data:www-data /var/log/gisprof
@@ -137,6 +148,11 @@ for host in "${HOSTS[@]}"; do
     if [[ -d "$SRC/$host" ]]; then
         mkdir -p "$target"
         rsync -a --delete "$SRC/$host/" "$target/"
+        # Overlay свежий /api/lead.php из main — быстрее, чем ребилдить 6 вариантов
+        if [[ -f /opt/gisprof-src/public/api/lead.php ]]; then
+            mkdir -p "$target/api"
+            install -m 644 /opt/gisprof-src/public/api/lead.php "$target/api/lead.php"
+        fi
         chown -R "$DEPLOY_USER:www-data" "$target"
         find "$target" -type d -exec chmod 755 {} \;
         find "$target" -type f -exec chmod 644 {} \;
