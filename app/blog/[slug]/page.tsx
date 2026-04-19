@@ -70,9 +70,23 @@ export default async function BlogPostPage({
     datePublished: meta.date,
     dateModified: meta.updated ?? meta.date,
     author: {
-      '@type': 'Organization',
-      name: BRAND.name,
-      url: VARIANT.canonicalBase,
+      '@type': 'Person',
+      name: 'Инженерная команда Оборон-Экран',
+      jobTitle: 'Ведущие инженеры ИБ, лицензиат ФСТЭК',
+      worksFor: {
+        '@type': 'Organization',
+        name: BRAND.name,
+        url: VARIANT.canonicalBase,
+      },
+      knowsAbout: [
+        'ГИС «Профилактика»',
+        'ПП РФ № 411',
+        '21 Приказ ФСТЭК',
+        'защита персональных данных',
+        'аттестация ИСПДн',
+        'Secret Net Studio',
+        'КриптоПро NGate',
+      ],
     },
     publisher: {
       '@type': 'Organization',
@@ -87,6 +101,11 @@ export default async function BlogPostPage({
     timeRequired: `PT${meta.readMinutes}M`,
     articleSection: meta.category,
     inLanguage: 'ru-RU',
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.blog-prose h2', '.blog-prose p'],
+    },
+    isAccessibleForFree: true,
   };
 
   const breadcrumbJsonLd = {
