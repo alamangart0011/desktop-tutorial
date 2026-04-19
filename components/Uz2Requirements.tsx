@@ -78,9 +78,21 @@ const DOCS = [
 const OS = ['Astra Linux', 'Alt Linux', 'РЕД ОС'];
 
 const FINES = [
-  { who: 'Граждане', sum: '100 000 – 200 000 ₽' },
-  { who: 'Должностные лица', sum: '200 000 – 400 000 ₽' },
-  { who: 'Юридические лица', sum: '3 000 000 – 5 000 000 ₽' },
+  {
+    who: 'Обработка ПДн без согласия',
+    sum: 'до 700 000 ₽',
+    note: 'ч. 2 ст. 13.11 КоАП — для юр. лиц',
+  },
+  {
+    who: 'Утечка ПДн 1 000–10 000 субъектов',
+    sum: '3 000 000 – 5 000 000 ₽',
+    note: 'ч. 13 ст. 13.11 КоАП (ред. ФЗ № 420 от 30.11.2024)',
+  },
+  {
+    who: 'Утечка ПДн свыше 100 000 субъектов',
+    sum: '10 000 000 – 15 000 000 ₽',
+    note: 'ч. 15 ст. 13.11 КоАП — повторно: оборотный штраф 1–3 % выручки',
+  },
 ];
 
 export function Uz2Requirements() {
@@ -188,11 +200,12 @@ export function Uz2Requirements() {
         <div className="mt-6 grid lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2 rounded-2xl border border-red-200 bg-red-50 p-6 md:p-8">
             <h3 className="font-extrabold text-xl text-red-800">
-              Штрафы по 13.11 КоАП — от 100 тыс. до 5 млн ₽
+              Ответственность по ст. 13.11 КоАП РФ — до 15 млн ₽
             </h3>
             <p className="mt-1 text-sm text-red-900/90">
-              За нарушение требований по безопасности ПДн, повлёкшее
-              неправомерную передачу или доступ к ПДн несовершеннолетних.
+              ФЗ № 420-ФЗ от 30.11.2024 ввёл повышенные штрафы за утечку
+              персональных данных. Для повторных нарушений — оборотные штрафы
+              (1–3 % годовой выручки, минимум 20 млн ₽).
             </p>
             <div className="mt-5 grid sm:grid-cols-3 gap-3">
               {FINES.map((s) => (
@@ -200,11 +213,14 @@ export function Uz2Requirements() {
                   key={s.who}
                   className="rounded-xl bg-white border border-red-200 p-4"
                 >
-                  <div className="text-xs text-red-700 font-semibold uppercase tracking-wide">
+                  <div className="text-xs text-red-700 font-semibold uppercase tracking-wide leading-snug">
                     {s.who}
                   </div>
-                  <div className="mt-1 font-extrabold text-[var(--color-ink)]">
+                  <div className="mt-2 font-extrabold text-[var(--color-ink)]">
                     {s.sum}
+                  </div>
+                  <div className="mt-1 text-[11px] text-red-900/70 leading-snug">
+                    {s.note}
                   </div>
                 </div>
               ))}
