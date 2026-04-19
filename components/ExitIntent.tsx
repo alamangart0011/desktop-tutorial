@@ -12,38 +12,34 @@ export function ExitIntent() {
     if (typeof window === 'undefined') return;
     if (sessionStorage.getItem(KEY) === '1') return;
     const isDesktop = window.matchMedia('(pointer: fine)').matches;
+    if (!isDesktop) return;
 
-    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+    const mountedAt = Date.now();
+    let hasScrolled = false;
     let shown = false;
 
     const show = () => {
       if (shown) return;
+      if (Date.now() - mountedAt < 20000) return;
+      if (!hasScrolled) return;
       shown = true;
       sessionStorage.setItem(KEY, '1');
       setOpen(true);
     };
 
     const onLeave = (e: MouseEvent) => {
-      if (isDesktop && e.clientY <= 4 && e.relatedTarget === null) show();
+      if (e.clientY <= 2 && e.relatedTarget === null) show();
     };
-
-    const resetIdle = () => {
-      if (idleTimer) clearTimeout(idleTimer);
-      idleTimer = setTimeout(show, 45000);
+    const onScroll = () => {
+      hasScrolled = true;
     };
 
     document.addEventListener('mouseleave', onLeave);
-    ['mousemove', 'touchstart', 'scroll', 'keydown'].forEach((ev) =>
-      document.addEventListener(ev, resetIdle, { passive: true })
-    );
-    resetIdle();
+    window.addEventListener('scroll', onScroll, { passive: true, once: true });
 
     return () => {
       document.removeEventListener('mouseleave', onLeave);
-      ['mousemove', 'touchstart', 'scroll', 'keydown'].forEach((ev) =>
-        document.removeEventListener(ev, resetIdle)
-      );
-      if (idleTimer) clearTimeout(idleTimer);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 

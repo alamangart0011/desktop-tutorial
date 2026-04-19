@@ -21,9 +21,6 @@ import { BackToTop } from '@/components/BackToTop';
 import { HomeJsonLd } from '@/components/HomeJsonLd';
 import { ExitIntent } from '@/components/ExitIntent';
 import { CallbackWidget } from '@/components/CallbackWidget';
-import { LiveViewers } from '@/components/LiveViewers';
-import { SlotsLeftBar } from '@/components/SlotsLeftBar';
-import { RecentLeads } from '@/components/RecentLeads';
 import { SeoContent } from '@/components/SeoContent';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { HeroAB } from '@/components/HeroAB';
@@ -86,9 +83,6 @@ export default function Page() {
       <CookieBanner />
       <ExitIntent />
       <CallbackWidget />
-      <LiveViewers />
-      <RecentLeads />
-      <SlotsLeftBar />
       <HomeJsonLd />
     </>
   );
