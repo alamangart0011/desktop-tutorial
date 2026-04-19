@@ -57,6 +57,11 @@ export function Footer() {
                 </a>
               </li>
             ))}
+            <li>
+              <Link href="/blog" className="text-white/85 hover:text-white transition">
+                Блог
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

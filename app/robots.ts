@@ -91,6 +91,7 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: [
       `${SITE}/sitemap.xml`,
       `${SITE}/turbo.xml`,
+      `${SITE}/blog/rss.xml`,
     ],
     host: HOST,
   };

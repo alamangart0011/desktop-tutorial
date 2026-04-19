@@ -86,6 +86,12 @@ export function Header() {
               {n.label}
             </a>
           ))}
+          <Link
+            href="/blog"
+            className="nav-link text-sm transition-colors text-[var(--color-ink-2)] hover:text-[var(--color-brand)]"
+          >
+            Блог
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -150,6 +156,15 @@ export function Header() {
                 </a>
               </li>
             ))}
+            <li>
+              <Link
+                href="/blog"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2.5 text-sm text-[var(--color-ink)] hover:bg-slate-50 transition"
+              >
+                Блог
+              </Link>
+            </li>
             <li className="mt-2 grid grid-cols-2 gap-2">
               <a
                 href={`tel:${BRAND.phoneRaw}`}
