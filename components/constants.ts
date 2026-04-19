@@ -62,10 +62,10 @@ export const FORM = {
 } as const;
 
 export const NAV = [
-  { href: '#uz2', label: 'ФСТЭК УЗ2' },
-  { href: '#cases', label: 'Кейсы' },
-  { href: '#pricing', label: 'Пакеты' },
-  { href: '#guarantee', label: 'Гарантии' },
-  { href: '#faq', label: 'FAQ' },
-  { href: '#contact', label: 'Контакты' },
+  { href: '/#uz2', label: 'ФСТЭК УЗ2' },
+  { href: '/#cases', label: 'Кейсы' },
+  { href: '/#pricing', label: 'Пакеты' },
+  { href: '/#guarantee', label: 'Гарантии' },
+  { href: '/#faq', label: 'FAQ' },
+  { href: '/#contact', label: 'Контакты' },
 ] as const;
