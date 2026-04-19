@@ -153,7 +153,7 @@ export default async function BlogPostPage({
                 {meta.excerpt}
               </p>
             )}
-            <div className="prose prose-slate mt-8 max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-10 prose-h3:text-lg prose-h3:mt-6 prose-a:text-[var(--color-brand)] prose-a:no-underline hover:prose-a:underline prose-strong:text-[var(--color-ink)] prose-ol:my-4 prose-ul:my-4 prose-li:my-1">
+            <div className="blog-prose mt-8">
               <Content />
             </div>
           </div>
