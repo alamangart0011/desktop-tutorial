@@ -1,0 +1,68 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /thanks
+
+User-Agent: Yandex
+Allow: /
+Disallow: /api/
+Disallow: /thanks
+
+User-Agent: YandexBot
+Allow: /
+Disallow: /api/
+Disallow: /thanks
+
+User-Agent: YandexImages
+Allow: /
+
+User-Agent: YandexMedia
+Allow: /
+
+User-Agent: YandexMetrika
+Allow: /
+
+User-Agent: YandexDirect
+Allow: /
+
+User-Agent: YandexTurbo
+Allow: /
+
+User-Agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /thanks
+
+User-Agent: Googlebot-Image
+Allow: /
+
+User-Agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /thanks
+
+User-Agent: Mail.Ru
+Allow: /
+
+User-Agent: DuckDuckBot
+Allow: /
+
+User-Agent: AhrefsBot
+Disallow: /
+
+User-Agent: SemrushBot
+Disallow: /
+
+User-Agent: MJ12bot
+Disallow: /
+
+User-Agent: DotBot
+Disallow: /
+
+User-Agent: BLEXBot
+Disallow: /
+
+Host: profilaktika-spb.ru
+Sitemap: https://profilaktika-spb.ru/sitemap.xml
+Sitemap: https://profilaktika-spb.ru/turbo.xml
+Sitemap: https://profilaktika-spb.ru/blog/rss.xml

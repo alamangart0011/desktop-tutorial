@@ -1,0 +1,11 @@
+Contact: mailto:mail@oboron-it.ru
+Contact: tel:+78126608001
+Expires: 2027-12-31T23:59:59+03:00
+Preferred-Languages: ru, en
+Canonical: https://profilaktika-spb.ru/.well-known/security.txt
+Policy: https://profilaktika-spb.ru/privacy
+# НПК «Оборон-Экран» — ответственное раскрытие уязвимостей.
+# Если вы нашли уязвимость на profilaktika-spb.ru или в поставляемых нами системах —
+# свяжитесь с нами по указанным контактам. Подробности у нас не разглашаются
+# публично до устранения. Не проводите DoS, социальную инженерию против сотрудников,
+# не выгружайте и не публикуйте чужие ПДн.

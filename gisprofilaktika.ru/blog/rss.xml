@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Блог НПК «Оборон-Экран» — ГИС «Профилактика» и ИБ для госсектора</title>
+    <link>https://gisprofilaktika.ru/blog</link>
+    <atom:link href="https://gisprofilaktika.ru/blog/rss.xml" rel="self" type="application/rss+xml" />
+    <description>Разборы ПП 411, 21 Приказа ФСТЭК, сравнения СЗИ, чек-листы аттестации ИСПДн. От действующих инженеров лицензиата ФСТЭК.</description>
+    <language>ru-RU</language>
+    <lastBuildDate>Sun, 19 Apr 2026 23:52:47 GMT</lastBuildDate>
+    <item>
+      <title>Постановление Правительства РФ № 411: полный разбор требований к ГИС «Профилактика»</title>
+      <link>https://gisprofilaktika.ru/blog/pp411-full-breakdown</link>
+      <guid isPermaLink="true">https://gisprofilaktika.ru/blog/pp411-full-breakdown</guid>
+      <pubDate>Wed, 15 Apr 2026 00:00:00 GMT</pubDate>
+      <description>Постановление Правительства № 411 от 01.04.2025 обязало 20+ типов организаций обмениваться данными по несовершеннолетним только через ГИС «Профилактика». С 01.12.2025 штрафы по 13.11 КоАП применяются в полную силу — за утечку ПДн до 15 млн ₽ юр. лицу (ч. 13–15, в ред. ФЗ № 420 от 30.11.2024). Разбираем документ по абзацам.</description>
+      <category>Нормативка</category>
+    </item>
+    <item>
+      <title>УЗ2 по 21 Приказу ФСТЭК на пальцах: что на самом деле требуется</title>
+      <link>https://gisprofilaktika.ru/blog/uz2-fstek-na-paltsah</link>
+      <guid isPermaLink="true">https://gisprofilaktika.ru/blog/uz2-fstek-na-paltsah</guid>
+      <pubDate>Sun, 12 Apr 2026 00:00:00 GMT</pubDate>
+      <description>Без УЗ2 в ГИС «Профилактика» не пустят. Разбираем без канцелярита: что такое 2-й уровень защищённости, какие 7 категорий СЗИ должны стоять на каждом АРМ, какие 8 документов обязательны и сколько стоит нормальный комплект.</description>
+      <category>ФСТЭК</category>
+    </item>
+    <item>
+      <title>Топ-10 ошибок при подключении к ГИС «Профилактика» — и как их избежать</title>
+      <link>https://gisprofilaktika.ru/blog/top-errors-connecting-gis</link>
+      <guid isPermaLink="true">https://gisprofilaktika.ru/blog/top-errors-connecting-gis</guid>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 GMT</pubDate>
+      <description>За полгода работы по ГИС «Профилактика» мы насобирали коллекцию типовых граблей, на которые наступают 80 % подключающихся самостоятельно. Ни одна из них не смертельна, но каждая стоит минимум месяца на переделку. Расскажем как их обойти.</description>
+      <category>Практика</category>
+    </item>
+    <item>
+      <title>Чек-лист готовности к аттестации ИСПДн для ГИС «Профилактика»</title>
+      <link>https://gisprofilaktika.ru/blog/checklist-ispdn-attestation</link>
+      <guid isPermaLink="true">https://gisprofilaktika.ru/blog/checklist-ispdn-attestation</guid>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate>
+      <description>45 пунктов, разбитые на 5 блоков — то, что мы реально проверяем у клиента на бесплатном аудите за 30 минут. Пройдитесь по нему сами, и если хотя бы в одном блоке набралось меньше 80 % «да» — это сигнал, что аттестация провалится.</description>
+      <category>Практика</category>
+    </item>
+    <item>
+      <title>Secret Net Studio vs Dallas Lock vs Аккорд: какое СЗИ НСД выбрать под ГИС «Профилактика»</title>
+      <link>https://gisprofilaktika.ru/blog/secret-net-studio-vs-alternatives</link>
+      <guid isPermaLink="true">https://gisprofilaktika.ru/blog/secret-net-studio-vs-alternatives</guid>
+      <pubDate>Sun, 05 Apr 2026 00:00:00 GMT</pubDate>
+      <description>За последние пять лет мы внедрили Secret Net Studio на сотнях рабочих мест в госсекторе Санкт-Петербурга и регулярно сравниваем его с альтернативами — Dallas Lock и Аккорд. Публикуем честное сравнение по 8 параметрам без маркетинговой воды.</description>
+      <category>Технологии</category>
+    </item>
+  </channel>
+</rss>

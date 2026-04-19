@@ -1,0 +1,13 @@
+/* TEAM */
+Команда: НПК «Оборон-Экран»
+Специализация: информационная безопасность, СЗИ, аттестация ИСПДн, подключение к ГИС «Профилактика»
+Сайт: https://spb-gis.ru
+Зеркала: gisprof.ru · gisprofilaktika.ru · pp411.ru · xn---411-k4d4a4d.xn--p1ai · profilaktika-spb.ru
+Контакт: mail@oboron-it.ru
+Телефон: +7 (812) 660-80-01
+Расположение: Санкт-Петербург, Россия
+
+/* STACK */
+Next.js 15, React 19, Tailwind CSS v4, TypeScript
+Деплой: Static Export + nginx + Let's Encrypt
+SEO: 13 JSON-LD (Service, Product, HowTo, FAQPage, Course, GovernmentService, TechArticle, BreadcrumbList, Speakable, VideoObject, WebSite, DefinedTermSet, AggregateRating), OG 1200×630, Sitemap, robots с Clean-param, Yandex Turbo RSS, IndexNow, A/B-тест Hero
