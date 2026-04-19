@@ -53,31 +53,31 @@ export function Header() {
       >
         <Link
           href="#top"
-          className="flex items-center gap-2 group"
+          className="flex items-center gap-2 group shrink-0"
           onClick={() => setOpen(false)}
         >
           <span
-            className={`inline-flex items-center justify-center rounded-xl bg-[var(--color-brand)] text-white font-extrabold transition-all duration-300 group-hover:bg-[var(--color-brand-2)] group-hover:shadow-md ${
+            className={`inline-flex items-center justify-center rounded-xl bg-[var(--color-brand)] text-white font-extrabold transition-all duration-300 group-hover:bg-[var(--color-brand-2)] group-hover:shadow-md shrink-0 ${
               scrolled ? 'w-8 h-8 text-sm' : 'w-9 h-9'
             }`}
           >
             О
           </span>
-          <span className="font-extrabold tracking-tight text-[15px] leading-tight">
+          <span className="font-extrabold tracking-tight text-[15px] leading-tight whitespace-nowrap">
             {BRAND.shortName}
-            <span className="block text-[11px] font-medium text-[var(--color-muted)]">
+            <span className="block text-[11px] font-medium text-[var(--color-muted)] whitespace-nowrap">
               ГИС «Профилактика»
             </span>
           </span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-6" aria-label="Главное меню">
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-6 min-w-0" aria-label="Главное меню">
           {NAV.map((n) => (
             <a
               key={n.href}
               href={n.href}
               aria-current={active === n.href ? 'true' : undefined}
-              className={`nav-link text-sm transition-colors ${
+              className={`nav-link text-sm whitespace-nowrap transition-colors ${
                 active === n.href
                   ? 'text-[var(--color-brand)] font-semibold'
                   : 'text-[var(--color-ink-2)] hover:text-[var(--color-brand)]'
@@ -88,25 +88,25 @@ export function Header() {
           ))}
           <Link
             href="/blog"
-            className="nav-link text-sm transition-colors text-[var(--color-ink-2)] hover:text-[var(--color-brand)]"
+            className="nav-link text-sm whitespace-nowrap transition-colors text-[var(--color-ink-2)] hover:text-[var(--color-brand)]"
           >
             Блог
           </Link>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <a
             href={`tel:${BRAND.phoneRaw}`}
-            className="hidden md:inline-flex text-sm font-semibold text-[var(--color-ink)] hover:text-[var(--color-brand)] transition-colors"
+            className="hidden xl:inline-flex text-sm font-semibold text-[var(--color-ink)] hover:text-[var(--color-brand)] transition-colors whitespace-nowrap"
           >
             {BRAND.phone}
           </a>
           <a
             href="#contact"
             data-goal="header-contact"
-            className="hidden sm:inline-flex btn-primary text-sm py-2.5 px-4 gap-2 group"
+            className="hidden sm:inline-flex btn-primary text-sm py-2.5 px-4 gap-2 group whitespace-nowrap"
           >
-            Получить расчёт
+            Получить&nbsp;расчёт
             <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
           <button
