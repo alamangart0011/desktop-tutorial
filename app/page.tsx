@@ -28,6 +28,7 @@ import { SeoContent } from '@/components/SeoContent';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { HeroAB } from '@/components/HeroAB';
 import { ContextualCta } from '@/components/ContextualCta';
+import { BlogTeaser } from '@/components/BlogTeaser';
 
 const RiskCalc = dynamic(
   () => import('@/components/RiskCalc').then((m) => m.RiskCalc),
@@ -74,6 +75,7 @@ export default function Page() {
         <Faq />
         <ContextualCta variant="phone" />
         <Glossary />
+        <BlogTeaser />
         <SeoContent />
         <ContactForm />
       </main>

@@ -1,5 +1,6 @@
 import { BRAND } from '@/components/constants';
 import { VARIANT } from '@/lib/variants';
+import { ALL_POSTS } from '@/lib/blog';
 
 export const dynamic = 'force-static';
 
@@ -11,6 +12,10 @@ export const dynamic = 'force-static';
  */
 export function GET() {
   const SITE = VARIANT.canonicalBase;
+  const blogLinks = ALL_POSTS.map(
+    ({ meta }) =>
+      `- [${meta.title}](${SITE}/blog/${meta.slug}): ${meta.description}`,
+  ).join('\n');
   const body = `# ${BRAND.name} — Подключение к ГИС «Профилактика»
 
 > Ведущий интегратор ГИС «Профилактика безнадзорности и правонарушений несовершеннолетних» по ПП РФ № 411 от 01.04.2025. ИБ-компания с 2019 года, базируется в Санкт-Петербурге, лицензиат ФСТЭК. Подключаем под ключ за 35–45 рабочих дней или возвращаем деньги. Услуги: подключение, аттестация ИСПДн (УЗ2 по 21 Приказу ФСТЭК), внедрение СЗИ (Secret Net Studio, КриптоПро NGate, ПАК «Соболь»), обучение, поддержка 24/7.
@@ -32,6 +37,12 @@ export function GET() {
 - [Гарантия возврата 100 %](${SITE}/#guarantee): 7 дней — закрываем предписание или возвращаем деньги
 - [Кейсы](${SITE}/#cases): обезличенные результаты по школам, КДН, опеке, соцзащите СПб и СЗФО
 - [Политика обработки ПДн](${SITE}/privacy): 152-ФЗ, основания, цели, права субъекта
+
+## База знаний / Блог
+
+${blogLinks}
+
+- [Все статьи блога](${SITE}/blog): разборы ПП 411, 21 Приказа ФСТЭК, сравнения СЗИ, чек-листы
 
 ## Нормативная база
 
