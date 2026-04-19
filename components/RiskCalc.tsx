@@ -4,10 +4,12 @@ import { useMemo, useState } from 'react';
 
 type Role = 'citizen' | 'official' | 'legal';
 
+// База — ч. 2 ст. 13.11 КоАП (обработка ПДн без надлежащего согласия в письменной форме):
+// граждане 10–20 тыс., должн. лица 40–100 тыс., юр. лица 300–700 тыс.
 const ROLE_RANGE: Record<Role, { min: number; max: number; label: string }> = {
-  citizen: { min: 100_000, max: 200_000, label: 'Гражданин' },
-  official: { min: 200_000, max: 400_000, label: 'Должностное лицо' },
-  legal: { min: 3_000_000, max: 5_000_000, label: 'Юридическое лицо' },
+  citizen: { min: 10_000, max: 20_000, label: 'Гражданин' },
+  official: { min: 40_000, max: 100_000, label: 'Должностное лицо' },
+  legal: { min: 300_000, max: 700_000, label: 'Юридическое лицо' },
 };
 
 function fmt(n: number) {
@@ -135,7 +137,7 @@ export function RiskCalc() {
               <span className="text-sm text-[var(--color-ink)]">
                 <b>Повторное нарушение за год.</b>{' '}
                 <span className="text-[var(--color-muted)]">
-                  Увеличивает нижнюю и верхнюю границы по ч. 11 ст. 13.11.
+                  Увеличивает границы по ч. 6 ст. 13.11; для повторной утечки — оборотный штраф 1–3 % выручки (ч. 16).
                 </span>
               </span>
             </label>

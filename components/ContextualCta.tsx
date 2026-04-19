@@ -19,7 +19,7 @@ const VARIANTS: Record<
     title: 'Не уверены, готова ли ваша организация?',
     text: 'Проведём бесплатный экспресс-аудит за 30 минут — пришлём отчёт с конкретными пробелами и сроками их закрытия.',
     ctaText: 'Заказать экспресс-аудит',
-    ctaHref: '#contact',
+    ctaHref: '/#contact',
     goal: 'ctx-audit',
     Icon: ClockIcon,
   },
@@ -27,7 +27,7 @@ const VARIANTS: Record<
     title: 'Узнайте стоимость подключения за 60 секунд',
     text: 'Ответьте на 5 вопросов — увидите рекомендованный пакет, ориентир по бюджету и срокам без обязательств.',
     ctaText: 'Открыть калькулятор',
-    ctaHref: '#quiz',
+    ctaHref: '/#quiz',
     goal: 'ctx-quiz',
     Icon: ArrowRightIcon,
   },
@@ -38,7 +38,7 @@ const VARIANTS: Record<
     ctaHref: `tel:${BRAND.phoneRaw}`,
     goal: 'ctx-phone',
     Icon: PhoneIcon,
-    secondary: { text: 'Заказать обратный звонок', href: '#contact', goal: 'ctx-phone-callback' },
+    secondary: { text: 'Заказать обратный звонок', href: '/#contact', goal: 'ctx-phone-callback' },
   },
 };
 

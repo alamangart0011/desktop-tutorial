@@ -52,7 +52,7 @@ export function Header() {
         }`}
       >
         <Link
-          href="#top"
+          href="/"
           className="flex items-center gap-2 group shrink-0"
           onClick={() => setOpen(false)}
         >
@@ -102,7 +102,7 @@ export function Header() {
             {BRAND.phone}
           </a>
           <a
-            href="#contact"
+            href="/#contact"
             data-goal="header-contact"
             className="hidden sm:inline-flex btn-primary text-sm py-2.5 px-4 gap-2 group whitespace-nowrap"
           >
@@ -174,7 +174,7 @@ export function Header() {
                 Позвонить
               </a>
               <a
-                href="#contact"
+                href="/#contact"
                 onClick={() => setOpen(false)}
                 data-goal="header-mobile-contact"
                 className="btn-primary text-sm"
