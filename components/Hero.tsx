@@ -43,7 +43,7 @@ export function Hero() {
           <div className="max-w-3xl hero-stagger">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3 py-1.5 text-xs font-semibold text-white">
               <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
-              {VARIANT.regionBadge} · штрафы по 13.11 КоАП уже применяются
+              {VARIANT.regionBadge} · штрафы за утечку ПДн до 15 млн ₽ уже применяются
             </div>
 
             <h1 className="mt-6 text-[2.25rem] sm:text-5xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-balance">

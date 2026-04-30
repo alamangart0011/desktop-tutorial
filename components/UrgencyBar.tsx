@@ -40,7 +40,7 @@ export function UrgencyBar() {
         <p className="flex-1 leading-snug">
           <strong className="font-extrabold">ГИС работает с 01.12.2025.</strong>{' '}
           <span className="opacity-90">
-            Штрафы по 13.11 КоАП — до 5&nbsp;млн&nbsp;₽ уже применяются. Успеть в первую волну приёмки важно.
+            Штрафы за утечку ПДн по ч. 13–15 ст. 13.11 КоАП — до 15&nbsp;млн&nbsp;₽ уже применяются (ред. ФЗ № 420 от 30.11.2024).
           </span>{' '}
           <a
             href="#risk"
